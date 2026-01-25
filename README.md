@@ -1,40 +1,43 @@
 # Claude Alchemy
 
-A monorepo combining Claude Code plugins and applications for an integrated AI-assisted development workflow.
+**Supercharge your Claude Code workflow with powerful plugins and a visual task manager.**
 
-## Overview
+Claude Alchemy is a collection of tools and applications designed to help developers get the most out of [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Whether you're generating PRDs, managing complex feature development, or tracking AI-generated tasks—this project has you covered.
+
+## Task Manager
+
+**See your Claude Code tasks come to life.**
+
+The Task Manager is a real-time Kanban board that visualizes Claude's native task system (`~/.claude/tasks/`). Watch tasks flow from Pending → In Progress → Completed as Claude works through your project.
+
+![Claude Task Manager](claude-apps/task-manager/internal/images/claude-task-manager.png)
+
+**Key Features:**
+- **Real-time updates** — Tasks update instantly via Server-Sent Events as Claude works
+- **Dependency tracking** — See which tasks block others and track completion flow
+- **Statistics dashboard** — Monitor progress with completion percentages and blocked task counts
+- **Search & filter** — Quickly find tasks across large task lists
+- **Dark/light themes** — Easy on the eyes during those long coding sessions
+
+```bash
+cd claude-apps/task-manager
+pnpm install && pnpm dev  # Starts on http://localhost:3030
+```
+
+## Plugins
 
 | Package | Description |
 |---------|-------------|
-| **claude-tools** | Claude Code plugins for PRD generation, feature development, and Git workflows |
-| **claude-apps/task-manager** | Real-time Kanban board for Claude AI task visualization |
+| **prd-tools** | PRD generation, analysis, and task creation |
+| **dev-tools** | Feature development workflows, Git automation, and release management |
 
-## Quick Install
-
-### Plugins
-
-Add the full plugin collection:
+**Install:**
 
 ```bash
 claude plugins add sequenzia/claude-alchemy
 ```
 
-Or install individual plugins:
-
-```bash
-claude plugins add sequenzia/claude-alchemy/claude-tools/prd-tools
-claude plugins add sequenzia/claude-alchemy/claude-tools/dev-tools
-```
-
-### Task Manager
-
-```bash
-cd claude-apps/task-manager
-pnpm install
-pnpm dev  # Starts on http://localhost:3030
-```
-
-## Plugins
+Or individually: `claude plugins add sequenzia/claude-alchemy/claude-tools/prd-tools`
 
 ### prd-tools (v0.3.1)
 
@@ -72,21 +75,6 @@ Developer tools for feature development, codebase analysis, Git workflows, and r
 - Architecture design with trade-off analysis
 - Code review with confidence scoring
 - 9-step release verification pipeline
-
-## Applications
-
-### Task Manager
-
-A Next.js Kanban board that visualizes Claude AI tasks from `~/.claude/tasks/`.
-
-**Features:**
-- Three-column board (Pending, In Progress, Completed)
-- Real-time updates via Server-Sent Events
-- Task filtering and search
-- Dependency visualization
-- Dark/light theme support
-
-**Tech Stack:** Next.js 16, TanStack Query, shadcn/ui, Tailwind CSS v4
 
 ## Workflow Integration
 
