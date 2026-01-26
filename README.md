@@ -2,7 +2,7 @@
 
 **Supercharge your Claude Code workflow with powerful plugins and a visual task manager.**
 
-Claude Alchemy is a collection of tools and applications designed to help developers get the most out of [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
+Claude Alchemy is a collection of tools and apps designed to help developers get the most out of [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
 
 ![Claude Task Manager](./internal/images/claude-task-manager.png)
 
