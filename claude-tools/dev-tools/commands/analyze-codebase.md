@@ -184,6 +184,8 @@ Execute these phases in order, completing ALL of them:
        Description: "Generate a comprehensive markdown report to internal/reports/"
      - Label: "Load into session context"
        Description: "Inject analysis into this session so I can reference it when answering questions"
+     - Label: "Update project docs"
+       Description: "Update README.md and/or CLAUDE.md with analysis summary"
    MultiSelect: true
    ```
 
@@ -287,16 +289,87 @@ Execute these phases in order, completing ALL of them:
    - **Display the formatted context** directly in the response
    - Confirm with brief summary: "Analysis loaded into session context. Sections: Architecture, Code Organization, Technology Stack, Development Info, Key Insights."
 
-   ### If BOTH options are selected:
+   ### If BOTH "Save detailed report" AND "Load into session context" are selected:
    - First: Generate and save the detailed report (as described above)
    - Then: Ask for context detail level and inject context (as described above)
    - Confirm both actions completed
+
+   ### If "Update project docs" is selected:
+
+   1. **Ask which files to update** using `AskUserQuestion`:
+      ```
+      Question: "Which documentation files should I update?"
+      Header: "Target Files"
+      Options:
+        - Label: "README.md only"
+          Description: "Update project README with user-facing overview"
+        - Label: "CLAUDE.md only"
+          Description: "Update CLAUDE.md with AI-context-optimized summary"
+        - Label: "Both files"
+          Description: "Update both with tailored content for each"
+      MultiSelect: false
+      ```
+
+   2. **For README.md** (if "README.md only" or "Both files" selected):
+      - Read existing `README.md` at the analyzed path root (note if file doesn't exist)
+      - **Launch report-generator agent** using Task tool with `subagent_type: "dev-tools:report-generator"`:
+        ```
+        Generate README.md content from codebase analysis.
+        Mode: readme-update
+
+        Path analyzed: [path]
+        Existing README content:
+        ---
+        [Include full existing README.md content, or "FILE_DOES_NOT_EXIST" if missing]
+        ---
+
+        ## Analysis Findings
+
+        [Include the complete analysis from Phase 2]
+
+        ---
+
+        Generate user-facing documentation sections and smart-merge with existing content.
+        Save the merged result to: [path]/README.md
+        ```
+      - Wait for agent to complete
+      - Confirm: "Updated README.md with project overview, structure, and tech stack."
+
+   3. **For CLAUDE.md** (if "CLAUDE.md only" or "Both files" selected):
+      - Read existing `CLAUDE.md` at the analyzed path root (note if file doesn't exist)
+      - **Launch report-generator agent** using Task tool with `subagent_type: "dev-tools:report-generator"`:
+        ```
+        Generate CLAUDE.md content from codebase analysis.
+        Mode: claude-md-update
+
+        Path analyzed: [path]
+        Existing CLAUDE.md content:
+        ---
+        [Include full existing CLAUDE.md content, or "FILE_DOES_NOT_EXIST" if missing]
+        ---
+
+        ## Analysis Findings
+
+        [Include the complete analysis from Phase 2]
+
+        ---
+
+        Generate AI-assistant-optimized documentation and smart-merge with existing content.
+        Save the merged result to: [path]/CLAUDE.md
+        ```
+      - Wait for agent to complete
+      - Confirm: "Updated CLAUDE.md with project overview, repository structure, and key patterns."
+
+   4. **If "Both files" selected**: Run both updates sequentially (README.md first, then CLAUDE.md)
+
+   Note: "Update project docs" can be combined with other output options. Process all selected options.
 
 4. Mark Phase 3 as `completed`
 
 5. **Final message based on selection:**
    - If report saved: "Report available at `internal/reports/codebase-analysis-report.md`"
    - If context loaded: "I now have detailed knowledge of this codebase and can answer architectural questions, suggest implementations following existing patterns, and help navigate the code."
+   - If project docs updated: "Project documentation updated. README.md and/or CLAUDE.md now contain analysis-derived content."
    - Offer next steps:
      - Ask questions about the codebase architecture
      - Run analysis on a different path

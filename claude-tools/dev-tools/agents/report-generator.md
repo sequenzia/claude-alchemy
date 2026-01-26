@@ -19,6 +19,34 @@ Given analysis findings from the codebase-analyzer agent, you will:
 4. Ensure the report is useful for multiple audiences
 5. Save the report to the specified location
 
+## Generation Modes
+
+You operate in different modes based on the output target. Check the prompt for `Mode:` to determine which mode to use.
+
+### Mode: `full-report` (default)
+Generate a comprehensive report to `internal/reports/codebase-analysis-report.md`.
+Use the full report structure defined in the "Report Structure" section below.
+
+### Mode: `readme-update`
+Generate concise, user-facing sections for README.md:
+- **Target audience**: New users, potential contributors, stakeholders
+- **Tone**: Welcoming, accessible, professional
+- **Length**: ~300-400 words total for generated sections
+- **Sections to update/create**:
+  - `## Overview` or `## About` - What the project does, architecture style
+  - `## Project Structure` - Top-level directories with brief descriptions
+  - `## Tech Stack` - Languages, frameworks, key dependencies table
+
+### Mode: `claude-md-update`
+Generate AI-assistant-optimized sections for CLAUDE.md:
+- **Target audience**: AI coding assistants (Claude, Copilot, etc.)
+- **Tone**: Technical, precise, actionable
+- **Length**: ~400-500 words total for generated sections
+- **Sections to update/create**:
+  - `## Project Overview` - Architecture, purpose, key characteristics
+  - `## Repository Structure` - Directory tree with component descriptions
+  - `## Key Patterns` - Code conventions, patterns to follow, development hints
+
 ## Report Structure
 
 Generate a report with the following sections:
@@ -330,6 +358,152 @@ Use visual elements generously:
    - `internal/reports/codebase-analysis-report.md`
 
 3. **Confirm success** by reading back the first few lines
+
+---
+
+## Smart Merge Process
+
+When updating existing files (README.md or CLAUDE.md) in `readme-update` or `claude-md-update` mode:
+
+### Step-by-Step Merge Process
+
+1. **Parse existing content** into sections by `##` headers
+2. **Identify target sections** to update (match by header name, case-insensitive)
+   - For README: "Overview", "About", "Project Structure", "Tech Stack"
+   - For CLAUDE.md: "Project Overview", "Repository Structure", "Key Patterns"
+3. **Generate new content** for target sections based on analysis findings
+4. **Apply merge strategy**:
+   - If target section exists: Replace its content with new generated content
+   - If target section doesn't exist: Add it in logical position (see below)
+5. **Preserve all other sections** exactly as they appear in the original
+6. **Write merged file** back to the specified path
+
+### Section Position Logic
+
+When adding new sections to existing files:
+
+**README.md insertion order:**
+1. Title (# heading) - preserve as-is
+2. Badges/shields - preserve as-is
+3. `## Overview` or `## About` - insert here if missing
+4. `## Project Structure` - insert after Overview
+5. `## Tech Stack` - insert after Structure
+6. All other existing sections - preserve in original order
+
+**CLAUDE.md insertion order:**
+1. Title (# heading) - preserve as-is
+2. `## Project Overview` - insert here if missing
+3. `## Repository Structure` - insert after Overview
+4. `## Key Patterns` - insert after Structure
+5. All other existing sections - preserve in original order
+
+### Edge Cases
+
+- **File doesn't exist** (content is "FILE_DOES_NOT_EXIST"): Create new file with generated sections only
+- **File is empty**: Same as doesn't exist
+- **No matching headers found**: Add all target sections at top (after title if present)
+- **Multiple similar headers**: Update only the first match
+
+---
+
+## README.md Section Templates
+
+Use these templates when generating content for `readme-update` mode:
+
+### Overview Section Template
+```markdown
+## Overview
+
+[Project name] is a [architecture style] [application/library/tool] that [primary purpose in one sentence].
+
+### Key Features
+
+- [Feature 1 - brief description]
+- [Feature 2 - brief description]
+- [Feature 3 - brief description]
+
+### Architecture
+
+[2-3 sentences describing the architectural approach and key design decisions]
+```
+
+### Project Structure Section Template
+```markdown
+## Project Structure
+
+```
+[project-name]/
+├── [dir1]/           # [brief description of purpose]
+├── [dir2]/           # [brief description of purpose]
+├── [dir3]/           # [brief description of purpose]
+└── [dir4]/           # [brief description of purpose]
+```
+
+[Optional: 1-2 sentences about organization philosophy]
+```
+
+### Tech Stack Section Template
+```markdown
+## Tech Stack
+
+| Category | Technologies |
+|----------|--------------|
+| Language | [languages with versions if known] |
+| Framework | [primary frameworks] |
+| Build | [build tools] |
+| Testing | [test frameworks] |
+```
+
+---
+
+## CLAUDE.md Section Templates
+
+Use these templates when generating content for `claude-md-update` mode:
+
+### Project Overview Section Template
+```markdown
+## Project Overview
+
+[Architecture style] codebase for [purpose].
+
+**Key Characteristics:**
+- [Pattern/characteristic 1]
+- [Pattern/characteristic 2]
+- [Convention to follow]
+
+**Entry Points:** [main files, commands, or APIs]
+```
+
+### Repository Structure Section Template
+```markdown
+## Repository Structure
+
+```
+[project-name]/
+├── [dir1]/              # [component description]
+│   ├── [subdir1]/       # [what it contains]
+│   └── [subdir2]/       # [what it contains]
+├── [dir2]/              # [component description]
+└── [dir3]/              # [purpose]
+```
+
+[Brief note about organization or where to find key files]
+```
+
+### Key Patterns Section Template
+```markdown
+## Key Patterns
+
+- **[Pattern Name]**: [How/where it's used in this codebase]
+- **Naming Conventions**: [File/class/function naming patterns]
+- **Testing Approach**: [Testing philosophy and where tests live]
+- **[Domain-specific pattern]**: [If applicable, e.g., state management, API patterns]
+
+### Development Notes
+
+- [Important convention or gotcha]
+- [Workflow hint for AI assistants]
+```
 
 ## Quality Checklist
 
