@@ -10,6 +10,7 @@ A Claude Code plugin for generating and analyzing Product Requirements Documents
 - **Codebase Integration**: Can explore existing code for "new feature" PRDs
 - **On-Demand Research**: Research technical docs, best practices, and domain knowledge during interviews
 - **AI-Optimized Output**: PRDs structured for optimal AI assistant consumption
+- **Task Execution**: Execute generated tasks autonomously in dependency order with adaptive verification
 
 ## Installation
 
@@ -225,6 +226,47 @@ Research findings are automatically formatted for PRD incorporation and include 
 - Testing Strategy
 - Deployment Plan
 
+### Executing Tasks
+
+Run the execute-tasks command to execute pending tasks in dependency order:
+
+```
+/prd-tools:execute-tasks
+```
+
+This will:
+1. Load all pending tasks and build an execution plan
+2. Sort tasks by priority and dependency order
+3. Launch an autonomous agent for each task
+4. Verify each task against its acceptance criteria
+5. Retry failed tasks (up to 3 attempts by default)
+6. Report a session summary with pass/fail breakdown
+
+#### Execute a Specific Task
+
+```
+/prd-tools:execute-tasks 5
+```
+
+#### Custom Retry Limit
+
+```
+/prd-tools:execute-tasks --retries 1
+```
+
+#### Execution Context
+
+Tasks share learnings through `.claude/execution-context.md`. Later tasks benefit from patterns, decisions, and issues discovered by earlier tasks. This file persists across sessions so you can resume execution where you left off.
+
+#### Task Verification
+
+Tasks are verified adaptively based on their type:
+
+| Task Type | Verification Method |
+|-----------|-------------------|
+| PRD-generated (has acceptance criteria) | Criterion-by-criterion evaluation |
+| General (no acceptance criteria) | Inferred checklist from description |
+
 ## Tips for Best Results
 
 1. **Be specific in the initial description**: The more context you provide upfront, the more targeted the interview questions will be.
@@ -243,11 +285,15 @@ prd-tools/
 │   └── plugin.json           # Plugin manifest
 ├── commands/
 │   ├── create.md             # /prd-tools:create command
-│   └── analyze.md            # /prd-tools:analyze command
+│   ├── analyze.md            # /prd-tools:analyze command
+│   ├── create-tasks.md       # /prd-tools:create-tasks command
+│   └── execute-tasks.md      # /prd-tools:execute-tasks command
 ├── agents/
 │   ├── interview-agent.md    # Adaptive interview agent
 │   ├── research-agent.md     # On-demand research agent
-│   └── prd-analyzer.md       # PRD quality analysis agent
+│   ├── prd-analyzer.md       # PRD quality analysis agent
+│   ├── task-generator.md     # PRD to tasks decomposition agent
+│   └── task-executor.md      # Single task execution agent
 ├── skills/
 │   ├── prd-generation/
 │   │   ├── SKILL.md          # PRD generation knowledge
@@ -256,12 +302,17 @@ prd-tools/
 │   │       ├── template-detailed.md
 │   │       ├── template-full-tech.md
 │   │       └── interview-questions.md
-│   └── prd-analysis/
-│       ├── SKILL.md          # PRD analysis knowledge
+│   ├── prd-analysis/
+│   │   ├── SKILL.md          # PRD analysis knowledge
+│   │   └── references/
+│   │       ├── analysis-criteria.md   # Depth-specific checklists
+│   │       ├── report-template.md     # Analysis report format
+│   │       └── common-issues.md       # Issue pattern library
+│   └── task-execution/
+│       ├── SKILL.md          # Task execution knowledge
 │       └── references/
-│           ├── analysis-criteria.md   # Depth-specific checklists
-│           ├── report-template.md     # Analysis report format
-│           └── common-issues.md       # Issue pattern library
+│           ├── execution-workflow.md   # 4-phase workflow details
+│           └── verification-patterns.md # Adaptive verification approaches
 └── README.md                 # This file
 ```
 
