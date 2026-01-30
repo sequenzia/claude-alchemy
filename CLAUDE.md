@@ -52,7 +52,7 @@ pnpm lint
 Claude Code plugins for PRD generation and developer workflows.
 
 **Plugins:**
-- `prd-tools` (v0.3.1) - PRD generation, analysis, and task generation
+- `prd-tools` (v0.2.0) - PRD generation, analysis, task generation, and task execution
 - `dev-tools` (v0.2.6) - Feature development, Git workflows, release automation
 
 **Commands:**
@@ -61,6 +61,7 @@ Claude Code plugins for PRD generation and developer workflows.
 | `/prd-tools:create` | Start PRD creation workflow |
 | `/prd-tools:analyze <path>` | Analyze existing PRD for quality issues |
 | `/prd-tools:create-tasks <path>` | Generate Claude Code native Tasks from PRD |
+| `/prd-tools:execute-tasks [task-id]` | Execute pending tasks in dependency order with adaptive verification |
 | `/dev-tools:analyze-codebase [path]` | Generate comprehensive codebase analysis |
 | `/dev-tools:feature-dev <description>` | Feature development workflow (7 phases) |
 | `/dev-tools:git-commit` | Stage and commit with conventional message |
@@ -148,7 +149,8 @@ model: opus  # optional: sonnet (default), opus, haiku
    ↓
 4. Task Visualization (task-manager app)
    ↓
-5. Task Execution (dev-tools:feature-dev)
+5. Task Execution (prd-tools:execute-tasks) [autonomous]
+   ↓  or: Manual execution (dev-tools:feature-dev) [per task]
    ↓
 6. Git Operations (dev-tools: commit, push)
    ↓

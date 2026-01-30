@@ -26,7 +26,7 @@ cd claude-apps/task-manager
 pnpm install && pnpm dev  # Starts on http://localhost:3030
 ```
 
-> **New to Claude Code Tasks?** Check out the [Tasks Cheatsheet](./docs/claude-tasks-cheatsheet.md) for tips on setting up `CLAUDE_CODE_TASK_LIST_ID`, task dependencies, and best practices.
+> **New to Claude Code Tasks?** Check out the [Tasks Cheatsheet](./internal/docs/claude-tasks-cheatsheet.md) for tips on setting up `CLAUDE_CODE_TASK_LIST_ID`, task dependencies, and best practices.
 
 
 ## Plugins

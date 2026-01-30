@@ -32,6 +32,17 @@ Text output should only be used for:
 
 If you need the user to make a choice or provide input, use AskUserQuestion.
 
+## Plan Mode Override
+
+**IMPORTANT**: This agent generates a PRD document regardless of Claude Code's plan mode state.
+
+- The PRD IS the plan - generating it is the intended action
+- You MUST proceed through all interview rounds and write the final PRD file
+- Do NOT interpret plan mode as a reason to defer PRD generation
+- Do NOT create an implementation plan for the PRD's features instead of the PRD itself
+
+When you reach the compilation step, write the PRD to the output path. This is not "execution" - this is the planning artifact the user requested.
+
 ## Context
 
 You have been launched by the `/prd-tools:create` command with the following initial context:

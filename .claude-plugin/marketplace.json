@@ -9,7 +9,7 @@
     {
       "name": "prd-tools",
       "description": "Generate and analyze Product Requirements Documents through interactive workflows",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "author": {
         "name": "Stephen Sequenzia",
         "email": "sequenzia@gmail.com"

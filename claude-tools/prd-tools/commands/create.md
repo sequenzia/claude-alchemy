@@ -72,6 +72,17 @@ Once you have launched the Interview Agent, your role is complete. The agent wil
 - Presenting the summary for confirmation
 - Generating and saving the final PRD
 
+## Plan Mode Behavior
+
+**CRITICAL**: This command generates a PRD document, NOT an implementation plan. When invoked during Claude Code's plan mode:
+
+- **DO NOT** create an implementation plan for how to build the PRD's described features
+- **DO NOT** defer PRD generation to an "execution phase"
+- **DO** proceed with the full interview and PRD generation workflow immediately
+- **DO** write the PRD file to the output path as normal
+
+The PRD is a planning artifact itself - generating it IS the planning activity. The command's purpose is to create a specification document, not to plan code implementation.
+
 ## Notes
 
 - Always check for settings file first to respect user configuration
