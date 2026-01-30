@@ -1,18 +1,17 @@
 ---
-description: Generate Claude Code native Tasks from an existing PRD
-allowed_tools:
-  - AskUserQuestion
-  - Task
-  - Read
-  - Glob
-  - TaskList
+name: create-tasks
+description: Generate Claude Code native Tasks from an existing PRD. Use when user says "create tasks", "generate tasks from PRD", "PRD to tasks", "task generation", or wants to decompose a PRD into implementation tasks.
+argument-hint: "[prd-path]"
+user-invocable: true
+disable-model-invocation: false
+allowed-tools: AskUserQuestion, Task, Read, Glob, TaskList
 arguments:
   - name: prd-path
     description: Path to the PRD file to analyze for task generation
     required: true
 ---
 
-# PRD to Tasks - Create Tasks Command
+# PRD to Tasks - Create Tasks Skill
 
 You are initiating the task generation workflow. This process reads an existing PRD and creates Claude Code native Tasks with dependencies, priorities, and metadata.
 
@@ -187,3 +186,9 @@ After completion, use `TaskList` to view all created tasks.
 - Dependencies are automatically inferred from layer relationships and PRD phases
 - Re-running on the same PRD merges intelligently (preserves completed tasks)
 - Task UIDs enable tracking across PRD updates
+
+## Reference Files
+
+- `references/decomposition-patterns.md` - Feature decomposition patterns by type
+- `references/dependency-inference.md` - Automatic dependency inference rules
+- `references/testing-requirements.md` - Test type mappings and acceptance criteria patterns

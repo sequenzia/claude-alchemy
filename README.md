@@ -50,8 +50,8 @@ Generate Product Requirements Documents through interactive interviews with dept
 
 | Command | Description |
 |---------|-------------|
-| `/prd-tools:create` | Start PRD creation workflow |
-| `/prd-tools:analyze <path>` | Analyze existing PRD for quality issues |
+| `/prd-tools:create-prd` | Start PRD creation workflow |
+| `/prd-tools:analyze-prd <path>` | Analyze existing PRD for quality issues |
 | `/prd-tools:create-tasks <path>` | Generate Claude Code native Tasks from PRD |
 
 **Features:**

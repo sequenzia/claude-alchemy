@@ -18,19 +18,19 @@ _Edge Cases:_
 - [ ] ...
 ```
 
-If found → **PRD-generated task**
+If found -> **PRD-generated task**
 
 ### Step 2: Check Metadata
 
-Check for `metadata.prd_path` field. If present → **PRD-generated task**
+Check for `metadata.prd_path` field. If present -> **PRD-generated task**
 
 ### Step 3: Check Source Reference
 
-Check for `Source: {path} Section {number}` at the end of the description. If present → **PRD-generated task**
+Check for `Source: {path} Section {number}` at the end of the description. If present -> **PRD-generated task**
 
 ### Default
 
-If none of the above are found → **General task**
+If none of the above are found -> **General task**
 
 ---
 
@@ -44,17 +44,17 @@ Extract criteria from the task description by category:
 **Acceptance Criteria:**
 
 _Functional:_
-- [ ] Schema defined with all required fields       → criterion 1
-- [ ] Indexes created for email lookup               → criterion 2
+- [ ] Schema defined with all required fields       -> criterion 1
+- [ ] Indexes created for email lookup               -> criterion 2
 
 _Edge Cases:_
-- [ ] Handle duplicate email constraint violation    → criterion 3
+- [ ] Handle duplicate email constraint violation    -> criterion 3
 
 _Error Handling:_
-- [ ] Clear error messages for constraint violations → criterion 4
+- [ ] Clear error messages for constraint violations -> criterion 4
 
 _Performance:_
-- [ ] Query response under 100ms for indexed fields  → criterion 5
+- [ ] Query response under 100ms for indexed fields  -> criterion 5
 ```
 
 Each line starting with `- [ ]` under a category header is one criterion.
@@ -109,8 +109,8 @@ After verifying acceptance criteria, check testing requirements:
 1. **Parse Testing Requirements** section from description:
    ```
    **Testing Requirements:**
-   • Unit: Schema validation for all field types
-   • Integration: Database persistence and retrieval
+   - Unit: Schema validation for all field types
+   - Integration: Database persistence and retrieval
    ```
 
 2. **For each test requirement**:
@@ -145,11 +145,11 @@ Infer verification approach from the task subject:
 
 Extract implicit criteria from description text:
 
-- **"should..."** statements → functional requirements to verify
-- **"when..."** statements → scenarios to test
-- **"must..."** statements → hard requirements to verify
-- **"can..."** statements → capabilities to confirm
-- **"handle..."** statements → error scenarios to check
+- **"should..."** statements -> functional requirements to verify
+- **"when..."** statements -> scenarios to test
+- **"must..."** statements -> hard requirements to verify
+- **"can..."** statements -> capabilities to confirm
+- **"handle..."** statements -> error scenarios to check
 
 ### Basic Quality Checklist
 
@@ -169,29 +169,29 @@ For all general tasks, verify:
 
 | Category | Pass Requirement | Failure Impact |
 |----------|-----------------|----------------|
-| **Functional** | ALL must pass | Any failure → FAIL |
+| **Functional** | ALL must pass | Any failure -> FAIL |
 | **Edge Cases** | Failures flagged, don't block | Report as PARTIAL if other categories pass |
 | **Error Handling** | Failures flagged, don't block | Report as PARTIAL if other categories pass |
 | **Performance** | Failures flagged, don't block | Report as PARTIAL if other categories pass |
-| **Tests** | ALL must pass | Any test failure → FAIL |
+| **Tests** | ALL must pass | Any test failure -> FAIL |
 
 **Decision matrix:**
 
 ```
-All Functional PASS + Tests PASS → PASS (even if Edge/Error/Perf have issues)
-All Functional PASS + Tests PASS + Edge/Error/Perf issues → PARTIAL
-Any Functional FAIL → FAIL
-Any Test FAIL → FAIL
+All Functional PASS + Tests PASS -> PASS (even if Edge/Error/Perf have issues)
+All Functional PASS + Tests PASS + Edge/Error/Perf issues -> PARTIAL
+Any Functional FAIL -> FAIL
+Any Test FAIL -> FAIL
 ```
 
 ### General Tasks
 
 | Check | Pass Requirement | Failure Impact |
 |-------|-----------------|----------------|
-| **Core change** | Must be implemented | Missing → FAIL |
-| **Tests pass** | Existing tests must pass | Test failure → FAIL |
-| **Linter** | No new violations | New violations → PARTIAL |
-| **No regressions** | Nothing else broken | Regression → FAIL |
+| **Core change** | Must be implemented | Missing -> FAIL |
+| **Tests pass** | Existing tests must pass | Test failure -> FAIL |
+| **Linter** | No new violations | New violations -> PARTIAL |
+| **No regressions** | Nothing else broken | Regression -> FAIL |
 
 ---
 
@@ -206,7 +206,7 @@ CRITERIA RESULTS:
   _Functional:_ ({passed}/{total})
   ✓ Schema defined with all required fields
   ✗ Indexes created for email lookup
-    → Index creation code exists but migration not run
+    -> Index creation code exists but migration not run
 
   _Edge Cases:_ ({passed}/{total})
   ✓ Handle duplicate email constraint violation
@@ -245,7 +245,7 @@ Use consistent symbols in verification reports:
 
 ## Retry Context
 
-When a task is being retried after a previous failure, the orchestrating command will provide failure context from the previous attempt. Use this information to:
+When a task is being retried after a previous failure, the orchestrating skill will provide failure context from the previous attempt. Use this information to:
 
 1. **Understand what failed**: Review the previous verification report
 2. **Avoid repeating mistakes**: Check if the same approach was already tried

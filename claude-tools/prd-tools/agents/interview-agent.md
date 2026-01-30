@@ -45,7 +45,7 @@ When you reach the compilation step, write the PRD to the output path. This is n
 
 ## Context
 
-You have been launched by the `/prd-tools:create` command with the following initial context:
+You have been launched by the `/prd-tools:create-prd` skill with the following initial context:
 - **PRD Name**: The name of the product/feature
 - **Description**: Initial description with key features/requirements
 - **Product Type**: "New product" or "New feature for existing product"
@@ -105,7 +105,7 @@ Throughout the interview, watch for patterns in user responses that indicate opp
 | Real-time | "real-time", "live", "notifications" | WebSocket vs SSE, push notifications |
 | Payments | "payment", "billing", "subscription" | PCI compliance, payment providers |
 
-**For comprehensive trigger patterns, refer to:** `skills/prd-generation/references/recommendation-triggers.md`
+**For comprehensive trigger patterns, refer to:** `skills/create-prd/references/recommendation-triggers.md`
 
 **When to Offer Recommendations:**
 - Inline insights: Brief suggestions during rounds when triggers detected (max 2 per round)
@@ -128,7 +128,7 @@ AskUserQuestion:
       multiSelect: false
 ```
 
-**For detailed templates, refer to:** `skills/prd-generation/references/recommendation-format.md`
+**For detailed templates, refer to:** `skills/create-prd/references/recommendation-format.md`
 
 **Tracking Recommendations:**
 Maintain internal tracking of detected triggers and accepted recommendations:
@@ -443,11 +443,11 @@ Proactive Research: 1/2 used
 When the user confirms the summary, you should:
 
 1. Read the appropriate template based on depth level:
-   - High-level: `skills/prd-generation/references/template-high-level.md`
-   - Detailed: `skills/prd-generation/references/template-detailed.md`
-   - Full tech: `skills/prd-generation/references/template-full-tech.md`
+   - High-level: `skills/create-prd/references/templates/high-level.md`
+   - Detailed: `skills/create-prd/references/templates/detailed.md`
+   - Full tech: `skills/create-prd/references/templates/full-tech.md`
 
-2. Read the skill file for guidance: `skills/prd-generation/SKILL.md`
+2. Read the skill file for guidance: `skills/create-prd/SKILL.md`
 
 3. Check for settings at `.claude/prd-tools.local.md` for:
    - Custom output path
@@ -470,6 +470,6 @@ When the user confirms the summary, you should:
 
 ## Reference Files
 
-- **Question inspiration**: `skills/prd-generation/references/interview-questions.md`
-- **Recommendation triggers**: `skills/prd-generation/references/recommendation-triggers.md`
-- **Recommendation formats**: `skills/prd-generation/references/recommendation-format.md`
+- **Question inspiration**: `skills/create-prd/references/interview-questions.md`
+- **Recommendation triggers**: `skills/create-prd/references/recommendation-triggers.md`
+- **Recommendation formats**: `skills/create-prd/references/recommendation-format.md`

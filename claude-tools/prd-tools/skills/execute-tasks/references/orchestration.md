@@ -1,35 +1,14 @@
----
-description: Execute pending Claude Code Tasks in dependency order with adaptive verification
-allowed_tools:
-  - Task
-  - Read
-  - Glob
-  - Grep
-  - TaskList
-  - TaskGet
-  - TaskUpdate
-arguments:
-  - name: task-id
-    description: Optional specific task ID to execute. If omitted, executes all unblocked tasks in dependency order.
-    required: false
-  - name: retries
-    description: Number of retry attempts for failed/partial tasks before moving on. Default is 3.
-    required: false
----
+# Orchestration Reference
 
-# Execute Tasks Command
+This reference provides the detailed 8-step orchestration loop for executing Claude Code Tasks in dependency order. The execute-tasks skill uses this procedure to manage the full execution session.
 
-You are initiating the task execution workflow. This process executes pending Claude Code Tasks in dependency order, launching a dedicated agent for each task with adaptive verification. Execution is fully autonomous — no user interaction between tasks.
-
-## Workflow
-
-### Step 1: Load Task List
+## Step 1: Load Task List
 
 Use `TaskList` to get all tasks and their current state.
 
 If a specific `task-id` argument was provided, validate it exists. If it doesn't exist, inform the user and stop.
 
-### Step 2: Validate State
+## Step 2: Validate State
 
 Handle edge cases before proceeding:
 
@@ -38,7 +17,7 @@ Handle edge cases before proceeding:
 - **Specific task-id is blocked**: Report which tasks are blocking it and stop.
 - **No unblocked tasks**: Report which tasks exist and what's blocking them. Detect circular dependencies and report if found.
 
-### Step 3: Build Execution Plan
+## Step 3: Build Execution Plan
 
 Collect all unblocked pending tasks (status `pending`, empty `blockedBy` list).
 
@@ -53,13 +32,13 @@ Otherwise, sort by priority:
 
 Break ties by "unblocks most others" — tasks that appear in the most `blockedBy` lists of other tasks execute first.
 
-### Step 4: Check Settings
+## Step 4: Check Settings
 
 Read `.claude/prd-tools.local.md` if it exists, for any execution preferences.
 
 This is optional — proceed without settings if not found.
 
-### Step 5: Present Execution Plan
+## Step 5: Present Execution Plan
 
 Display the execution plan (informational only, no confirmation needed):
 
@@ -84,7 +63,7 @@ COMPLETED:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-### Step 6: Initialize Execution Context
+## Step 6: Initialize Execution Context
 
 Check if `.claude/execution-context.md` exists.
 
@@ -111,21 +90,21 @@ If it does not exist, create it with the initial structure:
 
 If it already exists, read it to note prior session context.
 
-### Step 7: Execute Loop
+## Step 7: Execute Loop
 
 Execute tasks fully autonomously. No user interaction between tasks.
 
 For each task in the execution plan:
 
-#### 7a: Get Task Details
+### 7a: Get Task Details
 
 Use `TaskGet` to load full task details.
 
-#### 7b: Mark In Progress
+### 7b: Mark In Progress
 
 Use `TaskUpdate` to set status to `in_progress`.
 
-#### 7c: Launch Executor Agent
+### 7c: Launch Executor Agent
 
 Launch the `prd-tools:task-executor` agent using the `Task` tool:
 
@@ -158,7 +137,7 @@ Task:
     Focus on fixing the specific failures listed above.
 
     Instructions:
-    1. Read the task-execution skill and reference files
+    1. Read the execute-tasks skill and reference files
     2. Read .claude/execution-context.md for prior learnings
     3. Understand the task requirements and explore the codebase
     4. Implement the necessary changes
@@ -168,7 +147,7 @@ Task:
     8. Return a structured verification report
 ```
 
-#### 7d: Process Result
+### 7d: Process Result
 
 After the agent returns:
 
@@ -178,7 +157,7 @@ After the agent returns:
   - If retries remaining: Launch a fresh agent invocation with the failure context included in the prompt
   - If retries exhausted: Log final failure, leave task as `in_progress`, move to next task
 
-#### 7e: Refresh Task List
+### 7e: Refresh Task List
 
 After each task completes (PASS or retries exhausted):
 
@@ -187,7 +166,7 @@ After each task completes (PASS or retries exhausted):
 3. If newly unblocked tasks found, insert them into the execution plan using the priority sort from Step 3
 4. Continue until no more tasks remain in the plan
 
-### Step 8: Session Summary
+## Step 8: Session Summary
 
 After all tasks in the plan have been processed:
 
@@ -216,43 +195,10 @@ NEWLY UNBLOCKED:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-## Key Behaviors
-
-- **Fully autonomous**: No user prompts between tasks. The loop runs without interruption.
-- **One agent per task**: Each task gets a fresh agent invocation with isolated context.
-- **Configurable retries**: Default 3 attempts per task, configurable via `retries` argument.
-- **Retry with context**: Each retry includes the previous attempt's failure details so the agent can try a different approach.
-- **Dynamic unblocking**: After each task completes, the dependency graph is refreshed and newly unblocked tasks are added to the plan.
-- **Honest failure handling**: After retries exhausted, tasks stay `in_progress` (not completed), and execution continues to the next task.
-- **Circular dependency detection**: If all remaining tasks are blocked by each other, break at the weakest link (task with fewest blockers) and log a warning.
-- **Shared context**: Agents read and write `.claude/execution-context.md` so later tasks benefit from earlier discoveries.
-
-## Example Usage
-
-### Execute all unblocked tasks
-```
-/prd-tools:execute-tasks
-```
-
-### Execute a specific task
-```
-/prd-tools:execute-tasks 5
-```
-
-### Execute with custom retry limit
-```
-/prd-tools:execute-tasks --retries 1
-```
-
-### Execute specific task with retries
-```
-/prd-tools:execute-tasks 5 --retries 5
-```
-
 ## Notes
 
 - Tasks are executed using Claude Code's native task system (TaskGet/TaskUpdate/TaskList)
 - Each task is handled by the `prd-tools:task-executor` agent in isolation
 - The execution context file enables knowledge sharing across task boundaries
 - Failed tasks remain as `in_progress` for manual review or re-execution
-- Run this command again to pick up where you left off — it will execute any remaining unblocked tasks
+- Run the execute-tasks skill again to pick up where you left off — it will execute any remaining unblocked tasks

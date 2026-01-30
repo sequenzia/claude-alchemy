@@ -24,7 +24,7 @@ A Claude Code plugin for generating and analyzing Product Requirements Documents
 Run the create command to start generating a PRD:
 
 ```
-/prd-tools:create
+/prd-tools:create-prd
 ```
 
 This will:
@@ -38,12 +38,12 @@ This will:
 Run the analyze command to review an existing PRD for quality issues:
 
 ```
-/prd-tools:analyze <path-to-prd>
+/prd-tools:analyze-prd <path-to-prd>
 ```
 
 Example:
 ```
-/prd-tools:analyze specs/PRD-User-Authentication.md
+/prd-tools:analyze-prd specs/PRD-User-Authentication.md
 ```
 
 This will:
@@ -228,7 +228,7 @@ Research findings are automatically formatted for PRD incorporation and include 
 
 ### Executing Tasks
 
-Run the execute-tasks command to execute pending tasks in dependency order:
+Run the execute-tasks skill to execute pending tasks in dependency order:
 
 ```
 /prd-tools:execute-tasks
@@ -283,11 +283,6 @@ Tasks are verified adaptively based on their type:
 prd-tools/
 ├── .claude-plugin/
 │   └── plugin.json           # Plugin manifest
-├── commands/
-│   ├── create.md             # /prd-tools:create command
-│   ├── analyze.md            # /prd-tools:analyze command
-│   ├── create-tasks.md       # /prd-tools:create-tasks command
-│   └── execute-tasks.md      # /prd-tools:execute-tasks command
 ├── agents/
 │   ├── interview-agent.md    # Adaptive interview agent
 │   ├── research-agent.md     # On-demand research agent
@@ -295,22 +290,32 @@ prd-tools/
 │   ├── task-generator.md     # PRD to tasks decomposition agent
 │   └── task-executor.md      # Single task execution agent
 ├── skills/
-│   ├── prd-generation/
-│   │   ├── SKILL.md          # PRD generation knowledge
+│   ├── create-prd/
+│   │   ├── SKILL.md          # PRD creation workflow and knowledge
 │   │   └── references/
-│   │       ├── template-high-level.md
-│   │       ├── template-detailed.md
-│   │       ├── template-full-tech.md
-│   │       └── interview-questions.md
-│   ├── prd-analysis/
-│   │   ├── SKILL.md          # PRD analysis knowledge
+│   │       ├── templates/
+│   │       │   ├── high-level.md
+│   │       │   ├── detailed.md
+│   │       │   └── full-tech.md
+│   │       ├── interview-questions.md
+│   │       ├── recommendation-triggers.md
+│   │       └── recommendation-format.md
+│   ├── analyze-prd/
+│   │   ├── SKILL.md          # PRD analysis workflow and knowledge
 │   │   └── references/
 │   │       ├── analysis-criteria.md   # Depth-specific checklists
 │   │       ├── report-template.md     # Analysis report format
 │   │       └── common-issues.md       # Issue pattern library
-│   └── task-execution/
-│       ├── SKILL.md          # Task execution knowledge
+│   ├── create-tasks/
+│   │   ├── SKILL.md          # Task creation workflow and knowledge
+│   │   └── references/
+│   │       ├── decomposition-patterns.md  # Feature decomposition patterns
+│   │       ├── dependency-inference.md    # Dependency inference rules
+│   │       └── testing-requirements.md    # Test type mappings
+│   └── execute-tasks/
+│       ├── SKILL.md          # Task execution orchestration and knowledge
 │       └── references/
+│           ├── orchestration.md       # 8-step orchestration loop
 │           ├── execution-workflow.md   # 4-phase workflow details
 │           └── verification-patterns.md # Adaptive verification approaches
 └── README.md                 # This file

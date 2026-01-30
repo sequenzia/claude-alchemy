@@ -8,11 +8,11 @@ Load context and understand the task scope before writing any code.
 
 ### Step 1: Load Knowledge
 
-Read the task-execution skill and its references:
+Read the execute-tasks skill and its references:
 ```
-Read: skills/task-execution/SKILL.md
-Read: skills/task-execution/references/execution-workflow.md
-Read: skills/task-execution/references/verification-patterns.md
+Read: skills/execute-tasks/SKILL.md
+Read: skills/execute-tasks/references/execution-workflow.md
+Read: skills/execute-tasks/references/verification-patterns.md
 ```
 
 ### Step 2: Read Execution Context
@@ -204,7 +204,7 @@ TaskUpdate: taskId={id}, status=completed
 ```
 
 **If PARTIAL or FAIL:**
-Leave task as `in_progress`. Do NOT mark as completed. The orchestrating command will decide whether to retry.
+Leave task as `in_progress`. Do NOT mark as completed. The orchestrating skill will decide whether to retry.
 
 ### Append to Execution Context
 
@@ -225,7 +225,7 @@ Also update the relevant sections if new information was discovered:
 
 ### Report Structure
 
-Return a structured report to the orchestrating command:
+Return a structured report to the orchestrating skill:
 
 ```
 TASK RESULT: {PASS|PARTIAL|FAIL}

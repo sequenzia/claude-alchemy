@@ -1,19 +1,29 @@
 ---
-description: This skill should be used when executing implementation tasks, running tasks in dependency order, verifying task completion against acceptance criteria, or implementing code changes from generated tasks.
-triggers:
-  - execute task
-  - run task
-  - implement task
-  - work on task
-  - task execution
-  - complete task
-  - start working on tasks
-  - execute pending tasks
+name: execute-tasks
+description: Execute pending Claude Code Tasks in dependency order with adaptive verification. Use when user says "execute tasks", "run tasks", "start execution", "work on tasks", or wants to execute generated tasks autonomously.
+argument-hint: "[task-id]"
+user-invocable: true
+disable-model-invocation: false
+allowed-tools:
+  - Task
+  - Read
+  - Glob
+  - Grep
+  - TaskList
+  - TaskGet
+  - TaskUpdate
+arguments:
+  - name: task-id
+    description: Optional specific task ID to execute. If omitted, executes all unblocked tasks in dependency order.
+    required: false
+  - name: retries
+    description: Number of retry attempts for failed/partial tasks before moving on. Default is 3.
+    required: false
 ---
 
-# Task Execution Skill
+# Execute Tasks Skill
 
-This skill provides structured knowledge for executing Claude Code Tasks through a 4-phase workflow with adaptive verification. It bridges the gap between task generation and feature implementation by executing tasks autonomously in dependency order.
+This skill orchestrates autonomous task execution for Claude Code Tasks. It builds a dependency-aware execution plan, launches a dedicated agent for each task through a 4-phase workflow (Understand, Implement, Verify, Complete), handles retries with failure context, and shares learnings across tasks through a shared execution context file.
 
 ## Core Principles
 
@@ -49,6 +59,34 @@ Produce accurate verification results:
 - FAIL when Functional criteria or tests fail
 - Never mark a task complete if verification fails
 
+## Orchestration Workflow
+
+This skill orchestrates task execution through an 8-step loop. See `references/orchestration.md` for the full detailed procedure.
+
+### Step 1: Load Task List
+Retrieve all tasks via `TaskList`. If a specific `task-id` argument was provided, validate it exists.
+
+### Step 2: Validate State
+Handle edge cases: empty list, all completed, specific task blocked, no unblocked tasks, circular dependencies.
+
+### Step 3: Build Execution Plan
+Collect unblocked pending tasks, sort by priority (critical > high > medium > low > unprioritized), break ties by "unblocks most others."
+
+### Step 4: Check Settings
+Read `.claude/prd-tools.local.md` if it exists for execution preferences.
+
+### Step 5: Present Execution Plan
+Display the plan showing tasks to execute, blocked tasks, and completed count. Informational only, no confirmation needed.
+
+### Step 6: Initialize Execution Context
+Create `.claude/execution-context.md` if it doesn't exist with sections for Project Patterns, Key Decisions, Known Issues, File Map, and Task History. If it exists, read it for prior session context.
+
+### Step 7: Execute Loop
+For each task: get details, mark in progress, launch `prd-tools:task-executor` agent, process result (PASS/PARTIAL/FAIL), handle retries, refresh task list for newly unblocked tasks.
+
+### Step 8: Session Summary
+Display execution results with pass/fail counts, failed task list, and newly unblocked tasks.
+
 ## Task Classification
 
 Determine whether a task is PRD-generated or general to select the right verification approach.
@@ -59,19 +97,19 @@ Determine whether a task is PRD-generated or general to select the right verific
 2. **Check metadata**: Look for `metadata.prd_path` field
 3. **Check source reference**: Look for `Source: {path} Section {number}` in the description
 
-If any check matches → **PRD-generated task** (use criterion-based verification)
+If any check matches -> **PRD-generated task** (use criterion-based verification)
 
-If none match → **General task** (use inferred verification)
+If none match -> **General task** (use inferred verification)
 
 ## 4-Phase Workflow
 
-Execute each task through these phases in order:
+Each task is executed by the `prd-tools:task-executor` agent through these phases:
 
 ### Phase 1: Understand
 
 Load context and understand scope before writing code.
 
-- Read the task-execution skill and references
+- Read the execute-tasks skill and references
 - Read `.claude/execution-context.md` for learnings from prior tasks
 - Load task details via `TaskGet`
 - Classify the task (PRD-generated vs general)
@@ -84,7 +122,7 @@ Load context and understand scope before writing code.
 Execute the code changes following project patterns.
 
 - Read all target files before modifying them
-- Follow the project's implementation order (data → service → interface → tests)
+- Follow the project's implementation order (data -> service -> interface -> tests)
 - Match existing coding patterns and conventions
 - Write tests if specified in testing requirements
 - Run mid-implementation checks (linter, existing tests) to catch issues early
@@ -127,7 +165,41 @@ Tasks within an execution session share learnings through `.claude/execution-con
 
 This enables later tasks to benefit from earlier discoveries and retry attempts to learn from previous failures.
 
+## Key Behaviors
+
+- **Fully autonomous**: No user prompts between tasks. The loop runs without interruption.
+- **One agent per task**: Each task gets a fresh agent invocation with isolated context.
+- **Configurable retries**: Default 3 attempts per task, configurable via `retries` argument.
+- **Retry with context**: Each retry includes the previous attempt's failure details so the agent can try a different approach.
+- **Dynamic unblocking**: After each task completes, the dependency graph is refreshed and newly unblocked tasks are added to the plan.
+- **Honest failure handling**: After retries exhausted, tasks stay `in_progress` (not completed), and execution continues to the next task.
+- **Circular dependency detection**: If all remaining tasks are blocked by each other, break at the weakest link (task with fewest blockers) and log a warning.
+- **Shared context**: Agents read and write `.claude/execution-context.md` so later tasks benefit from earlier discoveries.
+
+## Example Usage
+
+### Execute all unblocked tasks
+```
+/prd-tools:execute-tasks
+```
+
+### Execute a specific task
+```
+/prd-tools:execute-tasks 5
+```
+
+### Execute with custom retry limit
+```
+/prd-tools:execute-tasks --retries 1
+```
+
+### Execute specific task with retries
+```
+/prd-tools:execute-tasks 5 --retries 5
+```
+
 ## Reference Files
 
+- `references/orchestration.md` - 8-step orchestration loop with execution plan, retry handling, and session summary
 - `references/execution-workflow.md` - Detailed phase-by-phase procedures for the 4-phase workflow
 - `references/verification-patterns.md` - Task classification, criterion verification, pass/fail rules, and failure reporting format

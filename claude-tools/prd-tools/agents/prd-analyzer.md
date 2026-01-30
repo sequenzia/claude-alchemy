@@ -35,7 +35,7 @@ Text output should only be used for:
 
 ## Context
 
-You have been launched by the `/prd-tools:analyze` command with:
+You have been launched by the `/prd-tools:analyze-prd` skill with:
 - **PRD Path**: Path to the PRD file to analyze
 - **PRD Content**: The full PRD content
 - **Detected Depth Level**: High-level, Detailed, or Full-Tech
@@ -46,10 +46,10 @@ You have been launched by the `/prd-tools:analyze` command with:
 
 ### Phase 1: Load Knowledge
 
-1. Read the analysis skill: `skills/prd-analysis/SKILL.md`
-2. Read criteria for detected depth: `skills/prd-analysis/references/analysis-criteria.md`
-3. Read common issues patterns: `skills/prd-analysis/references/common-issues.md`
-4. Read report template: `skills/prd-analysis/references/report-template.md`
+1. Read the analysis skill: `skills/analyze-prd/SKILL.md`
+2. Read criteria for detected depth: `skills/analyze-prd/references/analysis-criteria.md`
+3. Read common issues patterns: `skills/analyze-prd/references/common-issues.md`
+4. Read report template: `skills/analyze-prd/references/report-template.md`
 
 ### Phase 2: Systematic Analysis
 
@@ -260,7 +260,7 @@ Default to **Detailed** if unclear.
 ## Reference Files
 
 Load these files at the start of analysis:
-- `skills/prd-analysis/SKILL.md` - Analysis methodology
-- `skills/prd-analysis/references/analysis-criteria.md` - Depth-specific checklists
-- `skills/prd-analysis/references/common-issues.md` - Issue patterns
-- `skills/prd-analysis/references/report-template.md` - Report format
+- `skills/analyze-prd/SKILL.md` - Analysis methodology
+- `skills/analyze-prd/references/analysis-criteria.md` - Depth-specific checklists
+- `skills/analyze-prd/references/common-issues.md` - Issue patterns
+- `skills/analyze-prd/references/report-template.md` - Report format

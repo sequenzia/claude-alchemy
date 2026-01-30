@@ -58,8 +58,8 @@ Claude Code plugins for PRD generation and developer workflows.
 **Commands:**
 | Command | Description |
 |---------|-------------|
-| `/prd-tools:create` | Start PRD creation workflow |
-| `/prd-tools:analyze <path>` | Analyze existing PRD for quality issues |
+| `/prd-tools:create-prd` | Start PRD creation workflow |
+| `/prd-tools:analyze-prd <path>` | Analyze existing PRD for quality issues |
 | `/prd-tools:create-tasks <path>` | Generate Claude Code native Tasks from PRD |
 | `/prd-tools:execute-tasks [task-id]` | Execute pending tasks in dependency order with adaptive verification |
 | `/dev-tools:analyze-codebase [path]` | Generate comprehensive codebase analysis |
@@ -141,9 +141,9 @@ model: opus  # optional: sonnet (default), opus, haiku
 ## Workflow Integration
 
 ```
-1. PRD Creation (prd-tools:create)
+1. PRD Creation (prd-tools:create-prd)
    ↓
-2. PRD Analysis (prd-tools:analyze) [optional]
+2. PRD Analysis (prd-tools:analyze-prd) [optional]
    ↓
 3. Task Generation (prd-tools:create-tasks)
    ↓

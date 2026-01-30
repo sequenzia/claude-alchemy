@@ -46,10 +46,10 @@ Execute these phases in order:
 First, read the task generation skill and reference files:
 
 ```
-Read: skills/task-generation/SKILL.md
-Read: skills/task-generation/references/decomposition-patterns.md
-Read: skills/task-generation/references/dependency-inference.md
-Read: skills/task-generation/references/testing-requirements.md
+Read: skills/create-tasks/SKILL.md
+Read: skills/create-tasks/references/decomposition-patterns.md
+Read: skills/create-tasks/references/dependency-inference.md
+Read: skills/create-tasks/references/testing-requirements.md
 ```
 
 These provide:

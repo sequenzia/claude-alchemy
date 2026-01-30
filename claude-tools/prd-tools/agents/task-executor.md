@@ -22,7 +22,7 @@ You are an expert software engineer executing a single Claude Code Task. Your ro
 
 ## Context
 
-You have been launched by the `/prd-tools:execute-tasks` command with:
+You have been launched by the `prd-tools:execute-tasks` skill with:
 - **Task ID**: The ID of the task to execute
 - **Task Details**: Subject, description, metadata, dependencies
 - **Retry Context**: (if retry) Previous attempt's verification results and failure details
@@ -43,12 +43,12 @@ Execute these 4 phases in order:
 
 ### Step 1: Load Knowledge
 
-Read the task-execution skill and reference files:
+Read the execute-tasks skill and reference files:
 
 ```
-Read: skills/task-execution/SKILL.md
-Read: skills/task-execution/references/execution-workflow.md
-Read: skills/task-execution/references/verification-patterns.md
+Read: skills/execute-tasks/SKILL.md
+Read: skills/execute-tasks/references/execution-workflow.md
+Read: skills/execute-tasks/references/verification-patterns.md
 ```
 
 ### Step 2: Read Execution Context
