@@ -33,7 +33,7 @@ pnpm install && pnpm dev  # Starts on http://localhost:3030
 
 | Package | Description |
 |---------|-------------|
-| **prd-tools** | PRD generation, analysis, and task creation |
+| **sdd-tools** | Spec generation, analysis, and task creation |
 | **dev-tools** | Feature development workflows, Git automation, and release management |
 
 **Install:**
@@ -42,23 +42,23 @@ pnpm install && pnpm dev  # Starts on http://localhost:3030
 claude plugins add sequenzia/claude-alchemy
 ```
 
-Or individually: `claude plugins add sequenzia/claude-alchemy/claude-tools/prd-tools`
+Or individually: `claude plugins add sequenzia/claude-alchemy/claude-tools/sdd-tools`
 
-### prd-tools (v0.1.0)
+### sdd-tools (v0.3.0)
 
-Generate Product Requirements Documents through interactive interviews with depth-aware templates and research capabilities.
+Generate specifications through interactive interviews with depth-aware templates and research capabilities.
 
 | Command | Description |
 |---------|-------------|
-| `/prd-tools:create-prd` | Start PRD creation workflow |
-| `/prd-tools:analyze-prd <path>` | Analyze existing PRD for quality issues |
-| `/prd-tools:create-tasks <path>` | Generate Claude Code native Tasks from PRD |
+| `/sdd-tools:create-spec` | Start spec creation workflow |
+| `/sdd-tools:analyze-spec <path>` | Analyze existing spec for quality issues |
+| `/sdd-tools:create-tasks <path>` | Generate Claude Code native Tasks from spec |
 
 **Features:**
 - Three depth levels (high-level, detailed, full technical)
 - Adaptive interviews with proactive recommendations
 - On-demand research for technical docs and compliance
-- PRD quality analysis with interactive resolution
+- Spec quality analysis with interactive resolution
 - Native Claude Code Task generation with dependencies
 
 ### dev-tools (v0.1.0)
@@ -86,9 +86,9 @@ Developer tools for feature development, codebase analysis, Git workflows, and r
 The plugins and apps work together for a complete development workflow:
 
 ```
-PRD Creation → Task Generation → Task Visualization → Implementation → Release
+Spec Creation → Task Generation → Task Visualization → Implementation → Release
      ↓               ↓                  ↓                   ↓            ↓
- prd-tools     prd-tools:          task-manager        dev-tools:    dev-tools
+ sdd-tools     sdd-tools:          task-manager        dev-tools:    dev-tools
               create-tasks              app            feature-dev    (release)
 ```
 
@@ -97,8 +97,8 @@ PRD Creation → Task Generation → Task Visualization → Implementation → R
 ### Task Manager Kanban View
 ![Claude Task Manager](./internal/images/claude-task-manager.png)
 
-### Tasks Generated from prd-tools
-![PRD Tasks](./internal/images/tasks-generated-by-prd-tools.png)
+### Tasks Generated from sdd-tools
+![Spec Tasks](./internal/images/tasks-generated-by-sdd-tools.png)
 
 ### Single Task View with Dependencies, Test Cases and Acceptance Criteria
 ![Task Detail View](./internal/images/task-in-task-manager.png)

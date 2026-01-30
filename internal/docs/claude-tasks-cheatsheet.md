@@ -194,7 +194,7 @@ Break work into single-outcome tasks:
 
 ### Priority Mapping
 
-| PRD Priority | Task Priority |
+| Spec Priority | Task Priority |
 |--------------|---------------|
 | P0 (Critical) | `critical` |
 | P1 (High) | `high` |
@@ -203,22 +203,22 @@ Break work into single-outcome tasks:
 
 ### Task UID Pattern
 
-For traceability across PRD updates:
+For traceability across spec updates:
 
 ```
-{prd_path}:{feature_slug}:{task_type}:{sequence}
+{spec_path}:{feature_slug}:{task_type}:{sequence}
 
-Example: specs/PRD-Auth.md:user-login:api:001
+Example: specs/SPEC-Auth.md:user-login:api:001
 ```
 
 ---
 
 ## Integration with claude-alchemy
 
-### Generate Tasks from PRD
+### Generate Tasks from Spec
 
 ```
-/prd-tools:create-tasks path/to/PRD.md
+/sdd-tools:create-tasks path/to/SPEC.md
 ```
 
 ### Visualize Tasks
@@ -233,7 +233,7 @@ pnpm dev:task-manager
 ### Workflow
 
 ```
-1. Create PRD ────────→ /prd-tools:create
+1. Create Spec ───────→ /sdd-tools:create-spec
                               │
 2. Generate Tasks ────────────┤
                               ↓
@@ -248,15 +248,15 @@ pnpm dev:task-manager
 
 ## Merge Mode
 
-When re-running `/prd-tools:create-tasks` after PRD updates:
+When re-running `/sdd-tools:create-tasks` after spec updates:
 
 | Task Status | Behavior |
 |-------------|----------|
 | `pending` | Updated with new description |
 | `in_progress` | Preserved (no changes) |
 | `completed` | Never modified |
-| New in PRD | Created as new task |
-| Removed from PRD | Flagged for user decision |
+| New in spec | Created as new task |
+| Removed from spec | Flagged for user decision |
 
 ---
 

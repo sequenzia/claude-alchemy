@@ -4,7 +4,7 @@
 
 This monorepo combines Claude Code plugins and applications into a unified workspace:
 
-- **claude-tools/**: Claude Code plugins (prd-tools, dev-tools)
+- **claude-tools/**: Claude Code plugins (sdd-tools, dev-tools)
 - **claude-apps/**: Applications (task-manager)
 
 **Repository:** `sequenzia/claude-alchemy`
@@ -18,7 +18,7 @@ claude-alchemy/
 ├── .claude-plugin/
 │   └── marketplace.json              # Plugin registry
 ├── claude-tools/                     # Claude Code plugins
-│   ├── prd-tools/                    # PRD generation and analysis
+│   ├── sdd-tools/                    # Spec generation and analysis
 │   ├── dev-tools/                    # Feature development, Git workflows
 │   └── shared/                       # Shared resources (future)
 ├── claude-apps/                      # Applications
@@ -49,19 +49,19 @@ pnpm lint
 
 ### claude-tools (@claude-alchemy/tools)
 
-Claude Code plugins for PRD generation and developer workflows.
+Claude Code plugins for spec-driven development and developer workflows.
 
 **Plugins:**
-- `prd-tools` (v0.2.0) - PRD generation, analysis, task generation, and task execution
+- `sdd-tools` (v0.3.0) - Spec generation, analysis, task generation, and task execution
 - `dev-tools` (v0.2.6) - Feature development, Git workflows, release automation
 
 **Commands:**
 | Command | Description |
 |---------|-------------|
-| `/prd-tools:create-prd` | Start PRD creation workflow |
-| `/prd-tools:analyze-prd <path>` | Analyze existing PRD for quality issues |
-| `/prd-tools:create-tasks <path>` | Generate Claude Code native Tasks from PRD |
-| `/prd-tools:execute-tasks [task-id]` | Execute pending tasks in dependency order with adaptive verification |
+| `/sdd-tools:create-spec` | Start spec creation workflow |
+| `/sdd-tools:analyze-spec <path>` | Analyze existing spec for quality issues |
+| `/sdd-tools:create-tasks <path>` | Generate Claude Code native Tasks from spec |
+| `/sdd-tools:execute-tasks [task-id]` | Execute pending tasks in dependency order with adaptive verification |
 | `/dev-tools:analyze-codebase [path]` | Generate comprehensive codebase analysis |
 | `/dev-tools:feature-dev <description>` | Feature development workflow (7 phases) |
 | `/dev-tools:git-commit` | Stage and commit with conventional message |
@@ -141,15 +141,15 @@ model: opus  # optional: sonnet (default), opus, haiku
 ## Workflow Integration
 
 ```
-1. PRD Creation (prd-tools:create-prd)
+1. Spec Creation (sdd-tools:create-spec)
    ↓
-2. PRD Analysis (prd-tools:analyze-prd) [optional]
+2. Spec Analysis (sdd-tools:analyze-spec) [optional]
    ↓
-3. Task Generation (prd-tools:create-tasks)
+3. Task Generation (sdd-tools:create-tasks)
    ↓
 4. Task Visualization (task-manager app)
    ↓
-5. Task Execution (prd-tools:execute-tasks) [autonomous]
+5. Task Execution (sdd-tools:execute-tasks) [autonomous]
    ↓  or: Manual execution (dev-tools:feature-dev) [per task]
    ↓
 6. Git Operations (dev-tools: commit, push)

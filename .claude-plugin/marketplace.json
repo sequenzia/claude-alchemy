@@ -7,16 +7,16 @@
   },
   "plugins": [
     {
-      "name": "prd-tools",
-      "description": "Generate and analyze Product Requirements Documents through interactive workflows",
-      "version": "0.1.2",
+      "name": "sdd-tools",
+      "description": "Generate and analyze specifications through interactive Spec-Driven Development workflows",
+      "version": "0.3.0",
       "author": {
         "name": "Stephen Sequenzia",
         "email": "sequenzia@gmail.com"
       },
-      "source": "./claude-tools/prd-tools",
+      "source": "./claude-tools/sdd-tools",
       "category": "development",
-      "homepage": "https://github.com/sequenzia/claude-alchemy/tree/main/claude-tools/prd-tools"
+      "homepage": "https://github.com/sequenzia/claude-alchemy/tree/main/claude-tools/sdd-tools"
     },
     {
       "name": "dev-tools",
