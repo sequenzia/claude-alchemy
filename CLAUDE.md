@@ -52,8 +52,8 @@ pnpm lint
 Claude Code plugins for spec-driven development and developer workflows.
 
 **Plugins:**
-- `sdd-tools` (v0.3.0) - Spec generation, analysis, task generation, and task execution
-- `dev-tools` (v0.2.6) - Feature development, Git workflows, release automation
+- `sdd-tools` (v0.1.0) - Spec generation, analysis, task generation, and task execution
+- `dev-tools` (v0.3.0) - Feature development, Git workflows, release automation
 
 **Commands:**
 | Command | Description |
@@ -73,7 +73,7 @@ Claude Code plugins for spec-driven development and developer workflows.
 
 Real-time Kanban board for visualizing Claude AI task files from `~/.claude/tasks/`.
 
-**Tech Stack:** Next.js 16, TanStack Query, shadcn/ui, Tailwind CSS v4
+**Tech Stack:** Next.js 16.1.4, React 19.2.3, TanStack Query v5, shadcn/ui (Radix primitives), Tailwind CSS v4, Chokidar v5, TypeScript 5.9.3 (strict), ESLint 9
 
 **Key Features:**
 - Three-column Kanban board (Pending, In Progress, Completed)
@@ -155,6 +155,51 @@ model: opus  # optional: sonnet (default), opus, haiku
 6. Git Operations (dev-tools: commit, push)
    ↓
 7. Release (dev-tools: changelog, release)
+```
+
+## Architecture
+
+### Architecture Style
+
+Modular monorepo with plugin-based architecture. The task-manager app uses a layered (N-tier) design with event-driven real-time updates. The plugin system is entirely declarative/configuration-driven.
+
+### Task Manager Architecture
+
+- **Server Components** → parallel data fetching via `Promise.all` in page routes
+- **Service Layer** → `taskService.ts` (repository pattern over `~/.claude/tasks/` filesystem)
+- **Real-time Pipeline** → Chokidar file watcher (singleton) → EventEmitter → SSE ReadableStream → EventSource → TanStack Query invalidation
+- **Client State** → TanStack Query v5 with query key factories, SSR hydration via `initialData`
+- **UI Layer** → Smart/presentational component split (TaskBoardClient orchestrates, KanbanBoard renders)
+
+### Plugin Architecture
+
+- **Convention-over-configuration** → agents/skills auto-discovered from directory structure
+- **Orchestrator pattern** → Skills launch parallel sub-agents with specialized focus areas
+- **Execution context** → `.claude/execution-context.md` accumulates learnings across task executions
+- **Multi-tier agents** → Sonnet for exploration, Opus for complex analysis/architecture/execution
+
+### Key Design Decisions
+
+- **File system as database** → No traditional DB; reads JSON from `~/.claude/tasks/` directly
+- **SSE over WebSocket** → Simpler unidirectional push; sufficient for read-only task visualization
+- **Polling file watcher** → `usePolling: true` (300ms) for cross-platform reliability over native events
+- **Global singleton watcher** → `globalThis` pattern prevents duplicate Chokidar instances during HMR
+- **No authentication** → Local-only tool; path traversal validation is the primary security measure
+
+### Data Flow
+
+```
+Plugin writes task files → ~/.claude/tasks/<list>/*.json
+                                    ↓ (chokidar)
+                            FileWatcher singleton
+                                    ↓ (EventEmitter)
+                            /api/events SSE stream
+                                    ↓ (EventSource)
+                              useSSE hook
+                                    ↓ (invalidateQueries)
+                            TanStack Query cache
+                                    ↓ (re-render)
+                            KanbanBoard UI
 ```
 
 ## Conventions

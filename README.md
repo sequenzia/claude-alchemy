@@ -53,6 +53,7 @@ Generate specifications through interactive interviews with depth-aware template
 | `/sdd-tools:create-spec` | Start spec creation workflow |
 | `/sdd-tools:analyze-spec <path>` | Analyze existing spec for quality issues |
 | `/sdd-tools:create-tasks <path>` | Generate Claude Code native Tasks from spec |
+| `/sdd-tools:execute-tasks [task-id]` | Execute pending tasks in dependency order |
 
 **Features:**
 - Three depth levels (high-level, detailed, full technical)
@@ -61,7 +62,7 @@ Generate specifications through interactive interviews with depth-aware template
 - Spec quality analysis with interactive resolution
 - Native Claude Code Task generation with dependencies
 
-### dev-tools (v0.1.0)
+### dev-tools (v0.3.0)
 
 Developer tools for feature development, codebase analysis, Git workflows, and release automation.
 
