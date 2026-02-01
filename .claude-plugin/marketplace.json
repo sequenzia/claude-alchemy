@@ -21,7 +21,7 @@
     {
       "name": "dev-tools",
       "description": "Developer tools for feature development, Git workflows, and release automation",
-      "version": "0.3.2",
+      "version": "0.3.3",
       "author": {
         "name": "Stephen Sequenzia",
         "email": "sequenzia@gmail.com"
