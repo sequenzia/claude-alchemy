@@ -1,25 +1,19 @@
 {
   "name": "claude-alchemy-sdd",
   "version": "0.1.0",
-  "description": "Developer tools for feature development, Git workflows, and release automation",
+  "description": "SDD (Spec Driven Development) for Claude Alchemy",
   "author": {
     "name": "Stephen Sequenzia",
     "email": "sequenzia@gmail.com",
     "url": "https://sequenzia.com"
   },
-  "homepage": "https://github.com/sequenzia/claude-alchemy/tree/main/claude-tools/dev-tools",
-  "repository": "https://github.com/sequenzia/claude-alchemy/tree/main/claude-tools/dev-tools",
+  "homepage": "https://github.com/sequenzia/claude-alchemy/tree/main/plugins/sdd",
+  "repository": "https://github.com/sequenzia/claude-alchemy/tree/main/plugins/sdd",
   "license": "MIT",
   "keywords": [
     "claude-code",
-    "agents",
-    "skills",
-    "hooks",
-    "rules",
-    "tdd",
-    "code-review",
-    "workflow",
-    "automation",
-    "best-practices"
+    "spec-generation",
+    "analysis",
+    "skills"
   ]
 }

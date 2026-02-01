@@ -7,8 +7,8 @@
     "email": "sequenzia@gmail.com",
     "url": "https://sequenzia.com"
   },
-  "homepage": "https://github.com/sequenzia/claude-alchemy/tree/main/claude-tools/dev-tools",
-  "repository": "https://github.com/sequenzia/claude-alchemy/tree/main/claude-tools/dev-tools",
+  "homepage": "https://github.com/sequenzia/claude-alchemy/tree/main/plugins/tools",
+  "repository": "https://github.com/sequenzia/claude-alchemy/tree/main/plugins/tools",
   "license": "MIT",
   "keywords": [
     "claude-code",
@@ -23,3 +23,4 @@
     "best-practices"
   ]
 }
+  
