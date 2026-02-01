@@ -10,15 +10,16 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion
 
 # Codebase Analysis Workflow
 
-Execute a structured 3-phase codebase analysis workflow to gather insights.
+Execute a structured 4-phase codebase analysis workflow to gather insights.
 
-**CRITICAL: Complete ALL 3 phases.** The workflow is not complete until Phase 3: Reporting is finished. After completing each phase, immediately proceed to the next phase without waiting for user prompts.
+**CRITICAL: Complete ALL 4 phases.** The workflow is not complete until Phase 4: Post-Analysis Actions is finished. After completing each phase, immediately proceed to the next phase without waiting for user prompts.
 
 ## Phase Overview
 
 1. **Exploration** — Launch parallel agents to investigate the codebase
 2. **Synthesis** — Merge and analyze findings via synthesizer agent
 3. **Reporting** — Present structured analysis to the user
+4. **Post-Analysis Actions** — Save, document, or retain analysis insights
 
 ---
 
@@ -124,11 +125,78 @@ Execute a structured 3-phase codebase analysis workflow to gather insights.
    - **Challenges & Risks** — Technical risks and complexity hotspots
    - **Recommendations** — Actionable next steps
 
-3. **Offer next steps:**
-   Suggest what the user might do next:
-   - Dive deeper into a specific area
-   - Use the analysis to inform feature development
-   - Address identified risks or challenges
+3. **IMPORTANT: Proceed immediately to Phase 4.**
+   Do NOT stop here. Do NOT wait for user input. The report is presented, but the workflow requires Post-Analysis Actions. Continue directly to Phase 4 now.
+
+---
+
+## Phase 4: Post-Analysis Actions
+
+**Goal:** Let the user save, document, or retain analysis insights from the report.
+
+1. **Present action menu:**
+
+   Use `AskUserQuestion` with `multiSelect: true` to present all available actions:
+   - **Save report as Markdown file** — Write the full report to a file
+   - **Update README.md with analysis insights** — Add architecture/structure info to README
+   - **Update CLAUDE.md with analysis insights** — Add patterns/conventions to CLAUDE.md
+   - **Keep a condensed summary in memory** — Retain a quick-reference summary in conversation context
+
+   If the user selects no actions, the workflow is complete. Thank the user and end.
+
+2. **Execute selected actions in the following fixed order:**
+
+   ### Action: Save Report as Markdown File
+
+   - Check if a `docs/` directory exists in the project root
+     - If yes, suggest default path: `docs/codebase-analysis.md`
+     - If no, suggest default path: `codebase-analysis.md` in the project root
+   - Use `AskUserQuestion` to let the user confirm or customize the file path
+   - Write the full report content (same as Phase 3 output) to the confirmed path using the Write tool
+   - Confirm the file was saved
+
+   ### Action: Update README.md
+
+   - Read the existing README.md at the project root
+     - If no README.md exists, skip this action and inform the user
+   - Draft updates based on analysis insights — focus on:
+     - Architecture overview
+     - Project structure
+     - Tech stack summary
+   - Present the draft to the user for approval using `AskUserQuestion` with options:
+     - **Apply** — Apply the drafted updates
+     - **Modify** — Let the user describe what to change, then re-draft
+     - **Skip** — Skip this action entirely
+   - If approved, apply updates using the Edit tool
+
+   ### Action: Update CLAUDE.md
+
+   - Read the existing CLAUDE.md at the project root
+     - If no CLAUDE.md exists, use `AskUserQuestion` to ask if one should be created
+     - If user declines, skip this action
+   - Draft updates based on analysis insights — focus on:
+     - Key patterns and conventions discovered
+     - Critical files and their roles
+     - Important dependencies
+     - Architectural decisions and constraints
+   - Present the draft to the user for approval using `AskUserQuestion` with options:
+     - **Apply** — Apply the drafted updates
+     - **Modify** — Let the user describe what to change, then re-draft
+     - **Skip** — Skip this action entirely
+   - If approved, apply updates using the Edit tool (or Write tool if creating new)
+
+   ### Action: Keep Insights in Memory
+
+   - Present a condensed **Codebase Quick Reference** inline in the conversation:
+     - **Architecture** — 1-2 sentence summary of how the codebase is structured
+     - **Key Files** — 3-5 most critical files with one-line descriptions
+     - **Conventions** — Important patterns and naming conventions
+     - **Tech Stack** — Core technologies and frameworks
+     - **Watch Out For** — Top risks or complexity hotspots
+   - No file is written — this summary stays in conversation context for reference during the session
+
+3. **Complete the workflow:**
+   Summarize which actions were executed and confirm the workflow is complete.
 
 ---
 
