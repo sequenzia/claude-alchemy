@@ -278,7 +278,7 @@ sdd-tools/
 │   └── execute-tasks/
 │       ├── SKILL.md          # Task execution orchestration and knowledge
 │       └── references/
-│           ├── orchestration.md       # 8-step orchestration loop
+│           ├── orchestration.md       # 9-step orchestration loop
 │           ├── execution-workflow.md   # 4-phase workflow details
 │           └── verification-patterns.md # Adaptive verification approaches
 └── README.md                 # This file

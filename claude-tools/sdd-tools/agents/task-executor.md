@@ -28,7 +28,7 @@ You have been launched by the `sdd-tools:execute-tasks` skill with:
 - **Task ID**: The ID of the task to execute
 - **Task Details**: Subject, description, metadata, dependencies
 - **Retry Context**: (if retry) Previous attempt's verification results and failure details
-- **Task Execution ID**: The execution session identifier (e.g., `exec-20260131-143022`)
+- **Task Execution ID**: The execution session identifier (e.g., `exec-session-20260131-143022`)
 - **Execution Context Path**: Path to `.claude/{task_execution_id}/execution-context.md` for shared learnings
 
 ## Process Overview
@@ -283,3 +283,4 @@ Use this information to:
 - **Honest reporting**: Report PARTIAL or FAIL accurately; never mark complete if verification fails
 - **Share learnings**: Always append to execution context, even on failure
 - **Minimal changes**: Only modify what the task requires
+- **Execution directory is pre-authorized**: Freely create and modify any files within `.claude/{task_execution_id}/` without user authorization (execution-context.md, task logs, archived tasks, etc.). Do not ask for permission for these writes.

@@ -66,7 +66,7 @@ Produce accurate verification results:
 
 ## Orchestration Workflow
 
-This skill orchestrates task execution through an 8-step loop. See `references/orchestration.md` for the full detailed procedure.
+This skill orchestrates task execution through a 9-step loop. See `references/orchestration.md` for the full detailed procedure.
 
 ### Step 1: Load Task List
 Retrieve all tasks via `TaskList`. If a `--task-group` argument was provided, filter tasks to only those with matching `metadata.task_group`. If a specific `task-id` argument was provided, validate it exists.
@@ -84,11 +84,12 @@ Read `.claude/sdd-tools.local.md` if it exists for execution preferences.
 Display the plan showing tasks to execute, blocked tasks, and completed count. Informational only, no confirmation needed.
 
 ### Step 5.5: Initialize Execution Directory
-Generate a `task_execution_id` (format: `exec-{YYYYMMDD}-{HHMMSS}`) and create `.claude/{task_execution_id}/` directory containing:
+Generate a `task_execution_id` using three-tier resolution: (1) if `--task-group` provided → `{task_group}-{YYYYMMDD}-{HHMMSS}`, (2) else if all open tasks share the same `metadata.task_group` → `{task_group}-{YYYYMMDD}-{HHMMSS}`, (3) else → `exec-session-{YYYYMMDD}-{HHMMSS}`. Create `.claude/{task_execution_id}/` directory containing:
 - `execution_plan.md` — saved execution plan from Step 5
 - `execution-context.md` — initialized with standard template
 - `task_log.md` — initialized with table headers (Task ID, Subject, Status, Attempts, Token Usage)
 - `tasks/` — subdirectory for archiving completed task files
+- `execution_pointer.txt` at `~/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/` — created immediately with path to `.claude/{task_execution_id}/`
 
 ### Step 6: Initialize Execution Context
 Read `.claude/{task_execution_id}/execution-context.md` (created in Step 5.5). If a prior execution context exists from a previous session, merge relevant learnings into the new one.
@@ -97,7 +98,10 @@ Read `.claude/{task_execution_id}/execution-context.md` (created in Step 5.5). I
 For each task: get details, mark in progress, launch `sdd-tools:task-executor` agent, process result (PASS/PARTIAL/FAIL), handle retries, track token usage (placeholder/estimated), log result to `.claude/{task_execution_id}/task_log.md`, archive completed task files to `.claude/{task_execution_id}/tasks/`, refresh task list for newly unblocked tasks.
 
 ### Step 8: Session Summary
-Display execution results with pass/fail counts, failed task list, newly unblocked tasks, and token usage summary (placeholder). Save `session_summary.md` to `.claude/{task_execution_id}/`. Create `execution_pointer.txt` at `~/.claude/tasks/{project}/` pointing to the execution directory.
+Display execution results with pass/fail counts, failed task list, newly unblocked tasks, and token usage summary (placeholder). Save `session_summary.md` to `.claude/{task_execution_id}/`. Update `execution_pointer.txt` at `~/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/` pointing to the execution directory.
+
+### Step 9: Update CLAUDE.md
+Review execution context for project-wide changes (new patterns, dependencies, commands, structure changes, design decisions). Make targeted edits to CLAUDE.md if meaningful changes occurred. Skip if only task-specific or internal implementation details.
 
 ## Task Classification
 
@@ -187,6 +191,7 @@ This enables later tasks to benefit from earlier discoveries and retry attempts 
 - **Honest failure handling**: After retries exhausted, tasks stay `in_progress` (not completed), and execution continues to the next task.
 - **Circular dependency detection**: If all remaining tasks are blocked by each other, break at the weakest link (task with fewest blockers) and log a warning.
 - **Shared context**: Agents read and write `.claude/{task_execution_id}/execution-context.md` so later tasks benefit from earlier discoveries.
+- **Execution directory is pre-authorized**: All file operations within `.claude/{task_execution_id}/` and `~/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/execution_pointer.txt` are performed without prompting for user authorization. These are the skill's working files.
 
 ## Example Usage
 
@@ -222,6 +227,6 @@ This enables later tasks to benefit from earlier discoveries and retry attempts 
 
 ## Reference Files
 
-- `references/orchestration.md` - 8-step orchestration loop with execution plan, retry handling, and session summary
+- `references/orchestration.md` - 9-step orchestration loop with execution plan, retry handling, and session summary
 - `references/execution-workflow.md` - Detailed phase-by-phase procedures for the 4-phase workflow
 - `references/verification-patterns.md` - Task classification, criterion verification, pass/fail rules, and failure reporting format

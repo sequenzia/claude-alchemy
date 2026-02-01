@@ -1,6 +1,6 @@
 # Orchestration Reference
 
-This reference provides the detailed 8-step orchestration loop for executing Claude Code Tasks in dependency order. The execute-tasks skill uses this procedure to manage the full execution session.
+This reference provides the detailed 9-step orchestration loop for executing Claude Code Tasks in dependency order. The execute-tasks skill uses this procedure to manage the full execution session.
 
 ## Step 1: Load Task List
 
@@ -67,9 +67,10 @@ COMPLETED:
 
 ## Step 5.5: Initialize Execution Directory
 
-Generate a unique `task_execution_id`:
-- Format: `exec-{YYYYMMDD}-{HHMMSS}` (e.g., `exec-20260131-143022`)
-- Use the current date and time
+Generate a unique `task_execution_id` using three-tier resolution:
+1. IF `--task-group` was provided → `{task_group}-{YYYYMMDD}-{HHMMSS}` (e.g., `user-auth-20260131-143022`)
+2. ELSE IF all open tasks (pending + in_progress) share the same non-empty `metadata.task_group` → `{task_group}-{YYYYMMDD}-{HHMMSS}`
+3. ELSE → `exec-session-{YYYYMMDD}-{HHMMSS}` (e.g., `exec-session-20260131-143022`)
 
 Create the execution directory at `.claude/{task_execution_id}/` with:
 
@@ -101,6 +102,7 @@ Create the execution directory at `.claude/{task_execution_id}/` with:
    |---------|---------|--------|----------|-------------|
    ```
 4. **`tasks/`** - Empty subdirectory for archiving completed task files
+5. **`execution_pointer.txt`** at `~/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/` — Create immediately with the path to `.claude/{task_execution_id}/`. This ensures the pointer exists even if the session is interrupted before completing.
 
 ## Step 6: Initialize Execution Context
 
@@ -195,7 +197,7 @@ After each task completes (PASS or retries exhausted):
 
 ### 7g: Archive Completed Task Files
 
-If the task result is PASS, copy the task's JSON file from `~/.claude/tasks/{project}/` to `.claude/{task_execution_id}/tasks/`. Do not delete the original file.
+If the task result is PASS, copy the task's JSON file from `~/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/` to `.claude/{task_execution_id}/tasks/`. Do not delete the original file.
 
 ## Step 8: Session Summary
 
@@ -230,7 +232,30 @@ NEWLY UNBLOCKED:
 
 After displaying the summary:
 1. Save `session_summary.md` to `.claude/{task_execution_id}/` with the full summary content
-2. Create `execution_pointer.txt` at `~/.claude/tasks/{project}/` containing the path to `.claude/{task_execution_id}/` so future sessions can find the latest execution
+2. Update `execution_pointer.txt` at `~/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/` containing the path to `.claude/{task_execution_id}/` so future sessions can find the latest execution
+
+## Step 9: Update CLAUDE.md
+
+Review `.claude/{task_execution_id}/execution-context.md` for project-wide changes that should be reflected in CLAUDE.md.
+
+Update CLAUDE.md if the session introduced:
+- New architectural patterns or conventions
+- New dependencies or tech stack changes
+- New development commands or workflows
+- Changes to project structure
+- Important design decisions that affect future development
+
+Do NOT update CLAUDE.md for:
+- Internal implementation details
+- Temporary workarounds
+- Task-specific learnings that don't generalize
+- If no meaningful project-wide changes occurred, skip this step
+
+Process:
+1. Read current CLAUDE.md
+2. Identify sections needing updates from execution context
+3. Make targeted edits (do not rewrite the entire file)
+4. Keep updates concise and factual
 
 ## Notes
 
@@ -239,3 +264,4 @@ After displaying the summary:
 - The execution context file enables knowledge sharing across task boundaries
 - Failed tasks remain as `in_progress` for manual review or re-execution
 - Run the execute-tasks skill again to pick up where you left off — it will execute any remaining unblocked tasks
+- All file operations within `.claude/{task_execution_id}/` and execution_pointer.txt are pre-authorized and should never prompt for user confirmation
