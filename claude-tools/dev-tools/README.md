@@ -134,6 +134,28 @@ Bump the version of any plugin in this repository.
 
 ---
 
+#### `/dev-tools:update-changelog` - Changelog Updater
+
+Update CHANGELOG.md with recent changes, optionally scoped to a sub-project.
+
+```bash
+/dev-tools:update-changelog              # Prompts for scope selection
+/dev-tools:update-changelog all          # All changes, auto-groups by sub-project
+/dev-tools:update-changelog sdd-tools    # Only sdd-tools changes
+/dev-tools:update-changelog dev-tools    # Only dev-tools changes
+/dev-tools:update-changelog task-manager # Only task-manager changes
+/dev-tools:update-changelog project      # Only root project files
+```
+
+**Steps:**
+1. Pre-flight checks (git repo, commits exist, CHANGELOG.md presence)
+2. Load changelog-format guidelines
+3. Determine scope from argument or prompt user
+4. Launch changelog-agent with scope and path filter
+5. Report completion with next steps
+
+---
+
 ### Reference Skills (Claude-Only)
 
 These skills are automatically loaded by Claude when relevant. They have `user-invocable: false` so they don't appear in the `/` menu.
@@ -243,7 +265,9 @@ dev-tools/
 │   │   └── SKILL.md
 │   ├── project-conventions/
 │   │   └── SKILL.md
-│   └── release/
+│   ├── release/
+│   │   └── SKILL.md
+│   └── update-changelog/
 │       └── SKILL.md
 ├── CHANGELOG.md
 └── README.md

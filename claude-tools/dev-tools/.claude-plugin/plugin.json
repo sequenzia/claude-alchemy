@@ -1,6 +1,6 @@
 {
   "name": "dev-tools",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Developer tools for feature development, Git workflows, and release automation",
   "author": {
     "name": "Stephen Sequenzia",

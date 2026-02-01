@@ -1,32 +1,6 @@
 ---
 name: changelog-agent
 description: Reviews git history and updates CHANGELOG.md with entries for [Unreleased] section
-when_to_use: |
-  Use when the user wants to update or populate the changelog with recent changes.
-
-  <example>
-  user: "Update the changelog with recent commits"
-  assistant: Uses changelog-agent to review git history and suggest entries
-  <commentary>Standard changelog update workflow</commentary>
-  </example>
-
-  <example>
-  user: "Add changelog entries for the work I've done"
-  assistant: Uses changelog-agent to analyze commits and draft entries
-  <commentary>User wants to document recent development work</commentary>
-  </example>
-
-  <example>
-  user: "Prepare the changelog for release"
-  assistant: Uses changelog-agent to ensure [Unreleased] section is current
-  <commentary>Pre-release changelog preparation</commentary>
-  </example>
-
-  <example>
-  user: "What changes should go in the changelog?"
-  assistant: Uses changelog-agent to analyze commits and suggest categorized entries
-  <commentary>User needs help determining what to document</commentary>
-  </example>
 color: yellow
 tools:
   - Bash
@@ -65,6 +39,8 @@ If no CHANGELOG.md exists, ask the user if they want you to create one.
 
 ### Step 2: Get Git History Since Last Release (Enhanced)
 
+**Path filter note:** If a path filter is provided in the prompt (e.g., `-- claude-tools/sdd-tools/`), append it to all `git log` commands in this step to scope results to that sub-project.
+
 1. Find the tag for the last release:
    ```bash
    git tag --list 'v*' --sort=-version:refname | head -5
@@ -72,17 +48,17 @@ If no CHANGELOG.md exists, ask the user if they want you to create one.
 
 2. Get commits with extended format including body (for breaking change notices):
    ```bash
-   git log v{version}..HEAD --format="%H|%s|%b" --no-merges
+   git log v{version}..HEAD --format="%H|%s|%b" --no-merges [path_filter]
    ```
 
    If no tags exist, get recent commits with warning:
    ```bash
-   git log --format="%H|%s|%b" --no-merges -50
+   git log --format="%H|%s|%b" --no-merges -50 [path_filter]
    ```
 
 3. Extract PR/issue references for later enrichment:
    ```bash
-   git log v{version}..HEAD --no-merges --oneline | grep -oE '#[0-9]+' | sort -u
+   git log v{version}..HEAD --no-merges --oneline [path_filter] | grep -oE '#[0-9]+' | sort -u
    ```
 
 4. For more context on specific commits, use:
@@ -94,14 +70,16 @@ If no CHANGELOG.md exists, ask the user if they want you to create one.
 
 **Purpose:** Understand scope and impact of changes.
 
+**Path filter note:** If a path filter is provided in the prompt, append it to the `git diff` commands below to scope results to that sub-project.
+
 1. Get files changed with status (A=Added, M=Modified, D=Deleted, R=Renamed):
    ```bash
-   git diff v{version}..HEAD --name-status
+   git diff v{version}..HEAD --name-status [path_filter]
    ```
 
 2. Get summary by directory:
    ```bash
-   git diff v{version}..HEAD --dirstat
+   git diff v{version}..HEAD --dirstat [path_filter]
    ```
 
 3. Categorize files by area:
@@ -295,6 +273,24 @@ Once approved, use the `Edit` tool to update CHANGELOG.md:
 4. Removed
 5. Fixed
 6. Security
+
+**Sub-project headings:** When a scope is provided in the prompt, place entries under a sub-project heading within `[Unreleased]`:
+
+```markdown
+## [Unreleased]
+
+### sdd-tools
+
+#### Added
+- New entry scoped to sdd-tools
+
+### dev-tools
+
+#### Fixed
+- Fix scoped to dev-tools
+```
+
+Use `###` for sub-project names and `####` for categories within them. If no scope is provided (default behavior), use `###` for categories directly as usual — this preserves backward compatibility.
 
 ## Edge Case Handling
 

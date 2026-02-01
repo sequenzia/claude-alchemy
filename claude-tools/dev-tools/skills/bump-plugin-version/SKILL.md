@@ -69,29 +69,7 @@ Apply the bump:
 
 ---
 
-### Step 5: Confirm Version Change
-
-Use AskUserQuestion to confirm the version bump.
-
-Display:
-```
-Plugin: {plugin_name}
-Current version: {current_version}
-New version: {new_version}
-Bump type: {bump_level}
-
-Proceed with this version change?
-```
-
-Options:
-1. "Confirm" - Proceed with the update
-2. "Cancel" - Abort the operation
-
-If user selects "Cancel", stop and report: "Version bump cancelled."
-
----
-
-### Step 6: Update Plugin Configuration
+### Step 5: Update Plugin Configuration
 
 Edit the plugin's configuration file:
 - Path: `plugins/{plugin_name}/.claude-plugin/plugin.json`
@@ -103,7 +81,7 @@ Report: "Updated plugins/{plugin_name}/.claude-plugin/plugin.json"
 
 ---
 
-### Step 7: Update Marketplace Metadata
+### Step 6: Update Marketplace Metadata
 
 Read `.claude-plugin/marketplace.json` and locate the plugin entry in the `plugins` array by matching the `name` field.
 
@@ -112,30 +90,6 @@ Update the `version` field for that plugin entry.
 Use the Edit tool to make this change.
 
 Report: "Updated .claude-plugin/marketplace.json"
-
----
-
-### Step 8: Offer to Commit Changes
-
-Use AskUserQuestion to offer to commit the changes.
-
-```
-Both files have been updated. Would you like to commit these changes?
-```
-
-Options:
-1. "Yes, commit" - Commit the changes
-2. "No, skip commit" - Leave changes uncommitted
-
-**If user selects "Yes, commit":**
-
-Run `/dev-tools:git-commit`
-
-Report: "Changes committed with message: chore({plugin_name}): bump version to {new_version}"
-
-**If user selects "No, skip commit":**
-
-Report: "Changes left uncommitted. You can commit them manually when ready."
 
 ---
 
