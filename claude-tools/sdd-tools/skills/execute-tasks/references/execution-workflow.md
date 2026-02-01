@@ -19,7 +19,7 @@ Read: skills/execute-tasks/references/verification-patterns.md
 
 Check for shared execution context from prior tasks in this session:
 ```
-Read: .claude/execution-context.md
+Read: .claude/{task_execution_id}/execution-context.md
 ```
 
 If the file exists, review:
@@ -43,7 +43,7 @@ Use `TaskGet` to retrieve the full task details including:
 Determine whether this is a spec-generated task or a general task:
 
 1. Check for `**Acceptance Criteria:**` in the description
-2. Check for `metadata.prd_path` field
+2. Check for `metadata.spec_path` field
 3. Check for `Source:` reference in the description
 
 If any of the above are present, classify as **spec-generated**. Otherwise, classify as **general**.
@@ -208,7 +208,7 @@ Leave task as `in_progress`. Do NOT mark as completed. The orchestrating skill w
 
 ### Append to Execution Context
 
-Always append learnings to `.claude/execution-context.md`, regardless of PASS/PARTIAL/FAIL:
+Always append learnings to `.claude/{task_execution_id}/execution-context.md`, regardless of PASS/PARTIAL/FAIL:
 
 ```markdown
 ### Task [{id}]: {subject} - {PASS/PARTIAL/FAIL}

@@ -1,20 +1,25 @@
 ---
 name: execute-tasks
-description: Execute pending Claude Code Tasks in dependency order with adaptive verification. Use when user says "execute tasks", "run tasks", "start execution", "work on tasks", or wants to execute generated tasks autonomously.
-argument-hint: "[task-id]"
+description: Execute pending Claude Code Tasks in dependency order with adaptive verification. Supports task group filtering. Use when user says "execute tasks", "run tasks", "start execution", "work on tasks", or wants to execute generated tasks autonomously.
+argument-hint: "[task-id] [--task-group <group>] [--retries <n>]"
 user-invocable: true
 disable-model-invocation: false
 allowed-tools:
   - Task
   - Read
+  - Write
   - Glob
   - Grep
+  - Bash
   - TaskList
   - TaskGet
   - TaskUpdate
 arguments:
   - name: task-id
     description: Optional specific task ID to execute. If omitted, executes all unblocked tasks in dependency order.
+    required: false
+  - name: task-group
+    description: Optional task group name to filter tasks. Only tasks with matching metadata.task_group will be executed.
     required: false
   - name: retries
     description: Number of retry attempts for failed/partial tasks before moving on. Default is 3.
@@ -64,13 +69,13 @@ Produce accurate verification results:
 This skill orchestrates task execution through an 8-step loop. See `references/orchestration.md` for the full detailed procedure.
 
 ### Step 1: Load Task List
-Retrieve all tasks via `TaskList`. If a specific `task-id` argument was provided, validate it exists.
+Retrieve all tasks via `TaskList`. If a `--task-group` argument was provided, filter tasks to only those with matching `metadata.task_group`. If a specific `task-id` argument was provided, validate it exists.
 
 ### Step 2: Validate State
 Handle edge cases: empty list, all completed, specific task blocked, no unblocked tasks, circular dependencies.
 
 ### Step 3: Build Execution Plan
-Collect unblocked pending tasks, sort by priority (critical > high > medium > low > unprioritized), break ties by "unblocks most others."
+Collect unblocked pending tasks (filtered by task group if specified), sort by priority (critical > high > medium > low > unprioritized), break ties by "unblocks most others."
 
 ### Step 4: Check Settings
 Read `.claude/sdd-tools.local.md` if it exists for execution preferences.
@@ -78,14 +83,21 @@ Read `.claude/sdd-tools.local.md` if it exists for execution preferences.
 ### Step 5: Present Execution Plan
 Display the plan showing tasks to execute, blocked tasks, and completed count. Informational only, no confirmation needed.
 
+### Step 5.5: Initialize Execution Directory
+Generate a `task_execution_id` (format: `exec-{YYYYMMDD}-{HHMMSS}`) and create `.claude/{task_execution_id}/` directory containing:
+- `execution_plan.md` — saved execution plan from Step 5
+- `execution-context.md` — initialized with standard template
+- `task_log.md` — initialized with table headers (Task ID, Subject, Status, Attempts, Token Usage)
+- `tasks/` — subdirectory for archiving completed task files
+
 ### Step 6: Initialize Execution Context
-Create `.claude/execution-context.md` if it doesn't exist with sections for Project Patterns, Key Decisions, Known Issues, File Map, and Task History. If it exists, read it for prior session context.
+Read `.claude/{task_execution_id}/execution-context.md` (created in Step 5.5). If a prior execution context exists from a previous session, merge relevant learnings into the new one.
 
 ### Step 7: Execute Loop
-For each task: get details, mark in progress, launch `sdd-tools:task-executor` agent, process result (PASS/PARTIAL/FAIL), handle retries, refresh task list for newly unblocked tasks.
+For each task: get details, mark in progress, launch `sdd-tools:task-executor` agent, process result (PASS/PARTIAL/FAIL), handle retries, track token usage (placeholder/estimated), log result to `.claude/{task_execution_id}/task_log.md`, archive completed task files to `.claude/{task_execution_id}/tasks/`, refresh task list for newly unblocked tasks.
 
 ### Step 8: Session Summary
-Display execution results with pass/fail counts, failed task list, and newly unblocked tasks.
+Display execution results with pass/fail counts, failed task list, newly unblocked tasks, and token usage summary (placeholder). Save `session_summary.md` to `.claude/{task_execution_id}/`. Create `execution_pointer.txt` at `~/.claude/tasks/{project}/` pointing to the execution directory.
 
 ## Task Classification
 
@@ -94,7 +106,7 @@ Determine whether a task is spec-generated or general to select the right verifi
 ### Detection Algorithm
 
 1. **Check description format**: Look for `**Acceptance Criteria:**` with categorized criteria (`_Functional:_`, `_Edge Cases:_`, etc.)
-2. **Check metadata**: Look for `metadata.prd_path` field
+2. **Check metadata**: Look for `metadata.spec_path` field
 3. **Check source reference**: Look for `Source: {path} Section {number}` in the description
 
 If any check matches -> **spec-generated task** (use criterion-based verification)
@@ -110,7 +122,7 @@ Each task is executed by the `sdd-tools:task-executor` agent through these phase
 Load context and understand scope before writing code.
 
 - Read the execute-tasks skill and references
-- Read `.claude/execution-context.md` for learnings from prior tasks
+- Read `.claude/{task_execution_id}/execution-context.md` for learnings from prior tasks
 - Load task details via `TaskGet`
 - Classify the task (spec-generated vs general)
 - Parse acceptance criteria or infer requirements from description
@@ -141,7 +153,7 @@ Report results and share learnings.
 - Determine status (PASS/PARTIAL/FAIL) based on verification results
 - If PASS: mark task as `completed` via `TaskUpdate`
 - If PARTIAL or FAIL: leave as `in_progress` for the orchestrator to decide on retry
-- Append learnings to `.claude/execution-context.md` (files discovered, patterns learned, issues encountered)
+- Append learnings to `.claude/{task_execution_id}/execution-context.md` (files discovered, patterns learned, issues encountered)
 - Return structured report with verification results
 
 ## Adaptive Verification Overview
@@ -157,7 +169,7 @@ Verification adapts based on task type:
 
 ## Shared Execution Context
 
-Tasks within an execution session share learnings through `.claude/execution-context.md`:
+Tasks within an execution session share learnings through `.claude/{task_execution_id}/execution-context.md`:
 
 - **Read at start**: Check for prior task learnings before beginning work
 - **Write at end**: Always append learnings regardless of PASS/PARTIAL/FAIL
@@ -174,7 +186,7 @@ This enables later tasks to benefit from earlier discoveries and retry attempts 
 - **Dynamic unblocking**: After each task completes, the dependency graph is refreshed and newly unblocked tasks are added to the plan.
 - **Honest failure handling**: After retries exhausted, tasks stay `in_progress` (not completed), and execution continues to the next task.
 - **Circular dependency detection**: If all remaining tasks are blocked by each other, break at the weakest link (task with fewest blockers) and log a warning.
-- **Shared context**: Agents read and write `.claude/execution-context.md` so later tasks benefit from earlier discoveries.
+- **Shared context**: Agents read and write `.claude/{task_execution_id}/execution-context.md` so later tasks benefit from earlier discoveries.
 
 ## Example Usage
 
@@ -196,6 +208,16 @@ This enables later tasks to benefit from earlier discoveries and retry attempts 
 ### Execute specific task with retries
 ```
 /sdd-tools:execute-tasks 5 --retries 5
+```
+
+### Execute tasks for a specific group
+```
+/sdd-tools:execute-tasks --task-group user-authentication
+```
+
+### Execute specific group with custom retries
+```
+/sdd-tools:execute-tasks --task-group payments --retries 1
 ```
 
 ## Reference Files

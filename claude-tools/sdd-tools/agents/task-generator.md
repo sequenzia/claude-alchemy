@@ -28,6 +28,7 @@ You have been launched by the `/sdd-tools:create-tasks` command with:
 - **Spec Content**: Full content of the spec
 - **Depth Level**: Detected depth (High-Level, Detailed, or Full-Tech)
 - **Existing Tasks**: Any existing tasks for this spec (for merge mode)
+- **Task Group**: Group name for organizing tasks from this spec
 
 ## Process Overview
 
@@ -63,6 +64,14 @@ These provide:
 ---
 
 ## Phase 2: Spec Analysis
+
+### Extract Spec Name
+
+Parse the spec title to extract the spec name for use as `task_group`:
+- Look for `# {name} PRD` title format on line 1
+- Extract `{name}` as the spec name (e.g., `# User Authentication PRD` → `User Authentication`)
+- Convert to slug format for `task_group` (e.g., `user-authentication`)
+- If title does not match the PRD format, derive spec name from the filename
 
 Extract information from each spec section:
 
@@ -176,15 +185,16 @@ description: |
   • {Inferred test type}: {What to test}
   • {Spec-specified test}: {What to test}
 
-  Source: {prd_path} Section {number}
+  Source: {spec_path} Section {number}
 activeForm: "Creating User data model"         # Present continuous
 metadata:
   priority: critical|high|medium|low           # Mapped from P0-P3
   complexity: XS|S|M|L|XL                      # Estimated size
   source_section: "7.3 Data Models"            # Spec section
-  prd_path: "specs/SPEC-Example.md"            # Source spec
+  spec_path: "specs/SPEC-Example.md"            # Source spec
   feature_name: "User Authentication"          # Parent feature
-  task_uid: "{prd_path}:{feature}:{type}:{seq}" # Unique ID
+  task_uid: "{spec_path}:{feature}:{type}:{seq}" # Unique ID
+  task_group: "{spec-name}"                    # Group from spec title
 ```
 
 ### Acceptance Criteria Categories
@@ -244,7 +254,7 @@ Format as bullet points with test type and description:
 
 Generate unique IDs for merge tracking:
 ```
-{prd_path}:{feature_slug}:{task_type}:{sequence}
+{spec_path}:{feature_slug}:{task_type}:{sequence}
 
 Examples:
 - specs/SPEC-Auth.md:user-auth:model:001
@@ -388,9 +398,10 @@ TaskCreate:
     priority: critical
     complexity: S
     source_section: "7.3 Data Models"
-    prd_path: "specs/SPEC-Auth.md"
+    spec_path: "specs/SPEC-Auth.md"
     feature_name: "User Authentication"
     task_uid: "specs/SPEC-Auth.md:user-auth:model:001"
+    task_group: "user-authentication"
 ```
 
 **Important**: Track the mapping between task_uid and returned task ID for dependency setup.

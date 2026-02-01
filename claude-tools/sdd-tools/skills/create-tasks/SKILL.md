@@ -22,8 +22,9 @@ You are initiating the task generation workflow. This process reads an existing 
 Verify the spec file exists at the provided path.
 
 If the file is not found:
-1. Check if user provided a relative path
-2. Try common spec locations:
+1. Check `.claude/sdd-tools.local.md` for a default spec directory or output path, and try resolving the spec path against it
+2. Check if user provided a relative path
+3. Try common spec locations:
    - `specs/SPEC-{name}.md`
    - `docs/SPEC-{name}.md`
    - `{name}.md` in current directory
@@ -66,16 +67,17 @@ Analyze the spec content to detect its depth level:
 - Minimal technical details
 
 **Detection Priority**:
-1. If Full-Tech indicators found → Full-Tech
-2. Else if Detailed indicators found → Detailed
-3. Else if High-Level indicators found → High-Level
-4. Default → Detailed
+1. If spec contains `**Spec Depth**:` metadata field, use that value directly
+2. Else if Full-Tech indicators found → Full-Tech
+3. Else if Detailed indicators found → Detailed
+4. Else if High-Level indicators found → High-Level
+5. Default → Detailed
 
 ### Step 4: Check for Existing Tasks
 
 Use TaskList to check if there are existing tasks that reference this spec.
 
-Look for tasks with `metadata.prd_path` matching the spec path.
+Look for tasks with `metadata.spec_path` matching the spec path.
 
 If existing tasks found:
 - Count them by status (pending, in_progress, completed)
@@ -109,7 +111,7 @@ Provide this context in the prompt:
 ```
 Generate implementation tasks from the following spec.
 
-Spec Path: {prd_path}
+Spec Path: {spec_path}
 Detected Depth Level: {depth_level}
 
 {If existing tasks found:}
@@ -119,6 +121,8 @@ Existing Tasks for Merge:
 - {n} completed tasks (never modify)
 
 Existing task UIDs: {list of task_uids}
+
+Task Group: {spec-name}
 
 Spec Content:
 ---
@@ -132,9 +136,10 @@ Instructions:
 4. Infer dependencies between tasks
 5. Present preview summary for user confirmation
 6. Create tasks using TaskCreate with proper metadata
-7. Set dependencies using TaskUpdate
-8. {If merge mode:} Merge with existing tasks, preserving completed status
-9. Report completion with recommended first tasks
+7. Include `task_group` in each task's metadata, derived from the spec title
+8. Set dependencies using TaskUpdate
+9. {If merge mode:} Merge with existing tasks, preserving completed status
+10. Report completion with recommended first tasks
 ```
 
 ### Step 7: Handoff Complete
