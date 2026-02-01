@@ -7,26 +7,38 @@
   },
   "plugins": [
     {
-      "name": "sdd-tools",
-      "description": "Generate and analyze specifications through interactive Spec-Driven Development workflows",
-      "version": "0.1.7",
+      "name": "claude-alchemy-agents",
+      "description": "Developer tools for feature development, Git workflows, and release automation",
+      "version": "0.1.0",
       "author": {
         "name": "Stephen Sequenzia",
         "email": "sequenzia@gmail.com"
       },
-      "source": "./claude-tools/sdd-tools",
+      "source": "./plugins/agents/",
       "category": "development",
-      "homepage": "https://github.com/sequenzia/claude-alchemy/tree/main/claude-tools/sdd-tools"
+      "homepage": "https://github.com/sequenzia/claude-alchemy/tree/main/claude-tools/dev-tools"
     },
     {
-      "name": "dev-tools",
+      "name": "claude-alchemy-tools",
       "description": "Developer tools for feature development, Git workflows, and release automation",
-      "version": "0.3.3",
+      "version": "0.1.0",
       "author": {
         "name": "Stephen Sequenzia",
         "email": "sequenzia@gmail.com"
       },
-      "source": "./claude-tools/dev-tools",
+      "source": "./plugins/tools/",
+      "category": "development",
+      "homepage": "https://github.com/sequenzia/claude-alchemy/tree/main/claude-tools/dev-tools"
+    },
+    {
+      "name": "claude-alchemy-sdd",
+      "description": "Developer tools for feature development, Git workflows, and release automation",
+      "version": "0.1.0",
+      "author": {
+        "name": "Stephen Sequenzia",
+        "email": "sequenzia@gmail.com"
+      },
+      "source": "./plugins/sdd/",
       "category": "development",
       "homepage": "https://github.com/sequenzia/claude-alchemy/tree/main/claude-tools/dev-tools"
     }

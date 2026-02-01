@@ -1,9 +1,0 @@
-{
-  "name": "dev-tools",
-  "version": "0.3.3",
-  "description": "Developer tools for feature development, Git workflows, and release automation",
-  "author": {
-    "name": "Stephen Sequenzia",
-    "email": "sequenzia@gmail.com"
-  }
-}

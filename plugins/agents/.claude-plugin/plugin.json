@@ -1,0 +1,25 @@
+{
+  "name": "claude-alchemy-agents",
+  "version": "0.1.0",
+  "description": "Developer tools for feature development, Git workflows, and release automation",
+  "author": {
+    "name": "Stephen Sequenzia",
+    "email": "sequenzia@gmail.com",
+    "url": "https://sequenzia.com"
+  },
+  "homepage": "https://github.com/sequenzia/claude-alchemy/tree/main/claude-tools/dev-tools",
+  "repository": "https://github.com/sequenzia/claude-alchemy/tree/main/claude-tools/dev-tools",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "agents",
+    "skills",
+    "hooks",
+    "rules",
+    "tdd",
+    "code-review",
+    "workflow",
+    "automation",
+    "best-practices"
+  ]
+}
