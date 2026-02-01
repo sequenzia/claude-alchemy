@@ -6,6 +6,8 @@ This reference provides the detailed 8-step orchestration loop for executing Cla
 
 Use `TaskList` to get all tasks and their current state.
 
+If a `--task-group` argument was provided, filter the task list to only tasks where `metadata.task_group` matches the specified group. If no tasks match the group, inform the user and stop.
+
 If a specific `task-id` argument was provided, validate it exists. If it doesn't exist, inform the user and stop.
 
 ## Step 2: Validate State
@@ -19,7 +21,7 @@ Handle edge cases before proceeding:
 
 ## Step 3: Build Execution Plan
 
-Collect all unblocked pending tasks (status `pending`, empty `blockedBy` list).
+Collect all unblocked pending tasks (status `pending`, empty `blockedBy` list, matching task group if filtered).
 
 If a specific `task-id` was provided, the plan contains only that task.
 
@@ -63,32 +65,48 @@ COMPLETED:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+## Step 5.5: Initialize Execution Directory
+
+Generate a unique `task_execution_id`:
+- Format: `exec-{YYYYMMDD}-{HHMMSS}` (e.g., `exec-20260131-143022`)
+- Use the current date and time
+
+Create the execution directory at `.claude/{task_execution_id}/` with:
+
+1. **`execution_plan.md`** - Save the execution plan displayed in Step 5
+2. **`execution-context.md`** - Initialize with standard template:
+   ```markdown
+   # Execution Context
+
+   ## Project Patterns
+   <!-- Discovered coding patterns, conventions, tech stack details -->
+
+   ## Key Decisions
+   <!-- Architecture decisions, approach choices made during execution -->
+
+   ## Known Issues
+   <!-- Problems encountered, workarounds applied, things to watch out for -->
+
+   ## File Map
+   <!-- Important files discovered and their purposes -->
+
+   ## Task History
+   <!-- Brief log of task outcomes with relevant context -->
+   ```
+3. **`task_log.md`** - Initialize with table headers:
+   ```markdown
+   # Task Execution Log
+
+   | Task ID | Subject | Status | Attempts | Token Usage |
+   |---------|---------|--------|----------|-------------|
+   ```
+4. **`tasks/`** - Empty subdirectory for archiving completed task files
+
 ## Step 6: Initialize Execution Context
 
-Check if `.claude/execution-context.md` exists.
+Read `.claude/{task_execution_id}/execution-context.md` (created in Step 5.5).
 
-If it does not exist, create it with the initial structure:
-
-```markdown
-# Execution Context
-
-## Project Patterns
-<!-- Discovered coding patterns, conventions, tech stack details -->
-
-## Key Decisions
-<!-- Architecture decisions, approach choices made during execution -->
-
-## Known Issues
-<!-- Problems encountered, workarounds applied, things to watch out for -->
-
-## File Map
-<!-- Important files discovered and their purposes -->
-
-## Task History
-<!-- Brief log of task outcomes with relevant context -->
-```
-
-If it already exists, read it to note prior session context.
+If a prior execution session's context exists, merge relevant learnings (Project Patterns, Key Decisions, Known Issues, File Map) into the new execution context.
 
 ## Step 7: Execute Loop
 
@@ -125,7 +143,7 @@ Task:
     - Priority: {priority}
     - Complexity: {complexity}
     - Source Section: {source_section}
-    - Spec Path: {prd_path}
+    - Spec Path: {spec_path}
     - Feature: {feature_name}
 
     {If retry attempt:}
@@ -138,18 +156,27 @@ Task:
 
     Instructions:
     1. Read the execute-tasks skill and reference files
-    2. Read .claude/execution-context.md for prior learnings
+    2. Read .claude/{task_execution_id}/execution-context.md for prior learnings
     3. Understand the task requirements and explore the codebase
     4. Implement the necessary changes
     5. Verify against acceptance criteria (or inferred criteria for general tasks)
     6. Update task status if PASS (mark completed)
-    7. Append learnings to .claude/execution-context.md
+    7. Append learnings to .claude/{task_execution_id}/execution-context.md
     8. Return a structured verification report
+    9. Report token usage estimate (N/A or estimated)
 ```
 
-### 7d: Process Result
+### 7d: Log Task Result
 
-After the agent returns:
+After the agent returns, append a row to `.claude/{task_execution_id}/task_log.md`:
+
+```markdown
+| {id} | {subject} | {PASS/PARTIAL/FAIL} | {attempt_number}/{max_retries} | N/A |
+```
+
+### 7e: Process Result
+
+After logging:
 
 - Log a brief status line: `[{id}] {subject}: {PASS|PARTIAL|FAIL}`
 - **If PASS**: Continue to next task
@@ -157,7 +184,7 @@ After the agent returns:
   - If retries remaining: Launch a fresh agent invocation with the failure context included in the prompt
   - If retries exhausted: Log final failure, leave task as `in_progress`, move to next task
 
-### 7e: Refresh Task List
+### 7f: Refresh Task List
 
 After each task completes (PASS or retries exhausted):
 
@@ -165,6 +192,10 @@ After each task completes (PASS or retries exhausted):
 2. Check if any previously blocked tasks are now unblocked
 3. If newly unblocked tasks found, insert them into the execution plan using the priority sort from Step 3
 4. Continue until no more tasks remain in the plan
+
+### 7g: Archive Completed Task Files
+
+If the task result is PASS, copy the task's JSON file from `~/.claude/tasks/{project}/` to `.claude/{task_execution_id}/tasks/`. Do not delete the original file.
 
 ## Step 8: Session Summary
 
@@ -177,6 +208,8 @@ EXECUTION SUMMARY
 Tasks executed: {total attempted}
   Passed: {count}
   Failed: {count} (after {total retries} total retry attempts)
+
+Token Usage: N/A (placeholder - token tracking not yet available)
 
 Remaining:
   Pending: {count}
@@ -194,6 +227,10 @@ NEWLY UNBLOCKED:
   ...
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+After displaying the summary:
+1. Save `session_summary.md` to `.claude/{task_execution_id}/` with the full summary content
+2. Create `execution_pointer.txt` at `~/.claude/tasks/{project}/` containing the path to `.claude/{task_execution_id}/` so future sessions can find the latest execution
 
 ## Notes
 

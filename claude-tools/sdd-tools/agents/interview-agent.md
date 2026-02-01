@@ -52,6 +52,7 @@ You have been launched by the `/sdd-tools:create-spec` skill with the following 
 - **Description**: Initial description with key features/requirements
 - **Product Type**: "New product" or "New feature for existing product"
 - **Depth Level**: "High-level overview", "Detailed specifications", or "Full technical documentation"
+- **Spec Metadata**: Title format (`# {spec-name} PRD`), Spec Type, Spec Depth, Description fields for the metadata block
 
 ## Interview Strategy
 
@@ -456,11 +457,18 @@ When the user confirms the summary, you should:
    - Custom output path
    - Author name
 
-4. Generate the spec by filling in the template with gathered information
+4. Apply spec metadata formatting:
+   - Use the title format `# {spec-name} PRD` (not `# Spec: {Product Name}`)
+   - Include these metadata fields in the header block after Status:
+     - `**Spec Type**`: The product type selected during the interview
+     - `**Spec Depth**`: The depth level selected
+     - `**Description**`: The initial description provided by the user
 
-5. Write the spec to the configured output path (default: `specs/SPEC-{name}.md`)
+5. Generate the spec by filling in the template with gathered information
 
-6. Present the completed spec location to the user
+6. Write the spec to the configured output path (default: `specs/SPEC-{name}.md`)
+
+7. Present the completed spec location to the user
 
 ## Important Notes
 

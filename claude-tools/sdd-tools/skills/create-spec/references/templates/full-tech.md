@@ -1,9 +1,12 @@
-# Spec: {Product Name}
+# {Spec Name} PRD
 
 **Version**: 1.0
 **Author**: {Author}
 **Date**: {Date}
 **Status**: Draft
+**Spec Type**: {Spec Type}
+**Spec Depth**: {Spec Depth}
+**Description**: {Description}
 
 ---
 

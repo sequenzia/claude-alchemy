@@ -28,7 +28,8 @@ You have been launched by the `sdd-tools:execute-tasks` skill with:
 - **Task ID**: The ID of the task to execute
 - **Task Details**: Subject, description, metadata, dependencies
 - **Retry Context**: (if retry) Previous attempt's verification results and failure details
-- **Execution Context Path**: Path to `.claude/execution-context.md` for shared learnings
+- **Task Execution ID**: The execution session identifier (e.g., `exec-20260131-143022`)
+- **Execution Context Path**: Path to `.claude/{task_execution_id}/execution-context.md` for shared learnings
 
 ## Process Overview
 
@@ -55,7 +56,7 @@ Read: skills/execute-tasks/references/verification-patterns.md
 
 ### Step 2: Read Execution Context
 
-Read `.claude/execution-context.md` if it exists. Review:
+Read `.claude/{task_execution_id}/execution-context.md` if it exists. Review:
 - Project patterns and conventions from earlier tasks
 - Key decisions already made
 - Known issues and workarounds
@@ -68,7 +69,7 @@ If this is a retry attempt, pay special attention to the Task History entry for 
 
 Use `TaskGet` with the provided task ID to get full details:
 - Subject and description
-- Metadata (priority, complexity, source_section, prd_path, feature_name)
+- Metadata (priority, complexity, source_section, spec_path, feature_name, task_group)
 - Dependency information
 
 ### Step 4: Classify Task
@@ -76,7 +77,7 @@ Use `TaskGet` with the provided task ID to get full details:
 Determine the task type using this algorithm:
 
 1. Check for `**Acceptance Criteria:**` in description → Spec-generated
-2. Check for `metadata.prd_path` → Spec-generated
+2. Check for `metadata.spec_path` → Spec-generated
 3. Check for `Source:` reference → Spec-generated
 4. None found → General task
 
@@ -216,7 +217,7 @@ Leave task as `in_progress`. Do NOT mark as completed.
 
 ### Append to Execution Context
 
-Always append learnings to `.claude/execution-context.md`:
+Always append learnings to `.claude/{task_execution_id}/execution-context.md`:
 
 ```markdown
 ### Task [{id}]: {subject} - {PASS/PARTIAL/FAIL}
@@ -270,7 +271,7 @@ Use this information to:
 1. Understand what failed previously
 2. Avoid repeating the same approach if it didn't work
 3. Focus on the specific failures without redoing passing work
-4. Check `.claude/execution-context.md` for the previous attempt's learnings
+4. Check `.claude/{task_execution_id}/execution-context.md` for the previous attempt's learnings
 
 ---
 

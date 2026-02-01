@@ -66,6 +66,10 @@ After receiving the initial responses, immediately launch the Interview Agent us
 - Initial Description: The description provided
 - Output Path: From settings or default `specs/SPEC-{name}.md`
 - Author: From settings or "Not specified"
+- Title Format: `# {spec-name} PRD` (use spec name in title, not product name)
+- Spec Type: The product type for the metadata block
+- Spec Depth: The depth level for the metadata block
+- Description: The initial description for the metadata block
 
 The Interview Agent will:
 1. Conduct an adaptive interview based on the depth level

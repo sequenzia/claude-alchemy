@@ -22,7 +22,7 @@ If found -> **spec-generated task**
 
 ### Step 2: Check Metadata
 
-Check for `metadata.prd_path` field. If present -> **spec-generated task**
+Check for `metadata.spec_path` field. If present -> **spec-generated task**
 
 ### Step 3: Check Source Reference
 
@@ -251,4 +251,4 @@ When a task is being retried after a previous failure, the orchestrating skill w
 2. **Avoid repeating mistakes**: Check if the same approach was already tried
 3. **Try a different approach**: If the previous fix didn't work, consider alternatives
 4. **Focus on failures**: Only address the specific criteria that failed; don't redo passing work unless regressions occurred
-5. **Check execution context**: Read `.claude/execution-context.md` for any learnings from the previous attempt
+5. **Check execution context**: Read `.claude/{task_execution_id}/execution-context.md` for any learnings from the previous attempt
