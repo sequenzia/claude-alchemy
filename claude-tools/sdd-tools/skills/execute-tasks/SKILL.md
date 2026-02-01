@@ -11,6 +11,7 @@ allowed-tools:
   - Glob
   - Grep
   - Bash
+  - AskUserQuestion
   - TaskList
   - TaskGet
   - TaskUpdate
@@ -80,8 +81,8 @@ Collect unblocked pending tasks (filtered by task group if specified), sort by p
 ### Step 4: Check Settings
 Read `.claude/sdd-tools.local.md` if it exists for execution preferences.
 
-### Step 5: Present Execution Plan
-Display the plan showing tasks to execute, blocked tasks, and completed count. Informational only, no confirmation needed.
+### Step 5: Present Execution Plan and Confirm
+Display the plan showing tasks to execute, blocked tasks, and completed count. Then ask the user to confirm before proceeding with execution. If the user cancels, stop without modifying any tasks.
 
 ### Step 5.5: Initialize Execution Directory
 Generate a `task_execution_id` using three-tier resolution: (1) if `--task-group` provided → `{task_group}-{YYYYMMDD}-{HHMMSS}`, (2) else if all open tasks share the same `metadata.task_group` → `{task_group}-{YYYYMMDD}-{HHMMSS}`, (3) else → `exec-session-{YYYYMMDD}-{HHMMSS}`. Create `.claude/{task_execution_id}/` directory containing:
@@ -183,7 +184,7 @@ This enables later tasks to benefit from earlier discoveries and retry attempts 
 
 ## Key Behaviors
 
-- **Fully autonomous**: No user prompts between tasks. The loop runs without interruption.
+- **Autonomous execution loop**: After the user confirms the execution plan, no further prompts occur between tasks. The loop runs without interruption once started.
 - **One agent per task**: Each task gets a fresh agent invocation with isolated context.
 - **Configurable retries**: Default 3 attempts per task, configurable via `retries` argument.
 - **Retry with context**: Each retry includes the previous attempt's failure details so the agent can try a different approach.

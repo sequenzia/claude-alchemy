@@ -40,9 +40,9 @@ Read `.claude/sdd-tools.local.md` if it exists, for any execution preferences.
 
 This is optional — proceed without settings if not found.
 
-## Step 5: Present Execution Plan
+## Step 5: Present Execution Plan and Confirm
 
-Display the execution plan (informational only, no confirmation needed):
+Display the execution plan:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -64,6 +64,22 @@ COMPLETED:
   {count} tasks already completed
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+After displaying the plan, use AskUserQuestion to confirm:
+
+```yaml
+questions:
+  - header: "Confirm Execution"
+    question: "Ready to execute {count} tasks with up to {retries} retries per task?"
+    options:
+      - label: "Yes, start execution"
+        description: "Proceed with the execution plan above"
+      - label: "Cancel"
+        description: "Abort without executing any tasks"
+    multiSelect: false
+```
+
+If the user selects **"Cancel"**, report "Execution cancelled. No tasks were modified." and stop. Do not proceed to Step 5.5 or any subsequent steps.
 
 ## Step 5.5: Initialize Execution Directory
 
@@ -112,7 +128,7 @@ If a prior execution session's context exists, merge relevant learnings (Project
 
 ## Step 7: Execute Loop
 
-Execute tasks fully autonomously. No user interaction between tasks.
+Execute tasks autonomously. No user interaction between tasks.
 
 For each task in the execution plan:
 
