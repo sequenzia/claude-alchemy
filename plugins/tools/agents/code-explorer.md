@@ -7,6 +7,9 @@ tools:
   - Bash
 model: sonnet
 color: yellow
+skills:
+  - project-conventions
+  - language-patterns
 ---
 
 # Code Explorer Agent

@@ -38,7 +38,7 @@ Execute these phases in order, completing ALL of them:
    - Are there any constraints mentioned?
    - What success criteria can you infer?
 
-2. Summarize your understanding to the user. Ask if your understanding is correct before proceeding.
+2. Summarize your understanding to the user. Use AskUserQuestion to confirm if your understanding is correct before proceeding.
 
 ---
 
@@ -74,16 +74,31 @@ Execute these phases in order, completing ALL of them:
    ```
 
 3. **Synthesize findings:**
-   - Collect results from all agents
-   - Identify the key files that will need modification
-   - Note existing patterns and conventions
-   - List any potential challenges discovered
 
-4. **Read key files:**
-   - Read all files identified as critical for the implementation
-   - Build a mental model of how they work together
+   Launch a codebase-synthesizer agent to merge and analyze the exploration results.
 
-5. Present exploration findings to the user.
+   Use the Task tool with `subagent_type: "dev-tools:codebase-synthesizer"` and `model: "opus"`:
+   ```
+   Analysis context: [feature description]
+   Codebase path: [current working directory]
+
+   Exploration findings from [N] agents:
+
+   --- Agent 1: [Focus Area] ---
+   [Full report from agent 1]
+
+   --- Agent 2: [Focus Area] ---
+   [Full report from agent 2]
+
+   --- Agent 3: [Focus Area] (if applicable) ---
+   [Full report from agent 3]
+
+   Synthesize these findings into a unified analysis. Merge duplicates,
+   read critical files in depth, map relationships between components,
+   identify patterns, and assess challenges.
+   ```
+
+4. Present the synthesized analysis to the user.
 
 ---
 
@@ -293,7 +308,7 @@ When launching parallel agents:
 - Handle agent failures gracefully (continue with partial results)
 
 When calling Task tool for agents:
-- Use `model: "opus"` for code-architect and code-reviewer agents
+- Use `model: "opus"` for codebase-synthesizer, code-architect, and code-reviewer agents
 - Use default model (sonnet) for code-explorer agents
 
 ## Additional Resources

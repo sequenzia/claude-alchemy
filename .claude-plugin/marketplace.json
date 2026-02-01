@@ -1,26 +1,14 @@
 {
   "name": "claude-alchemy",
-  "description": "Directory of Claude Code extensions including development tools, productivity plugins, and MCP integrations",
+  "description": "Custom plugins for Claude Alchemy",
   "owner": {
     "name": "Stephen Sequenzia",
     "email": "sequenzia@gmail.com"
   },
   "plugins": [
     {
-      "name": "claude-alchemy-agents",
-      "description": "Developer tools for feature development, Git workflows, and release automation",
-      "version": "0.1.0",
-      "author": {
-        "name": "Stephen Sequenzia",
-        "email": "sequenzia@gmail.com"
-      },
-      "source": "./plugins/agents/",
-      "category": "development",
-      "homepage": "https://github.com/sequenzia/claude-alchemy/tree/main/claude-tools/dev-tools"
-    },
-    {
       "name": "claude-alchemy-tools",
-      "description": "Developer tools for feature development, Git workflows, and release automation",
+      "description": "General Developer Skills & Agents for Claude Alchemy",
       "version": "0.1.0",
       "author": {
         "name": "Stephen Sequenzia",
@@ -28,11 +16,11 @@
       },
       "source": "./plugins/tools/",
       "category": "development",
-      "homepage": "https://github.com/sequenzia/claude-alchemy/tree/main/claude-tools/dev-tools"
+      "homepage": "https://github.com/sequenzia/claude-alchemy/tree/main/plugins/tools"
     },
     {
       "name": "claude-alchemy-sdd",
-      "description": "Developer tools for feature development, Git workflows, and release automation",
+      "description": "SDD (Spec Driven Development) Skills & Agents for Claude Alchemy",
       "version": "0.1.0",
       "author": {
         "name": "Stephen Sequenzia",
@@ -40,7 +28,7 @@
       },
       "source": "./plugins/sdd/",
       "category": "development",
-      "homepage": "https://github.com/sequenzia/claude-alchemy/tree/main/claude-tools/dev-tools"
+      "homepage": "https://github.com/sequenzia/claude-alchemy/tree/main/plugins/sdd"
     }
   ]
 }

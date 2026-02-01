@@ -1,5 +1,5 @@
 ---
-name: research-agent
+name: researcher
 description: Researches technical documentation, domain knowledge, competitive landscape, and general topics to inform spec requirements. Use when you need current information about technologies, industry practices, or the problem space.
 when_to_use: |
   Use ONLY when user explicitly requests research during spec creation.
