@@ -9,7 +9,7 @@
     {
       "name": "sdd-tools",
       "description": "Generate and analyze specifications through interactive Spec-Driven Development workflows",
-      "version": "0.1.3",
+      "version": "0.1.4",
       "author": {
         "name": "Stephen Sequenzia",
         "email": "sequenzia@gmail.com"

@@ -251,7 +251,6 @@ sdd-tools/
 ├── agents/
 │   ├── research-agent.md     # On-demand research agent
 │   ├── spec-analyzer.md      # Spec quality analysis agent
-│   ├── task-generator.md     # Spec to tasks decomposition agent
 │   └── task-executor.md      # Single task execution agent
 ├── skills/
 │   ├── create-spec/

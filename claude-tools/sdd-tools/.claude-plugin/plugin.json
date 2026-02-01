@@ -1,6 +1,6 @@
 {
   "name": "sdd-tools",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Generate, analyze, and execute specifications through interactive Spec-Driven Development workflows",
   "author": {
     "name": "Stephen Sequenzia",
