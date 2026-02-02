@@ -28,6 +28,32 @@ pnpm install && pnpm dev  # Starts on http://localhost:3030
 
 > **New to Claude Code Tasks?** Check out the [Tasks Cheatsheet](./internal/docs/claude-tasks-cheatsheet.md) for tips on setting up `CLAUDE_CODE_TASK_LIST_ID`, task dependencies, and best practices.
 
+## Architecture
+
+Claude Alchemy is a pnpm monorepo with two systems:
+
+| Component | Location | Description |
+|-----------|----------|-------------|
+| **Tools Plugin** | `plugins/tools/` | 5 agents, 10 skills for code exploration, architecture, review, and release workflows |
+| **SDD Plugin** | `plugins/sdd/` | 2 agents, 4 skills for spec-driven development (create-spec → create-tasks → execute-tasks) |
+| **Task Manager** | `apps/task-manager/` | Next.js 16 app with real-time Kanban board for Claude Code Tasks |
+
+### Plugins
+
+The plugin system uses a "markdown-as-code" design — all workflow logic lives in declarative `SKILL.md` and agent markdown files. Skills orchestrate specialized agents in parallel using Claude Code's Task tool.
+
+**Tools Plugin (`claude-alchemy-tools`):**
+- `/codebase-analysis` — 4-phase codebase exploration with parallel agents
+- `/feature-dev` — 7-phase feature development (explore → design → implement → review)
+- `/git-commit` — Conventional commit creation
+- `/bump-plugin-version` — Semantic version management
+
+**SDD Plugin (`claude-alchemy-sdd`):**
+- `/create-spec` — Adaptive interview to generate specifications
+- `/analyze-spec` — Spec quality analysis
+- `/create-tasks` — Decompose specs into Claude Code Tasks with dependency inference
+- `/execute-tasks` — Autonomous task execution with shared context
+
 ## Screenshots
 
 ### Task Manager Kanban View
