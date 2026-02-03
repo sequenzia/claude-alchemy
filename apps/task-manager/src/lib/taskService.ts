@@ -159,6 +159,25 @@ function resolveExecutionDir(pointerContent: string): string | null {
   return resolved
 }
 
+/**
+ * Resolve the execution directory path for a given task list.
+ * Returns null if the pointer doesn't exist or the path is invalid.
+ */
+export async function getExecutionDir(
+  taskListId: string
+): Promise<string | null> {
+  const pointerPath = join(TASKS_DIR, taskListId, 'execution_pointer.md')
+
+  let pointerContent: string
+  try {
+    pointerContent = await readFile(pointerPath, 'utf-8')
+  } catch {
+    return null
+  }
+
+  return resolveExecutionDir(pointerContent)
+}
+
 export async function getExecutionContext(
   taskListId: string
 ): Promise<ExecutionContext | null> {

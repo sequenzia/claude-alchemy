@@ -21,6 +21,7 @@ export class FileWatcher extends EventEmitter {
   private watcher: FSWatcher | null = null
   private readonly basePath: string
   private started = false
+  private watchedExecDirs = new Map<string, string>() // taskListId -> execDir
 
   constructor() {
     super()
@@ -98,12 +99,20 @@ export class FileWatcher extends EventEmitter {
   }
 
   private handleExecutionChange(filePath: string): void {
-    // Determine which task list this file belongs to.
-    // Files are under ~/.claude/tasks/<listId>/ (depth 1 for pointer)
-    // or could be watched externally. We derive the listId from the
-    // relative path to the basePath.
-    const rel = relative(this.basePath, filePath)
-    const taskListId = rel.split('/')[0]
+    // Check if the file is inside a watched execution directory
+    let taskListId: string | undefined
+    for (const [listId, execDir] of this.watchedExecDirs) {
+      if (filePath.startsWith(execDir)) {
+        taskListId = listId
+        break
+      }
+    }
+
+    // Fall back to deriving from the tasks basePath
+    if (!taskListId) {
+      const rel = relative(this.basePath, filePath)
+      taskListId = rel.split('/')[0]
+    }
     if (!taskListId) return
 
     const event: ExecutionWatcherEvent = {
@@ -111,6 +120,26 @@ export class FileWatcher extends EventEmitter {
       taskListId,
     }
     this.emit('executionEvent', event)
+  }
+
+  /**
+   * Watch an execution directory for changes to artifact files.
+   * Avoids duplicate watches for the same taskListId.
+   */
+  watchExecutionDir(taskListId: string, execDir: string): void {
+    if (!this.watcher || !this.started) return
+
+    const existing = this.watchedExecDirs.get(taskListId)
+    if (existing === execDir) return
+
+    // If there was a previous exec dir for this list, unwatch it
+    if (existing) {
+      this.watcher.unwatch(existing)
+    }
+
+    this.watchedExecDirs.set(taskListId, execDir)
+    this.watcher.add(execDir)
+    console.log(`File watcher: now watching execution dir for "${taskListId}": ${execDir}`)
   }
 
   private handleFileDelete(filePath: string): void {

@@ -18,5 +18,7 @@ export function useExecutionContext(
     queryFn: () => fetchExecutionContext(taskListId!),
     enabled: !!taskListId,
     initialData: initialData ?? undefined,
+    staleTime: 2000,
+    refetchInterval: 5000,
   })
 }

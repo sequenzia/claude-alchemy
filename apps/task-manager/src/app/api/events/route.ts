@@ -1,4 +1,5 @@
 import { fileWatcher, type FileWatcherEvent, type ExecutionWatcherEvent } from '@/lib/fileWatcher'
+import { getExecutionDir } from '@/lib/taskService'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -10,6 +11,14 @@ export async function GET(request: Request) {
   // Ensure file watcher is started
   if (!fileWatcher.isStarted()) {
     await fileWatcher.start()
+  }
+
+  // Watch the execution directory for this task list if it exists
+  if (taskListId) {
+    const execDir = await getExecutionDir(taskListId)
+    if (execDir) {
+      fileWatcher.watchExecutionDir(taskListId, execDir)
+    }
   }
 
   const encoder = new TextEncoder()
