@@ -1,0 +1,17 @@
+{
+  "description": "Auto-approve file operations for execute-tasks session management",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/auto-approve-session.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

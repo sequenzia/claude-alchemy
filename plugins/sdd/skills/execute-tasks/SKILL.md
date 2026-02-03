@@ -194,7 +194,7 @@ This enables later tasks to benefit from earlier discoveries and retry attempts 
 - **Honest failure handling**: After retries exhausted, tasks stay `in_progress` (not completed), and execution continues to the next task.
 - **Circular dependency detection**: If all remaining tasks are blocked by each other, break at the weakest link (task with fewest blockers) and log a warning.
 - **Shared context**: Agents read and write `.claude/session/__live_session__/execution_context.md` so later tasks benefit from earlier discoveries.
-- **Session directory is pre-authorized**: All file operations within `.claude/session/` (including `__live_session__/` and archival folders) and `~/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/execution_pointer.md` are performed without prompting for user authorization. These are the skill's working files.
+- **Session directory is auto-approved**: All file operations within `.claude/session/` (including `__live_session__/` and archival folders) and `$HOME/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/execution_pointer.md` are auto-approved by the `auto-approve-session.sh` PreToolUse hook and will not prompt for user authorization. These are the skill's working files.
 
 ## Example Usage
 

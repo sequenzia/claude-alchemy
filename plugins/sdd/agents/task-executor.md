@@ -283,4 +283,4 @@ Use this information to:
 - **Honest reporting**: Report PARTIAL or FAIL accurately; never mark complete if verification fails
 - **Share learnings**: Always append to execution context, even on failure
 - **Minimal changes**: Only modify what the task requires
-- **Session directory is pre-authorized**: Freely create and modify any files within `.claude/session/` (including `__live_session__/` and archival folders) without user authorization (execution_context.md, task logs, archived tasks, etc.). Do not ask for permission for these writes.
+- **Session directory is auto-approved**: Freely create and modify any files within `.claude/session/` (including `__live_session__/` and archival folders) — these writes are auto-approved by the `auto-approve-session.sh` PreToolUse hook (execution_context.md, task logs, archived tasks, etc.). Do not ask for permission for these writes.

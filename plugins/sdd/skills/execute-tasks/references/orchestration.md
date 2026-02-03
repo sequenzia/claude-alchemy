@@ -131,7 +131,7 @@ Create `.claude/session/__live_session__/` (and `.claude/session/` parent if nee
    |---------|---------|--------|----------|-------------|
    ```
 4. **`tasks/`** - Empty subdirectory for archiving completed task files
-5. **`execution_pointer.md`** at `~/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/` — Create immediately with the absolute path to `.claude/session/__live_session__/`. This ensures the pointer exists even if the session is interrupted before completing.
+5. **`execution_pointer.md`** at `$HOME/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/execution_pointer.md` — Create immediately with the fully resolved absolute path to the live session directory (e.g., `/Users/sequenzia/dev/repos/my-project/.claude/session/__live_session__/`). Construct this by prepending the current working directory to `.claude/session/__live_session__/`. This ensures the pointer exists even if the session is interrupted before completing.
 
 ## Step 6: Initialize Execution Context
 
@@ -295,4 +295,4 @@ Process:
 - The execution context file enables knowledge sharing across task boundaries
 - Failed tasks remain as `in_progress` for manual review or re-execution
 - Run the execute-tasks skill again to pick up where you left off — it will execute any remaining unblocked tasks
-- All file operations within `.claude/session/` (including `__live_session__/` and archival folders) and `execution_pointer.md` are pre-authorized and should never prompt for user confirmation
+- All file operations within `.claude/session/` (including `__live_session__/` and archival folders) and `execution_pointer.md` are auto-approved by the `auto-approve-session.sh` PreToolUse hook and should never prompt for user confirmation
