@@ -19,7 +19,7 @@ Read: skills/execute-tasks/references/verification-patterns.md
 
 Check for shared execution context from prior tasks in this session:
 ```
-Read: .claude/session/__live_session__/execution_context.md
+Read: .claude/sessions/__live_session__/execution_context.md
 ```
 
 If the file exists, review:
@@ -208,7 +208,7 @@ Leave task as `in_progress`. Do NOT mark as completed. The orchestrating skill w
 
 ### Append to Execution Context
 
-Always append learnings to `.claude/session/__live_session__/execution_context.md`, regardless of PASS/PARTIAL/FAIL:
+Always append learnings to `.claude/sessions/__live_session__/execution_context.md`, regardless of PASS/PARTIAL/FAIL:
 
 ```markdown
 ### Task [{id}]: {subject} - {PASS/PARTIAL/FAIL}

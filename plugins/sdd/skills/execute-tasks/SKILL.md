@@ -82,26 +82,26 @@ Collect unblocked pending tasks (filtered by task group if specified), sort by p
 Read `.claude/sdd-tools.local.md` if it exists for execution preferences.
 
 ### Step 5: Initialize Execution Directory
-Generate a `task_execution_id` using three-tier resolution: (1) if `--task-group` provided → `{task_group}-{YYYYMMDD}-{HHMMSS}`, (2) else if all open tasks share the same `metadata.task_group` → `{task_group}-{YYYYMMDD}-{HHMMSS}`, (3) else → `exec-session-{YYYYMMDD}-{HHMMSS}`. Clean any stale `__live_session__/` files by archiving them to `.claude/session/interrupted-{YYYYMMDD}-{HHMMSS}/`. Create `.claude/session/__live_session__/` directory containing:
+Generate a `task_execution_id` using three-tier resolution: (1) if `--task-group` provided → `{task_group}-{YYYYMMDD}-{HHMMSS}`, (2) else if all open tasks share the same `metadata.task_group` → `{task_group}-{YYYYMMDD}-{HHMMSS}`, (3) else → `exec-session-{YYYYMMDD}-{HHMMSS}`. Clean any stale `__live_session__/` files by archiving them to `.claude/sessions/interrupted-{YYYYMMDD}-{HHMMSS}/`. Create `.claude/sessions/__live_session__/` directory containing:
 - `execution_plan.md` — saved execution plan from Step 5
 - `execution_context.md` — initialized with standard template
 - `task_log.md` — initialized with table headers (Task ID, Subject, Status, Attempts, Token Usage)
 - `tasks/` — subdirectory for archiving completed task files
-- `execution_pointer.md` at `~/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/` — created immediately with absolute path to `.claude/session/__live_session__/`
+- `execution_pointer.md` at `~/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/` — created immediately with absolute path to `.claude/sessions/__live_session__/`
 
 ### Step 6: Present Execution Plan and Confirm
-Display the plan showing tasks to execute, blocked tasks, and completed count. Also display the details of step 5 which includes the session directory path (`.claude/session/__live_session__/`) and files created, including the execution pointer file location.
+Display the plan showing tasks to execute, blocked tasks, and completed count. Also display the details of step 5 which includes the session directory path (`.claude/sessions/__live_session__/`) and files created, including the execution pointer file location.
 
 Then ask the user to confirm before proceeding with execution. If the user cancels, stop without modifying any tasks.
 
 ### Step 7: Initialize Execution Context
-Read `.claude/session/__live_session__/execution_context.md` (created in Step 5). If a prior execution context exists, look in `.claude/session/` for the most recent timestamped subfolder and merge relevant learnings into the new one.
+Read `.claude/sessions/__live_session__/execution_context.md` (created in Step 5). If a prior execution context exists, look in `.claude/sessions/` for the most recent timestamped subfolder and merge relevant learnings into the new one.
 
 ### Step 8: Execute Loop
-For each task: get details, mark in progress, launch `sdd-tools:task-executor` agent, process result (PASS/PARTIAL/FAIL), handle retries, track token usage (placeholder/estimated), log result to `.claude/session/__live_session__/task_log.md`, archive completed task files to `.claude/session/__live_session__/tasks/`, refresh task list for newly unblocked tasks.
+For each task: get details, mark in progress, launch `sdd-tools:task-executor` agent, process result (PASS/PARTIAL/FAIL), handle retries, track token usage (placeholder/estimated), log result to `.claude/sessions/__live_session__/task_log.md`, archive completed task files to `.claude/sessions/__live_session__/tasks/`, refresh task list for newly unblocked tasks.
 
 ### Step 9: Session Summary
-Display execution results with pass/fail counts, failed task list, newly unblocked tasks, and token usage summary (placeholder). Save `session_summary.md` to `.claude/session/__live_session__/`. Archive the session by moving all contents from `__live_session__/` to `.claude/session/{task_execution_id}/`, leaving `__live_session__/` as an empty directory. `execution_pointer.md` stays pointing to `__live_session__/`.
+Display execution results with pass/fail counts, failed task list, newly unblocked tasks, and token usage summary (placeholder). Save `session_summary.md` to `.claude/sessions/__live_session__/`. Archive the session by moving all contents from `__live_session__/` to `.claude/sessions/{task_execution_id}/`, leaving `__live_session__/` as an empty directory. `execution_pointer.md` stays pointing to `__live_session__/`.
 
 ### Step 10: Update CLAUDE.md
 Review execution context for project-wide changes (new patterns, dependencies, commands, structure changes, design decisions). Make targeted edits to CLAUDE.md if meaningful changes occurred. Skip if only task-specific or internal implementation details.
@@ -129,7 +129,7 @@ Each task is executed by the `sdd-tools:task-executor` agent through these phase
 Load context and understand scope before writing code.
 
 - Read the execute-tasks skill and references
-- Read `.claude/session/__live_session__/execution_context.md` for learnings from prior tasks
+- Read `.claude/sessions/__live_session__/execution_context.md` for learnings from prior tasks
 - Load task details via `TaskGet`
 - Classify the task (spec-generated vs general)
 - Parse acceptance criteria or infer requirements from description
@@ -160,7 +160,7 @@ Report results and share learnings.
 - Determine status (PASS/PARTIAL/FAIL) based on verification results
 - If PASS: mark task as `completed` via `TaskUpdate`
 - If PARTIAL or FAIL: leave as `in_progress` for the orchestrator to decide on retry
-- Append learnings to `.claude/session/__live_session__/execution_context.md` (files discovered, patterns learned, issues encountered)
+- Append learnings to `.claude/sessions/__live_session__/execution_context.md` (files discovered, patterns learned, issues encountered)
 - Return structured report with verification results
 
 ## Adaptive Verification Overview
@@ -176,7 +176,7 @@ Verification adapts based on task type:
 
 ## Shared Execution Context
 
-Tasks within an execution session share learnings through `.claude/session/__live_session__/execution_context.md`:
+Tasks within an execution session share learnings through `.claude/sessions/__live_session__/execution_context.md`:
 
 - **Read at start**: Check for prior task learnings before beginning work
 - **Write at end**: Always append learnings regardless of PASS/PARTIAL/FAIL
@@ -193,8 +193,8 @@ This enables later tasks to benefit from earlier discoveries and retry attempts 
 - **Dynamic unblocking**: After each task completes, the dependency graph is refreshed and newly unblocked tasks are added to the plan.
 - **Honest failure handling**: After retries exhausted, tasks stay `in_progress` (not completed), and execution continues to the next task.
 - **Circular dependency detection**: If all remaining tasks are blocked by each other, break at the weakest link (task with fewest blockers) and log a warning.
-- **Shared context**: Agents read and write `.claude/session/__live_session__/execution_context.md` so later tasks benefit from earlier discoveries.
-- **Session directory is auto-approved**: All file operations within `.claude/session/` (including `__live_session__/` and archival folders) and `$HOME/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/execution_pointer.md` are auto-approved by the `auto-approve-session.sh` PreToolUse hook and will not prompt for user authorization. These are the skill's working files.
+- **Shared context**: Agents read and write `.claude/sessions/__live_session__/execution_context.md` so later tasks benefit from earlier discoveries.
+- **Session directory is auto-approved**: All file operations within `.claude/sessions/` (including `__live_session__/` and archival folders) and `$HOME/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/execution_pointer.md` are auto-approved by the `auto-approve-session.sh` PreToolUse hook and will not prompt for user authorization. These are the skill's working files.
 
 ## Example Usage
 
