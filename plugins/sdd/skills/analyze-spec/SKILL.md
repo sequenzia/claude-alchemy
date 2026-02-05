@@ -73,7 +73,7 @@ Extract the spec filename and construct the report path.
 
 ### Step 6: Launch Analyzer Agent
 
-Launch the Spec Analyzer Agent using the Task tool with subagent_type `sdd-tools:spec-analyzer`.
+Launch the Spec Analyzer Agent using the Task tool with subagent_type `claude-alchemy-sdd:spec-analyzer`.
 
 Provide this context in the prompt:
 
@@ -109,7 +109,7 @@ Once you have launched the Analyzer Agent, your role is complete. The agent will
 ## Example Usage
 
 ```
-/sdd-tools:analyze-spec specs/SPEC-User-Authentication.md
+/claude-alchemy-sdd:analyze-spec specs/SPEC-User-Authentication.md
 ```
 
 This will:

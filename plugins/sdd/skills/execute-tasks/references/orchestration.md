@@ -14,7 +14,7 @@ If a specific `task-id` argument was provided, validate it exists. If it doesn't
 
 Handle edge cases before proceeding:
 
-- **Empty task list**: Report "No tasks found. Use `/sdd-tools:create-tasks` to generate tasks from a spec, or create tasks manually with TaskCreate." and stop.
+- **Empty task list**: Report "No tasks found. Use `/claude-alchemy-sdd:create-tasks` to generate tasks from a spec, or create tasks manually with TaskCreate." and stop.
 - **All completed**: Report a summary of completed tasks and stop.
 - **Specific task-id is blocked**: Report which tasks are blocking it and stop.
 - **No unblocked tasks**: Report which tasks exist and what's blocking them. Detect circular dependencies and report if found.
@@ -155,11 +155,11 @@ Use `TaskUpdate` to set status to `in_progress`.
 
 ### 7c: Launch Executor Agent
 
-Launch the `sdd-tools:task-executor` agent using the `Task` tool:
+Launch the `claude-alchemy-sdd:task-executor` agent using the `Task` tool:
 
 ```
 Task:
-  subagent_type: sdd-tools:task-executor
+  subagent_type: claude-alchemy-sdd:task-executor
   prompt: |
     Execute the following task.
 
@@ -291,7 +291,7 @@ Process:
 ## Notes
 
 - Tasks are executed using Claude Code's native task system (TaskGet/TaskUpdate/TaskList)
-- Each task is handled by the `sdd-tools:task-executor` agent in isolation
+- Each task is handled by the `claude-alchemy-sdd:task-executor` agent in isolation
 - The execution context file enables knowledge sharing across task boundaries
 - Failed tasks remain as `in_progress` for manual review or re-execution
 - Run the execute-tasks skill again to pick up where you left off — it will execute any remaining unblocked tasks

@@ -9,7 +9,7 @@
     {
       "name": "claude-alchemy-tools",
       "description": "General Developer Skills & Agents for Claude Alchemy",
-      "version": "0.1.2",
+      "version": "0.1.3",
       "author": {
         "name": "Stephen Sequenzia",
         "email": "sequenzia@gmail.com"
@@ -21,7 +21,7 @@
     {
       "name": "claude-alchemy-sdd",
       "description": "SDD (Spec Driven Development) Skills & Agents for Claude Alchemy",
-      "version": "0.1.3",
+      "version": "0.1.4",
       "author": {
         "name": "Stephen Sequenzia",
         "email": "sequenzia@gmail.com"

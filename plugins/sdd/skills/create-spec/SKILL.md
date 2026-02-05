@@ -314,7 +314,7 @@ Since you mentioned GDPR compliance, let me quickly research the current require
 
 #### Invoking Research
 
-Use the Task tool with subagent_type `sdd-tools:research-agent`:
+Use the Task tool with subagent_type `claude-alchemy-sdd:research-agent`:
 
 ```
 Task prompt template:

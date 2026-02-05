@@ -619,17 +619,17 @@ If required information missing from spec:
 
 ### Basic Usage
 ```
-/sdd-tools:create-tasks specs/SPEC-User-Authentication.md
+/claude-alchemy-sdd:create-tasks specs/SPEC-User-Authentication.md
 ```
 
 ### With Relative Path
 ```
-/sdd-tools:create-tasks SPEC-Payments.md
+/claude-alchemy-sdd:create-tasks SPEC-Payments.md
 ```
 
 ### Re-running (Merge Mode)
 ```
-/sdd-tools:create-tasks specs/SPEC-User-Authentication.md
+/claude-alchemy-sdd:create-tasks specs/SPEC-User-Authentication.md
 ```
 If tasks already exist for this spec, they will be intelligently merged.
 
