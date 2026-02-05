@@ -4,7 +4,7 @@ tools:
   - Read
   - Glob
   - Grep
-model: opus
+model: inherit
 color: red
 ---
 

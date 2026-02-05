@@ -2,7 +2,7 @@
 name: spec-analyzer
 description: Performs comprehensive analysis of specs to identify inconsistencies, missing information, ambiguities, and structure issues
 when_to_use: Use this agent to analyze an existing spec for quality issues and guide users through resolving findings interactively.
-model: opus
+model: inherit
 color: purple
 skills:
   - analyze-spec

@@ -5,7 +5,7 @@ tools:
   - Glob
   - Grep
   - Bash
-model: opus
+model: inherit
 color: purple
 ---
 
