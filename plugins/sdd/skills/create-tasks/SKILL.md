@@ -63,7 +63,7 @@ This workflow has eight phases:
 Verify the spec file exists at the provided path.
 
 If the file is not found:
-1. Check `.claude/sdd-tools.local.md` for a default spec directory or output path, and try resolving the spec path against it
+1. Check `.claude/claude-alchemy.local.md` for a default spec directory or output path, and try resolving the spec path against it
 2. Check if user provided a relative path
 3. Try common spec locations:
    - `specs/SPEC-{name}.md`
@@ -82,7 +82,7 @@ Read the entire spec file using the Read tool.
 
 ### Check Settings
 
-Check for optional settings at `.claude/sdd-tools.local.md`:
+Check for optional settings at `.claude/claude-alchemy.local.md`:
 - Author name (for attribution)
 - Any custom preferences
 
@@ -163,7 +163,9 @@ Parse the spec title to extract the spec name for use as `task_group`:
 - Look for `# {name} PRD` title format on line 1
 - Extract `{name}` as the spec name (e.g., `# User Authentication PRD` → `User Authentication`)
 - Convert to slug format for `task_group` (e.g., `user-authentication`)
-- If title does not match the PRD format, derive spec name from the filename
+- If title does not match the PRD format, derive spec name from the filename: strip `SPEC-` prefix, strip `.md` extension, lowercase, replace spaces/underscores with hyphens (e.g., `SPEC-Payment-Flow.md` → `payment-flow`)
+
+**Important**: `task_group` MUST be set on every task. The `execute-tasks` skill relies on `metadata.task_group` for `--task-group` filtering and session ID generation. Tasks without `task_group` will be invisible to group-filtered execution runs.
 
 ### Section Mapping
 
@@ -286,7 +288,7 @@ metadata:
   spec_path: "specs/SPEC-Example.md"            # Source spec
   feature_name: "User Authentication"          # Parent feature
   task_uid: "{spec_path}:{feature}:{type}:{seq}" # Unique ID
-  task_group: "{spec-name}"                    # Group from spec title
+  task_group: "{spec-name}"                    # REQUIRED — Group from spec title
 ```
 
 ### Acceptance Criteria Categories

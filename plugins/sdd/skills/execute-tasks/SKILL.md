@@ -67,7 +67,7 @@ Produce accurate verification results:
 
 ## Orchestration Workflow
 
-This skill orchestrates task execution through a 9-step loop. See `references/orchestration.md` for the full detailed procedure.
+This skill orchestrates task execution through a 10-step loop. See `references/orchestration.md` for the full detailed procedure.
 
 ### Step 1: Load Task List
 Retrieve all tasks via `TaskList`. If a `--task-group` argument was provided, filter tasks to only those with matching `metadata.task_group`. If a specific `task-id` argument was provided, validate it exists.
@@ -79,14 +79,15 @@ Handle edge cases: empty list, all completed, specific task blocked, no unblocke
 Collect unblocked pending tasks (filtered by task group if specified), sort by priority (critical > high > medium > low > unprioritized), break ties by "unblocks most others."
 
 ### Step 4: Check Settings
-Read `.claude/sdd-tools.local.md` if it exists for execution preferences.
+Read `.claude/claude-alchemy.local.md` if it exists for execution preferences.
 
 ### Step 5: Initialize Execution Directory
-Generate a `task_execution_id` using three-tier resolution: (1) if `--task-group` provided → `{task_group}-{YYYYMMDD}-{HHMMSS}`, (2) else if all open tasks share the same `metadata.task_group` → `{task_group}-{YYYYMMDD}-{HHMMSS}`, (3) else → `exec-session-{YYYYMMDD}-{HHMMSS}`. Clean any stale `__live_session__/` files by archiving them to `.claude/sessions/interrupted-{YYYYMMDD}-{HHMMSS}/`. Create `.claude/sessions/__live_session__/` directory containing:
+Generate a `task_execution_id` using three-tier resolution: (1) if `--task-group` provided → `{task_group}-{YYYYMMDD}-{HHMMSS}`, (2) else if all open tasks share the same `metadata.task_group` → `{task_group}-{YYYYMMDD}-{HHMMSS}`, (3) else → `exec-session-{YYYYMMDD}-{HHMMSS}`. Clean any stale `__live_session__/` files by archiving them to `.claude/sessions/interrupted-{YYYYMMDD}-{HHMMSS}/`, resetting any `in_progress` tasks from the interrupted session back to `pending`. Check for and enforce the concurrency guard via `.lock` file. Create `.claude/sessions/__live_session__/` directory containing:
 - `execution_plan.md` — saved execution plan from Step 5
 - `execution_context.md` — initialized with standard template
-- `task_log.md` — initialized with table headers (Task ID, Subject, Status, Attempts, Token Usage)
+- `task_log.md` — initialized with table headers (Task ID, Subject, Status, Attempts, Duration, Token Usage)
 - `tasks/` — subdirectory for archiving completed task files
+- `progress.md` — initialized with status template for real-time progress tracking
 - `execution_pointer.md` at `~/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/` — created immediately with absolute path to `.claude/sessions/__live_session__/`
 
 ### Step 6: Present Execution Plan and Confirm
@@ -98,10 +99,10 @@ Then ask the user to confirm before proceeding with execution. If the user cance
 Read `.claude/sessions/__live_session__/execution_context.md` (created in Step 5). If a prior execution context exists, look in `.claude/sessions/` for the most recent timestamped subfolder and merge relevant learnings into the new one.
 
 ### Step 8: Execute Loop
-For each task: get details, mark in progress, launch `claude-alchemy-sdd:task-executor` agent, process result (PASS/PARTIAL/FAIL), handle retries, track token usage (placeholder/estimated), log result to `.claude/sessions/__live_session__/task_log.md`, copy completed task files to `.claude/sessions/__live_session__/tasks/`, refresh task list for newly unblocked tasks.
+For each task: get details, mark in progress, record start time, launch `claude-alchemy-sdd:task-executor` agent, process result (PASS/PARTIAL/FAIL), handle retries, calculate duration, capture token usage from Task tool response if available, log result to `.claude/sessions/__live_session__/task_log.md`, copy completed task files to `.claude/sessions/__live_session__/tasks/`, refresh task list for newly unblocked tasks.
 
 ### Step 9: Session Summary
-Display execution results with pass/fail counts, failed task list, newly unblocked tasks, and token usage summary (placeholder). Save `session_summary.md` to `.claude/sessions/__live_session__/`. Archive the session by moving all contents from `__live_session__/` to `.claude/sessions/{task_execution_id}/`, leaving `__live_session__/` as an empty directory. `execution_pointer.md` stays pointing to `__live_session__/`.
+Display execution results with pass/fail counts, total execution time, failed task list, newly unblocked tasks, and token usage summary (captured from Task tool responses if available). Save `session_summary.md` to `.claude/sessions/__live_session__/`. Archive the session by moving all contents from `__live_session__/` to `.claude/sessions/{task_execution_id}/`, leaving `__live_session__/` as an empty directory. `execution_pointer.md` stays pointing to `__live_session__/`.
 
 ### Step 10: Update CLAUDE.md
 Review execution context for project-wide changes (new patterns, dependencies, commands, structure changes, design decisions). Make targeted edits to CLAUDE.md if meaningful changes occurred. Skip if only task-specific or internal implementation details.
@@ -194,6 +195,9 @@ This enables later tasks to benefit from earlier discoveries and retry attempts 
 - **Honest failure handling**: After retries exhausted, tasks stay `in_progress` (not completed), and execution continues to the next task.
 - **Circular dependency detection**: If all remaining tasks are blocked by each other, break at the weakest link (task with fewest blockers) and log a warning.
 - **Shared context**: Agents read and write `.claude/sessions/__live_session__/execution_context.md` so later tasks benefit from earlier discoveries.
+- **Resilient context sharing**: If a task-executor fails to append to `execution_context.md`, learnings are captured in the verification report as a fallback.
+- **Single-session invariant**: Only one execution session can run at a time per project. A `.lock` file in `__live_session__/` prevents concurrent invocations.
+- **Interrupted session recovery**: Stale sessions are detected and archived; tasks left `in_progress` are automatically reset to `pending`.
 
 ## Example Usage
 
@@ -229,6 +233,6 @@ This enables later tasks to benefit from earlier discoveries and retry attempts 
 
 ## Reference Files
 
-- `references/orchestration.md` - 9-step orchestration loop with execution plan, retry handling, and session summary
+- `references/orchestration.md` - 10-step orchestration loop with execution plan, retry handling, and session summary
 - `references/execution-workflow.md` - Detailed phase-by-phase procedures for the 4-phase workflow
 - `references/verification-patterns.md` - Task classification, criterion verification, pass/fail rules, and failure reporting format

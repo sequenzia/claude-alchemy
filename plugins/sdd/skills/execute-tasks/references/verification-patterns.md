@@ -252,3 +252,4 @@ When a task is being retried after a previous failure, the orchestrating skill w
 3. **Try a different approach**: If the previous fix didn't work, consider alternatives
 4. **Focus on failures**: Only address the specific criteria that failed; don't redo passing work unless regressions occurred
 5. **Check execution context**: Read `.claude/sessions/__live_session__/execution_context.md` for any learnings from the previous attempt
+6. **Clean up before fixing**: Check for partial changes from the previous attempt. Run linter and tests to assess codebase state before adding new changes. Revert incomplete artifacts if they would interfere with the fix.

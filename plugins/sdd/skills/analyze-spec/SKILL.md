@@ -58,7 +58,7 @@ Analyze the spec content to detect its depth level:
 
 ### Step 4: Check Settings
 
-Check for settings at `.claude/sdd-tools.local.md` to get:
+Check for settings at `.claude/claude-alchemy.local.md` to get:
 - Author name (if configured)
 - Any custom preferences
 

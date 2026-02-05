@@ -1,6 +1,6 @@
 # Orchestration Reference
 
-This reference provides the detailed 9-step orchestration loop for executing Claude Code Tasks in dependency order. The execute-tasks skill uses this procedure to manage the full execution session.
+This reference provides the detailed 10-step orchestration loop for executing Claude Code Tasks in dependency order. The execute-tasks skill uses this procedure to manage the full execution session.
 
 ## Step 1: Load Task List
 
@@ -36,7 +36,7 @@ Break ties by "unblocks most others" — tasks that appear in the most `blockedB
 
 ## Step 4: Check Settings
 
-Read `.claude/sdd-tools.local.md` if it exists, for any execution preferences.
+Read `.claude/claude-alchemy.local.md` if it exists, for any execution preferences.
 
 This is optional — proceed without settings if not found.
 
@@ -97,7 +97,39 @@ Before creating new files, check if `.claude/sessions/__live_session__/` contain
    - Create `.claude/sessions/interrupted-{YYYYMMDD}-{HHMMSS}/` using the current timestamp
    - Move all contents from `__live_session__/` to the interrupted archive folder
    - Log: `Archived stale session to .claude/sessions/interrupted-{YYYYMMDD}-{HHMMSS}/`
+   - **Recover interrupted tasks**:
+     1. Use `TaskList` to get all tasks
+     2. Filter to tasks with status `in_progress`
+     3. If an archived `task_log.md` exists, cross-reference: only reset tasks that appear in the log (they were part of the interrupted session)
+     4. If no `task_log.md` available in the archive, reset ALL `in_progress` tasks (conservative approach)
+     5. Reset matched tasks to `pending` via `TaskUpdate`
+     6. Log each reset: `Reset interrupted task [{id}] "{subject}" from in_progress to pending`
+     7. Log: `Recovered {n} interrupted tasks (reset to pending)`
 3. If `__live_session__/` is empty or doesn't exist, proceed normally
+
+### Concurrency Guard
+
+Check for an active execution session before proceeding:
+
+1. Check if `.claude/sessions/__live_session__/.lock` exists
+2. If lock exists, read its timestamp:
+   - If timestamp is **less than 4 hours old**: another session may be active. Use `AskUserQuestion` with options:
+     - "Force start (remove lock)" — delete the lock and proceed
+     - "Cancel" — abort execution
+   - If timestamp is **more than 4 hours old**: treat as stale, delete the lock, and proceed
+3. If no lock exists, proceed normally
+
+### Create Lock File
+
+After the concurrency check passes, create `.claude/sessions/__live_session__/.lock` with:
+
+```markdown
+task_execution_id: {task_execution_id}
+timestamp: {ISO 8601 timestamp}
+pid: orchestrator
+```
+
+This lock is automatically cleaned up in Step 8 when `__live_session__/` contents are archived to the timestamped session folder.
 
 ### Create Session Files
 
@@ -127,17 +159,35 @@ Create `.claude/sessions/__live_session__/` (and `.claude/sessions/` parent if n
    ```markdown
    # Task Execution Log
 
-   | Task ID | Subject | Status | Attempts | Token Usage |
-   |---------|---------|--------|----------|-------------|
+   | Task ID | Subject | Status | Attempts | Duration | Token Usage |
+   |---------|---------|--------|----------|----------|-------------|
    ```
 4. **`tasks/`** - Empty subdirectory for archiving completed task files
-5. **`execution_pointer.md`** at `$HOME/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/execution_pointer.md` — Create immediately with the fully resolved absolute path to the live session directory (e.g., `/Users/sequenzia/dev/repos/my-project/.claude/sessions/__live_session__/`). Construct this by prepending the current working directory to `.claude/sessions/__live_session__/`. This ensures the pointer exists even if the session is interrupted before completing.
+5. **`progress.md`** - Initialize with status template:
+   ```markdown
+   # Execution Progress
+   Status: Initializing
+   Current Task: —
+   Phase: —
+   Updated: {ISO 8601 timestamp}
+   ```
+6. **`execution_pointer.md`** at `$HOME/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/execution_pointer.md` — Create immediately with the fully resolved absolute path to the live session directory (e.g., `/Users/sequenzia/dev/repos/my-project/.claude/sessions/__live_session__/`). Construct this by prepending the current working directory to `.claude/sessions/__live_session__/`. This ensures the pointer exists even if the session is interrupted before completing.
 
 ## Step 6: Initialize Execution Context
 
 Read `.claude/sessions/__live_session__/execution_context.md` (created in Step 5.5).
 
 If a prior execution session's context exists, look in `.claude/sessions/` for the most recent timestamped subfolder and merge relevant learnings (Project Patterns, Key Decisions, Known Issues, File Map) into the new execution context.
+
+### Context Compaction
+
+After merging prior learnings, check the Task History section. If it has 10 or more entries from merged sessions, compact older entries:
+
+1. Keep the 5 most recent Task History entries in full
+2. Summarize all older entries into a single "Prior Sessions Summary" paragraph at the top of the Task History section
+3. Replace the old individual entries with this summary
+
+This prevents the execution context from growing unbounded across multiple execution sessions.
 
 ## Step 7: Execute Loop
 
@@ -153,7 +203,17 @@ Use `TaskGet` to load full task details.
 
 Use `TaskUpdate` to set status to `in_progress`.
 
+Update `progress.md` with:
+```
+Status: Executing
+Current Task: [{id}] {subject} ({n} of {total})
+Phase: Launching agent
+Updated: {ISO 8601 timestamp}
+```
+
 ### 7c: Launch Executor Agent
+
+Record the current time as `task_start_time` before launching the agent.
 
 Launch the `claude-alchemy-sdd:task-executor` agent using the `Task` tool:
 
@@ -185,7 +245,14 @@ Task:
     ---
     Focus on fixing the specific failures listed above.
 
-    Instructions:
+    Before implementing fixes:
+    1. Read execution_context.md for learnings from the failed attempt
+    2. Check for partial changes: incomplete files, broken imports, partial implementations
+    3. Run linter and tests to assess codebase state before making changes
+    4. Clean up incomplete artifacts before proceeding
+    5. If previous approach was fundamentally wrong, consider reverting and trying differently
+
+    Instructions (follow in order):
     1. Read the execute-tasks skill and reference files
     2. Read .claude/sessions/__live_session__/execution_context.md for prior learnings
     3. Understand the task requirements and explore the codebase
@@ -194,15 +261,19 @@ Task:
     6. Update task status if PASS (mark completed)
     7. Append learnings to .claude/sessions/__live_session__/execution_context.md
     8. Return a structured verification report
-    9. Report token usage estimate (N/A or estimated)
+    9. Report any token/usage information available from your session
 ```
 
 ### 7d: Log Task Result
 
-After the agent returns, append a row to `.claude/sessions/__live_session__/task_log.md`:
+After the agent returns:
+
+1. Calculate `duration = current_time - task_start_time`. Format: <60s = `{s}s`, <60m = `{m}m {s}s`, >=60m = `{h}h {m}m {s}s`
+2. Capture token usage from the Task tool response if available, otherwise `N/A`
+3. Append a row to `.claude/sessions/__live_session__/task_log.md`:
 
 ```markdown
-| {id} | {subject} | {PASS/PARTIAL/FAIL} | {attempt_number}/{max_retries} | N/A |
+| {id} | {subject} | {PASS/PARTIAL/FAIL} | {attempt_number}/{max_retries} | {duration} | {token_usage or N/A} |
 ```
 
 ### 7e: Process Result
@@ -214,6 +285,16 @@ After logging:
 - **If PARTIAL or FAIL**: Check retry count
   - If retries remaining: Launch a fresh agent invocation with the failure context included in the prompt
   - If retries exhausted: Log final failure, leave task as `in_progress`, move to next task
+
+**Context append fallback**: If the agent's report contains a `LEARNINGS:` section (indicating the agent failed to append to `execution_context.md`), manually append those learnings to `.claude/sessions/__live_session__/execution_context.md`.
+
+Update `progress.md` with the task result and next action:
+```
+Status: Executing
+Current Task: [{id}] {subject} — {PASS|PARTIAL|FAIL}
+Phase: {Moving to next task | Retrying ({n}/{max}) | Completing session}
+Updated: {ISO 8601 timestamp}
+```
 
 ### 7f: Refresh Task List
 
@@ -230,6 +311,14 @@ If the task result is PASS, copy the task's JSON file from `~/.claude/tasks/{CLA
 
 ## Step 8: Session Summary
 
+Update `progress.md` with final status:
+```
+Status: Complete
+Current Task: —
+Phase: Generating summary
+Updated: {ISO 8601 timestamp}
+```
+
 After all tasks in the plan have been processed:
 
 ```
@@ -240,7 +329,8 @@ Tasks executed: {total attempted}
   Passed: {count}
   Failed: {count} (after {total retries} total retry attempts)
 
-Token Usage: N/A (placeholder - token tracking not yet available)
+Total execution time: {sum of all task durations}
+Token Usage: {total tokens if tracked, otherwise "N/A"}
 
 Remaining:
   Pending: {count}
@@ -261,7 +351,7 @@ NEWLY UNBLOCKED:
 
 After displaying the summary:
 1. Save `session_summary.md` to `.claude/sessions/__live_session__/` with the full summary content
-2. **Archive the session**: Create `.claude/sessions/{task_execution_id}/` and move all contents from `__live_session__/` to the archival folder
+2. **Archive the session**: Create `.claude/sessions/{task_execution_id}/` and move all contents from `__live_session__/` to the archival folder. The `.lock` file is moved to the archive along with all other session files, releasing the concurrency guard.
 3. `__live_session__/` is left as an empty directory (not deleted)
 4. `execution_pointer.md` stays pointing to `__live_session__/` (no update needed — it will be empty until the next execution)
 

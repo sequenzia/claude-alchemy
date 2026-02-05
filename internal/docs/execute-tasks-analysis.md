@@ -123,7 +123,7 @@ Its role is to autonomously execute Claude Code Tasks in dependency order by del
 
 | File | Purpose |
 |------|---------|
-| `.claude/sdd-tools.local.md` | Optional per-project execution preferences |
+| `.claude/claude-alchemy.local.md` | Optional per-project execution preferences |
 | `.claude/settings.json` | Contains `CLAUDE_CODE_TASK_LIST_ID` |
 | `plugins/sdd/.claude-plugin/plugin.json` | Plugin manifest (v0.1.4) |
 
@@ -152,7 +152,7 @@ Guards against five edge cases:
 - Breaks ties by "unblocks most others" (counts how many other tasks list this one in `blockedBy`)
 
 ### Step 4: Check Settings
-- Reads `.claude/sdd-tools.local.md` (optional, non-blocking if absent)
+- Reads `.claude/claude-alchemy.local.md` (optional, non-blocking if absent)
 
 ### Step 5: Initialize Execution Directory
 **Session ID generation** (3-tier):

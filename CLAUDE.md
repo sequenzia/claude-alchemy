@@ -29,7 +29,10 @@ Claude Alchemy is a pnpm monorepo with two Claude Code plugins and a Next.js Tas
 
 ## Critical Integration Points
 
-- **execution_pointer.md**: Written by `execute-tasks` skill to `~/.claude/tasks/{listId}/`, contains absolute path to `.claude/session/__live_session__/`, read by Task Manager's `taskService.ts` to display execution artifacts
+- **execution_pointer.md**: Written by `execute-tasks` skill to `~/.claude/tasks/{listId}/`, contains absolute path to `.claude/sessions/__live_session__/`, read by Task Manager's `taskService.ts` to display execution artifacts
+- **Session files in `__live_session__/`**: `execution_context.md`, `task_log.md`, `progress.md`, `execution_plan.md`, `.lock`, `tasks/` subdirectory. Written by `execute-tasks` skill, readable by Task Manager via `getExecutionContext()`
+- **`progress.md`**: Real-time execution status (current task, phase, timestamp). Updated during execution — Chokidar picks up changes automatically
+- **`.lock` file**: Prevents concurrent execution sessions. Created at session start, archived with session on completion. Stale locks (>4h) auto-expire
 - **Task storage**: `~/.claude/tasks/claude-alchemy/` (set via CLAUDE_CODE_TASK_LIST_ID in .claude/settings.json)
 
 ## Task Manager Architecture
@@ -59,4 +62,5 @@ Claude Alchemy is a pnpm monorepo with two Claude Code plugins and a Next.js Tas
 - Multi-phase workflows with explicit transition directives
 - All user interactions through `AskUserQuestion` tool
 - SDD plugin has PreToolUse hook (`hooks/auto-approve-session.sh`) for autonomous session file operations
+- Interrupted sessions are auto-recovered — stale `__live_session__/` files are archived and `in_progress` tasks are reset to `pending` on next invocation
 - Plugin versions tracked in both `.claude-plugin/plugin.json` and root `marketplace.json` (update both when versioning)

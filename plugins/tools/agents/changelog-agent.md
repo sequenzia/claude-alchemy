@@ -39,7 +39,7 @@ If no CHANGELOG.md exists, ask the user if they want you to create one.
 
 ### Step 2: Get Git History Since Last Release (Enhanced)
 
-**Path filter note:** If a path filter is provided in the prompt (e.g., `-- claude-tools/sdd-tools/`), append it to all `git log` commands in this step to scope results to that sub-project.
+**Path filter note:** If a path filter is provided in the prompt (e.g., `-- claude-alchemy/sdd/`), append it to all `git log` commands in this step to scope results to that sub-project.
 
 1. Find the tag for the last release:
    ```bash
@@ -279,10 +279,10 @@ Once approved, use the `Edit` tool to update CHANGELOG.md:
 ```markdown
 ## [Unreleased]
 
-### sdd-tools
+### sdd
 
 #### Added
-- New entry scoped to sdd-tools
+- New entry scoped to sdd
 
 ### claude-alchemy-tools
 

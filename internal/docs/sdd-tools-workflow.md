@@ -7,13 +7,13 @@ The SDD pipeline takes you from idea to working implementation in four steps:
      (Spec)             (Quality Check)        (Task List)           (Implementation)
 ```
 
-Each step produces artifacts that feed into the next, and you can re-enter the pipeline at any point. Optional settings in `.claude/sdd-tools.local.md` configure output paths, author name, and other preferences across all skills.
+Each step produces artifacts that feed into the next, and you can re-enter the pipeline at any point. Optional settings in `.claude/claude-alchemy.local.md` configure output paths, author name, and other preferences across all skills.
 
 ## Step 1: Create a Spec (`/sdd:create-spec`)
 
 The spec creation skill launches an adaptive interview that builds a structured specification from your answers.
 
-**Settings Check** — The skill first loads `.claude/sdd-tools.local.md` (if present) for custom configuration like output path or author name.
+**Settings Check** — The skill first loads `.claude/claude-alchemy.local.md` (if present) for custom configuration like output path or author name.
 
 **Initial Gathering** — You provide four pieces of context:
 1. **Spec name** — identifies the output file
@@ -231,7 +231,7 @@ The board watches `~/.claude/tasks/` for file changes using Chokidar and pushes 
 
 ## Settings & Configuration
 
-All SDD skills check for an optional settings file at `.claude/sdd-tools.local.md`. This file is not checked into version control and allows per-project or per-user configuration.
+All SDD skills check for an optional settings file at `.claude/claude-alchemy.local.md`. This file is not checked into version control and allows per-project or per-user configuration.
 
 | Setting | Used By | Description |
 |---------|---------|-------------|

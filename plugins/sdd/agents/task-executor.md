@@ -65,6 +65,8 @@ Read `.claude/sessions/__live_session__/execution_context.md` if it exists. Revi
 
 If this is a retry attempt, pay special attention to the Task History entry for this task's previous attempt.
 
+**Large context handling**: If `execution_context.md` is large (200+ lines), prioritize reading: Project Patterns, Key Decisions, Known Issues, File Map, and the last 5 Task History entries. Skim or skip older Task History entries to conserve context window.
+
 ### Step 3: Load Task Details
 
 Use `TaskGet` with the provided task ID to get full details:
@@ -113,6 +115,8 @@ Before writing code, have a clear plan:
 
 ## Phase 2: Implement
 
+If `progress.md` exists in `.claude/sessions/__live_session__/`, update the Phase line to `Phase: Phase 2 — Implementing`.
+
 ### Pre-Implementation
 
 - Read every file you plan to edit
@@ -154,6 +158,8 @@ If testing requirements are specified:
 ---
 
 ## Phase 3: Verify
+
+If `progress.md` exists in `.claude/sessions/__live_session__/`, update the Phase line to `Phase: Phase 3 — Verifying`.
 
 ### Spec-Generated Tasks
 
@@ -256,7 +262,15 @@ RECOMMENDATIONS:
 
 FILES MODIFIED:
   - {file path}: {brief description}
+
+{If context append failed:}
+LEARNINGS:
+  - Files modified: {list}
+  - Key learnings: {patterns, conventions, file locations}
+  - Issues encountered: {problems, workarounds}
 ```
+
+If the append to `execution_context.md` fails, do not crash. Instead, include the `LEARNINGS:` section in the report as a fallback so the orchestrator can append the data.
 
 ---
 
@@ -272,6 +286,10 @@ Use this information to:
 2. Avoid repeating the same approach if it didn't work
 3. Focus on the specific failures without redoing passing work
 4. Check `.claude/sessions/__live_session__/execution_context.md` for the previous attempt's learnings
+5. Check for and clean up partial changes from the previous attempt:
+   - Run linter and tests to assess the current codebase state before adding new changes
+   - Look for incomplete artifacts: partially written files, broken imports, half-implemented features
+   - If the previous approach was fundamentally wrong, consider reverting the changes and trying a different strategy
 
 ---
 

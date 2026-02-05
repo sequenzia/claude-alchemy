@@ -40,7 +40,7 @@ Use AskUserQuestion to prompt the user to select a plugin.
 
 Display each plugin as an option with its current version:
 - Format: "{plugin_name} (v{current_version})"
-- Example: "sdd-tools (v0.3.1)"
+- Example: "sdd (v0.3.1)"
 
 ---
 

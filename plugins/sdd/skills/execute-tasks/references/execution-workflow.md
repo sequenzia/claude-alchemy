@@ -31,6 +31,21 @@ If the file exists, review:
 
 Use this context to inform your approach. If the file does not exist, proceed without it.
 
+#### Context Size Management
+
+If `execution_context.md` has grown large:
+
+- **200+ lines (~8KB)**: Keep the last 5 Task History entries in full. Summarize older Task History entries into a brief paragraph. Keep Project Patterns, Key Decisions, Known Issues, and File Map sections in full.
+- **500+ lines (~20KB)**: Read selectively — always read the top sections (Project Patterns, Key Decisions, Known Issues, File Map) and the last 5 Task History entries. Skip older Task History entries entirely.
+
+#### Retry Context Check
+
+If this is a retry attempt:
+
+1. Read the previous attempt's learnings from `execution_context.md`
+2. Assess the current codebase state: run linter and tests to understand what the previous attempt left behind
+3. Decide approach: build on the previous attempt's partial work, or revert and try a different strategy
+
 ### Step 3: Load Task Details
 
 Use `TaskGet` to retrieve the full task details including:
@@ -82,6 +97,8 @@ Before proceeding to implementation, have a clear understanding of:
 ---
 
 ## Phase 2: Implement
+
+If `progress.md` exists in `.claude/sessions/__live_session__/`, update the Phase line to `Phase: Phase 2 — Implementing`.
 
 Execute the implementation following project patterns and best practices.
 
@@ -135,6 +152,8 @@ If the task specifies testing requirements or the project has test patterns:
 ---
 
 ## Phase 3: Verify
+
+If `progress.md` exists in `.claude/sessions/__live_session__/`, update the Phase line to `Phase: Phase 3 — Verifying`.
 
 Verify the implementation against task requirements. The verification approach is adaptive based on task classification.
 
@@ -222,6 +241,15 @@ Also update the relevant sections if new information was discovered:
 - **Key Decisions**: Architecture or approach decisions made
 - **Known Issues**: New problems or gotchas discovered
 - **File Map**: Important files discovered and their purposes
+
+#### Error Resilience
+
+If the append to `execution_context.md` fails (file locked, write error, etc.):
+
+1. **Do not crash** — continue the workflow normally
+2. Log a `WARNING: Failed to append learnings to execution_context.md` line in the verification report
+3. Include a `LEARNINGS:` fallback section in the report with the same data that would have been appended
+4. Return the report normally — the orchestrator will pick up the fallback learnings
 
 ### Report Structure
 
