@@ -10,104 +10,37 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion
 
 # Codebase Analysis Workflow
 
-Execute a structured 4-phase codebase analysis workflow to gather insights.
+Execute a structured 3-phase codebase analysis workflow to gather insights.
 
-**CRITICAL: Complete ALL 4 phases.** The workflow is not complete until Phase 4: Post-Analysis Actions is finished. After completing each phase, immediately proceed to the next phase without waiting for user prompts.
+**CRITICAL: Complete ALL 3 phases.** The workflow is not complete until Phase 3: Post-Analysis Actions is finished. After completing each phase, immediately proceed to the next phase without waiting for user prompts.
 
 ## Phase Overview
 
-1. **Exploration** — Launch parallel agents to investigate the codebase
-2. **Synthesis** — Merge and analyze findings via synthesizer agent
-3. **Reporting** — Present structured analysis to the user
-4. **Post-Analysis Actions** — Save, document, or retain analysis insights
+1. **Deep Analysis** — Explore and synthesize codebase findings via deep-analysis skill
+2. **Reporting** — Present structured analysis to the user
+3. **Post-Analysis Actions** — Save, document, or retain analysis insights
 
 ---
 
-## Phase 1: Codebase Exploration
+## Phase 1: Deep Analysis
 
-**Goal:** Thoroughly explore the codebase to gather raw findings.
+**Goal:** Explore the codebase and synthesize findings.
 
 1. **Determine analysis context:**
-   - If `$ARGUMENTS` is provided, use it as the analysis context (feature area, question, or general exploration goal)
+   - If `$ARGUMENTS` is provided, use it as the analysis context
    - If no arguments, set context to "general codebase understanding"
-   - Set `PATH = current working directory`
-   - Inform the user: "Analyzing codebase at: `PATH`" with the analysis context
 
-2. **Load skills for this phase:**
-   - Read `${CLAUDE_PLUGIN_ROOT}/skills/project-conventions/SKILL.md` and apply its guidance
-   - Read `${CLAUDE_PLUGIN_ROOT}/skills/language-patterns/SKILL.md` and apply its guidance
+2. **Run deep-analysis workflow:**
+   - Read `${CLAUDE_PLUGIN_ROOT}/skills/deep-analysis/SKILL.md` and follow its complete workflow, passing the analysis context from step 1
+   - This handles exploration (parallel code-explorer agents) and synthesis (codebase-synthesizer agent)
 
-3. **Determine focus areas:**
-   - For feature-focused analysis, use 3 agents:
-     ```
-     Agent 1: Explore entry points and user-facing code related to the context
-     Agent 2: Explore data models, schemas, and storage related to the context
-     Agent 3: Explore utilities, helpers, and shared infrastructure
-     ```
-   - For general codebase understanding, 2 agents may suffice:
-     ```
-     Agent 1: Explore application structure, entry points, and core logic
-     Agent 2: Explore configuration, infrastructure, and shared utilities
-     ```
-
-4. **Launch code-explorer agents:**
-
-   Launch agents in parallel using the Task tool with `subagent_type: "claude-alchemy-tools:code-explorer"`:
-   ```
-   Path to analyze: [PATH]
-   Analysis context: [context from step 1]
-   Focus area: [specific focus for this agent]
-
-   Find and analyze:
-   - Relevant files and their purposes
-   - Key functions/classes and their roles
-   - Existing patterns and conventions
-   - Integration points and dependencies
-
-   Return a structured report of your findings.
-   ```
-
-5. **Handle agent failures:**
-   - If an agent fails, note which focus area was missed
-   - Continue with successful results — partial findings are still valuable
-   - If all agents fail, inform the user and offer to retry or explore manually
+3. **Verify results:**
+   - Ensure the synthesis covers the analysis context adequately
+   - If critical gaps remain, use Glob/Grep to fill them directly
 
 ---
 
-## Phase 2: Synthesis and Analysis
-
-**Goal:** Merge exploration findings into a unified analysis.
-
-1. **Launch codebase-synthesizer agent:**
-
-   Use the Task tool with `subagent_type: "claude-alchemy-tools:codebase-synthesizer"` and `model: "opus"`:
-   ```
-   Analysis context: [context from Phase 1]
-   Codebase path: [PATH]
-
-   Exploration findings from [N] agents:
-
-   --- Agent 1: [Focus Area] ---
-   [Full report from agent 1]
-
-   --- Agent 2: [Focus Area] ---
-   [Full report from agent 2]
-
-   --- Agent 3: [Focus Area] (if applicable) ---
-   [Full report from agent 3]
-
-   Synthesize these findings into a unified analysis. Merge duplicates,
-   read critical files in depth, map relationships between components,
-   identify patterns, and assess challenges.
-   ```
-
-2. **Review synthesis:**
-   - Verify the synthesizer covered all focus areas
-   - If critical gaps exist, use Glob/Grep to fill them directly
-
----
-
-## Phase 3: Reporting
+## Phase 2: Reporting
 
 **Goal:** Present a structured analysis to the user.
 
@@ -125,12 +58,12 @@ Execute a structured 4-phase codebase analysis workflow to gather insights.
    - **Challenges & Risks** — Technical risks and complexity hotspots
    - **Recommendations** — Actionable next steps
 
-3. **IMPORTANT: Proceed immediately to Phase 4.**
-   Do NOT stop here. Do NOT wait for user input. The report is presented, but the workflow requires Post-Analysis Actions. Continue directly to Phase 4 now.
+3. **IMPORTANT: Proceed immediately to Phase 3.**
+   Do NOT stop here. Do NOT wait for user input. The report is presented, but the workflow requires Post-Analysis Actions. Continue directly to Phase 3 now.
 
 ---
 
-## Phase 4: Post-Analysis Actions
+## Phase 3: Post-Analysis Actions
 
 **Goal:** Let the user save, document, or retain analysis insights from the report.
 
@@ -153,7 +86,7 @@ Execute a structured 4-phase codebase analysis workflow to gather insights.
      - If yes, suggest default path: `docs/codebase-analysis.md`
      - If no, suggest default path: `codebase-analysis.md` in the project root
    - Use `AskUserQuestion` to let the user confirm or customize the file path
-   - Write the full report content (same as Phase 3 output) to the confirmed path using the Write tool
+   - Write the full report content (same as Phase 2 output) to the confirmed path using the Write tool
    - Confirm the file was saved
 
    ### Action: Update README.md
@@ -202,7 +135,7 @@ Execute a structured 4-phase codebase analysis workflow to gather insights.
 
    **Step 1: Extract actionable items from the report**
 
-   Parse the Phase 3 report (in conversation context) to extract items from:
+   Parse the Phase 2 report (in conversation context) to extract items from:
    - **Challenges & Risks** table rows — title from Challenge column, severity from Severity column, description from Impact column
    - **Recommendations** section — each numbered item; infer severity from linked challenges (High if linked to a High challenge, otherwise Medium)
    - **Other findings** with concrete fixes — default to Low severity
@@ -265,14 +198,7 @@ If any phase fails:
 
 ## Agent Coordination
 
-When launching parallel agents:
-- Give each agent a distinct focus area to minimize overlap
-- Wait for all agents to complete before proceeding to synthesis
-- Handle agent failures gracefully — continue with partial results
-
-When calling Task tool for agents:
-- Use `model: "opus"` for codebase-synthesizer agent
-- Use default model (sonnet) for code-explorer agents
+Exploration and synthesis agent coordination is handled by the `deep-analysis` skill in Phase 1. See that skill for agent model tiers and failure handling details.
 
 ---
 

@@ -46,59 +46,11 @@ Execute these phases in order, completing ALL of them:
 
 **Goal:** Understand the relevant parts of the codebase.
 
-1. **Load skills for this phase:**
-   - Read `${CLAUDE_PLUGIN_ROOT}/skills/project-conventions/SKILL.md` and apply its guidance
-   - Read `${CLAUDE_PLUGIN_ROOT}/skills/language-patterns/SKILL.md` and apply its guidance
+1. **Run deep-analysis workflow:**
+   - Read `${CLAUDE_PLUGIN_ROOT}/skills/deep-analysis/SKILL.md` and follow its complete workflow, using the feature description from Phase 1 as the analysis context
+   - This handles exploration (parallel code-explorer agents) and synthesis (codebase-synthesizer agent)
 
-2. **Launch code-explorer agents:**
-
-   Launch 2-3 code-explorer agents in parallel with different focus areas:
-   ```
-   Agent 1: Explore entry points and user-facing code related to the feature
-   Agent 2: Explore data models, schemas, and storage related to the feature
-   Agent 3: Explore utilities, helpers, and shared infrastructure (if applicable)
-   ```
-
-   Use the Task tool with `subagent_type: "claude-alchemy-tools:code-explorer"`:
-   ```
-   Feature: [feature description]
-   Focus area: [specific focus for this agent]
-
-   Find and analyze:
-   - Relevant files and their purposes
-   - Key functions/classes that would be modified or extended
-   - Existing patterns to follow
-   - Potential integration points
-
-   Return a structured report of your findings.
-   ```
-
-3. **Synthesize findings:**
-
-   Launch a codebase-synthesizer agent to merge and analyze the exploration results.
-
-   Use the Task tool with `subagent_type: "claude-alchemy-tools:codebase-synthesizer"` and `model: "opus"`:
-   ```
-   Analysis context: [feature description]
-   Codebase path: [current working directory]
-
-   Exploration findings from [N] agents:
-
-   --- Agent 1: [Focus Area] ---
-   [Full report from agent 1]
-
-   --- Agent 2: [Focus Area] ---
-   [Full report from agent 2]
-
-   --- Agent 3: [Focus Area] (if applicable) ---
-   [Full report from agent 3]
-
-   Synthesize these findings into a unified analysis. Merge duplicates,
-   read critical files in depth, map relationships between components,
-   identify patterns, and assess challenges.
-   ```
-
-4. Present the synthesized analysis to the user.
+2. Present the synthesized analysis to the user.
 
 ---
 
@@ -302,14 +254,16 @@ If any phase fails:
 
 ## Agent Coordination
 
-When launching parallel agents:
+Exploration and synthesis agent coordination is handled by the `deep-analysis` skill in Phase 2. See that skill for agent model tiers and failure handling details.
+
+When launching other parallel agents (code-architect, code-reviewer):
 - Give each agent a distinct focus area
-- Wait for all agents to complete before synthesizing
+- Wait for all agents to complete before proceeding
 - Handle agent failures gracefully (continue with partial results)
 
 When calling Task tool for agents:
-- Use `model: "opus"` for codebase-synthesizer, code-architect, and code-reviewer agents
-- Use default model (sonnet) for code-explorer agents
+- Use `model: "opus"` for code-architect and code-reviewer agents
+- Code-explorer and codebase-synthesizer models are managed by deep-analysis
 
 ## Additional Resources
 
