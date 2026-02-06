@@ -26,6 +26,8 @@ const TAB_LABELS: Record<string, string> = {
   progress: 'Progress',
 }
 
+const TAB_ORDER = ['execution_plan', 'progress', 'execution_context', 'task_log', 'session_summary']
+
 function getTabLabel(name: string): string {
   return TAB_LABELS[name] ?? name.replace(/_/g, ' ')
 }
@@ -137,32 +139,37 @@ export function ExecutionDialog({
   if (!executionContext) return null
 
   const { artifacts, progress } = executionContext
-  const defaultTab = artifacts[0]?.name ?? ''
+  const sortedArtifacts = [...artifacts].sort((a, b) => {
+    const ai = TAB_ORDER.indexOf(a.name)
+    const bi = TAB_ORDER.indexOf(b.name)
+    return (ai === -1 ? Infinity : ai) - (bi === -1 ? Infinity : bi)
+  })
+  const defaultTab = sortedArtifacts.find(a => a.name === 'execution_plan')?.name ?? sortedArtifacts[0]?.name ?? ''
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-4xl max-h-[85vh] flex flex-col">
+      <DialogContent className="sm:max-w-4xl w-full h-[85vh] flex flex-col">
         <DialogHeader>
-          <DialogTitle>Execution Context</DialogTitle>
+          <DialogTitle>Execution Details</DialogTitle>
           <DialogDescription>
-            Artifacts from the current task execution session
+            Details from the current task execution session
           </DialogDescription>
         </DialogHeader>
 
         <Tabs defaultValue={defaultTab} className="flex-1 min-h-0">
           <TabsList variant="line">
-            {artifacts.map((artifact) => (
+            {sortedArtifacts.map((artifact) => (
               <TabsTrigger key={artifact.name} value={artifact.name}>
                 {getTabLabel(artifact.name)}
               </TabsTrigger>
             ))}
           </TabsList>
 
-          {artifacts.map((artifact) => (
+          {sortedArtifacts.map((artifact) => (
             <TabsContent
               key={artifact.name}
               value={artifact.name}
-              className="overflow-y-auto mt-4"
+              className="flex-1 min-h-0 overflow-y-auto mt-4"
               style={{ maxHeight: 'calc(85vh - 200px)' }}
             >
               {artifact.name === 'progress' && progress ? (
