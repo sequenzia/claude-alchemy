@@ -1,7 +1,6 @@
 ---
 name: changelog-agent
 description: Reviews git history and updates CHANGELOG.md with entries for [Unreleased] section
-color: yellow
 tools:
   - Bash
   - Read

@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/sequenzia/claude-alchemy/schemas/mcp.schema.json",
+  "$comment": "Source: https://code.claude.com/docs/en/mcp — Last validated: 2026-02-07",
+  "title": "Claude Code MCP Server Configuration",
+  "description": "Schema for .mcp.json — Model Context Protocol server definitions for Claude Code plugins",
+  "type": "object",
+  "properties": {
+    "mcpServers": {
+      "type": "object",
+      "description": "Named MCP server configurations",
+      "additionalProperties": {
+        "$ref": "#/$defs/mcpServer"
+      }
+    }
+  },
+  "required": ["mcpServers"],
+  "additionalProperties": false,
+  "$defs": {
+    "mcpServer": {
+      "type": "object",
+      "description": "Configuration for a single MCP server",
+      "properties": {
+        "command": {
+          "type": "string",
+          "description": "Command to start the MCP server (for stdio transport)"
+        },
+        "args": {
+          "type": "array",
+          "description": "Arguments to pass to the server command",
+          "items": { "type": "string" }
+        },
+        "env": {
+          "type": "object",
+          "description": "Environment variables to set for the server process",
+          "additionalProperties": { "type": "string" }
+        },
+        "cwd": {
+          "type": "string",
+          "description": "Working directory for the server process"
+        },
+        "url": {
+          "type": "string",
+          "description": "URL for HTTP/SSE transport MCP servers",
+          "format": "uri"
+        },
+        "type": {
+          "type": "string",
+          "description": "Transport type",
+          "enum": ["stdio", "sse", "http"]
+        },
+        "headers": {
+          "type": "object",
+          "description": "HTTP headers to send with requests (for HTTP/SSE transport)",
+          "additionalProperties": { "type": "string" }
+        },
+        "oauth": {
+          "type": "object",
+          "description": "OAuth configuration for authenticated MCP servers",
+          "properties": {
+            "clientId": {
+              "type": "string",
+              "description": "OAuth client ID"
+            },
+            "callbackPort": {
+              "type": "integer",
+              "description": "Local port for OAuth callback"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

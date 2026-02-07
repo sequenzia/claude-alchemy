@@ -1,0 +1,76 @@
+{
+  "name": "claude-code-schemas",
+  "displayName": "Claude Code Plugin Schemas",
+  "description": "Schema validation, autocomplete, and hover documentation for Claude Code plugin files",
+  "version": "0.2.0",
+  "publisher": "claude-alchemy",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Linters",
+    "Programming Languages",
+    "Other"
+  ],
+  "keywords": [
+    "claude-code",
+    "plugins",
+    "schema",
+    "validation",
+    "yaml",
+    "frontmatter"
+  ],
+  "activationEvents": [
+    "workspaceContains:**/.claude-plugin/plugin.json",
+    "onLanguage:markdown"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "jsonValidation": [
+      {
+        "fileMatch": "**/.claude-plugin/plugin.json",
+        "url": "./schemas/plugin.schema.json"
+      },
+      {
+        "fileMatch": "**/hooks/hooks.json",
+        "url": "./schemas/hooks.schema.json"
+      },
+      {
+        "fileMatch": "**/.mcp.json",
+        "url": "./schemas/mcp.schema.json"
+      },
+      {
+        "fileMatch": "**/.lsp.json",
+        "url": "./schemas/lsp.schema.json"
+      },
+      {
+        "fileMatch": "**/marketplace.json",
+        "url": "./schemas/marketplace.schema.json"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "package": "vsce package --no-dependencies",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^25.2.1",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.2.0",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "ajv": "^8.17.0",
+    "js-yaml": "^4.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sequenzia/claude-alchemy",
+    "directory": "extensions/vscode"
+  }
+}

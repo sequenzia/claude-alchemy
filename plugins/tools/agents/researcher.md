@@ -1,7 +1,8 @@
 ---
 name: researcher
-description: Researches technical documentation, domain knowledge, competitive landscape, and general topics to inform spec requirements. Use when you need current information about technologies, industry practices, or the problem space.
-when_to_use: |
+description: |
+  Researches technical documentation, domain knowledge, competitive landscape, and general topics to inform spec requirements. Use when you need current information about technologies, industry practices, or the problem space.
+
   Use ONLY when user explicitly requests research during spec creation.
 
   <example>
@@ -33,7 +34,6 @@ when_to_use: |
   assistant: Uses research-agent to explore inventory management challenges
   <commentary>Problem domain exploration</commentary>
   </example>
-color: green
 model: inherit
 tools:
   - WebSearch

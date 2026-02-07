@@ -1,0 +1,225 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/sequenzia/claude-alchemy/schemas/marketplace.schema.json",
+  "$comment": "Source: https://code.claude.com/docs/en/plugin-marketplaces — Last validated: 2026-02-07",
+  "title": "Claude Code Plugin Marketplace Registry",
+  "description": "Schema for marketplace.json — a registry of available Claude Code plugins",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Registry name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Registry description"
+    },
+    "owner": {
+      "type": "object",
+      "description": "Registry owner information",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Owner name"
+        },
+        "email": {
+          "type": "string",
+          "description": "Owner email",
+          "format": "email"
+        },
+        "url": {
+          "type": "string",
+          "description": "Owner website",
+          "format": "uri"
+        }
+      },
+      "additionalProperties": false
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Registry metadata",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Metadata description"
+        },
+        "version": {
+          "type": "string",
+          "description": "Registry format version"
+        },
+        "pluginRoot": {
+          "type": "string",
+          "description": "Root path for plugin resolution"
+        }
+      },
+      "additionalProperties": false
+    },
+    "plugins": {
+      "type": "array",
+      "description": "List of registered plugins",
+      "items": {
+        "$ref": "#/$defs/pluginEntry"
+      }
+    }
+  },
+  "required": ["plugins"],
+  "additionalProperties": false,
+  "$defs": {
+    "pluginEntry": {
+      "type": "object",
+      "description": "A single plugin registry entry",
+      "required": ["name", "source"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Plugin identifier (kebab-case)",
+          "pattern": "^[a-z0-9]([a-z0-9-]*[a-z0-9])?$"
+        },
+        "version": {
+          "type": "string",
+          "description": "Current plugin version (semver)",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9.]+)?(\\+[a-zA-Z0-9.]+)?$"
+        },
+        "description": {
+          "type": "string",
+          "description": "Brief plugin description"
+        },
+        "source": {
+          "description": "Plugin source — relative path string or object with repository details",
+          "oneOf": [
+            {
+              "type": "string",
+              "description": "Relative path to the plugin directory"
+            },
+            {
+              "type": "object",
+              "description": "Source repository details",
+              "properties": {
+                "source": {
+                  "type": "string",
+                  "description": "Source type (e.g., 'github', 'git')"
+                },
+                "repo": {
+                  "type": "string",
+                  "description": "Repository identifier (e.g., 'owner/repo')"
+                },
+                "url": {
+                  "type": "string",
+                  "description": "Repository URL",
+                  "format": "uri"
+                },
+                "ref": {
+                  "type": "string",
+                  "description": "Git ref (branch, tag, or commit)"
+                },
+                "sha": {
+                  "type": "string",
+                  "description": "Pinned commit SHA"
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        "author": {
+          "description": "Plugin author",
+          "oneOf": [
+            { "type": "string" },
+            {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "email": { "type": "string", "format": "email" },
+                "url": { "type": "string", "format": "uri" }
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        "category": {
+          "type": "string",
+          "description": "Plugin category for organization"
+        },
+        "homepage": {
+          "type": "string",
+          "description": "Plugin homepage URL",
+          "format": "uri"
+        },
+        "keywords": {
+          "type": "array",
+          "description": "Discovery tags",
+          "items": { "type": "string" }
+        },
+        "tags": {
+          "type": "array",
+          "description": "Plugin tags for filtering and categorization",
+          "items": { "type": "string" }
+        },
+        "strict": {
+          "type": "boolean",
+          "description": "Whether to enforce strict validation for this plugin"
+        },
+        "repository": {
+          "description": "Source code repository",
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string" },
+                "url": { "type": "string", "format": "uri" }
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        "license": {
+          "type": "string",
+          "description": "SPDX license identifier (e.g., 'MIT', 'Apache-2.0')"
+        },
+        "commands": {
+          "description": "Path(s) to command file directories",
+          "oneOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } }
+          ]
+        },
+        "agents": {
+          "description": "Path(s) to agent definition directories",
+          "oneOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } }
+          ]
+        },
+        "hooks": {
+          "description": "Hook configuration path(s)",
+          "oneOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } },
+            { "type": "object" }
+          ]
+        },
+        "mcpServers": {
+          "description": "MCP server configuration path(s)",
+          "oneOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } },
+            { "type": "object" }
+          ]
+        },
+        "lspServers": {
+          "description": "LSP server configuration path(s)",
+          "oneOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } },
+            { "type": "object" }
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

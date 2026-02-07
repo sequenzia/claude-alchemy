@@ -1,0 +1,124 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/sequenzia/claude-alchemy/schemas/skill-frontmatter.schema.json",
+  "$comment": "Source: https://code.claude.com/docs/en/skills — Last validated: 2026-02-07",
+  "title": "Claude Code Skill Frontmatter",
+  "description": "Schema for YAML frontmatter in SKILL.md files — defines skill metadata and behavior",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Skill identifier used for invocation (e.g., 'feature-dev'). Lowercase letters, numbers, and hyphens only.",
+      "pattern": "^[a-z0-9]([a-z0-9-]*[a-z0-9])?$",
+      "maxLength": 64
+    },
+    "description": {
+      "type": "string",
+      "description": "What the skill does and when to use it. Include trigger phrases for model-invocable skills."
+    },
+    "argument-hint": {
+      "type": "string",
+      "description": "Autocomplete hint shown after the slash command (e.g., '<feature-description>')"
+    },
+    "disable-model-invocation": {
+      "type": "boolean",
+      "description": "When true, prevents the model from automatically loading this skill. Default: false.",
+      "default": false
+    },
+    "user-invocable": {
+      "type": "boolean",
+      "description": "When true, the skill appears in the / slash command menu. Default: true.",
+      "default": true
+    },
+    "allowed-tools": {
+      "description": "Tools the skill is allowed to use. Can be a comma-separated string or an array of tool names.",
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      ]
+    },
+    "model": {
+      "type": "string",
+      "description": "Model to use when executing the skill",
+      "enum": ["sonnet", "opus", "haiku", "inherit"]
+    },
+    "context": {
+      "type": "string",
+      "description": "Execution context. Use 'fork' to run in a forked subagent.",
+      "enum": ["fork"]
+    },
+    "agent": {
+      "type": "string",
+      "description": "Subagent type to use when context is 'fork'"
+    },
+    "hooks": {
+      "type": "object",
+      "description": "Lifecycle hooks scoped to this skill",
+      "properties": {
+        "PreToolUse": { "$ref": "#/$defs/matcherGroupArray" },
+        "PostToolUse": { "$ref": "#/$defs/matcherGroupArray" },
+        "Stop": { "$ref": "#/$defs/matcherGroupArray" }
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/matcherGroupArray"
+      }
+    },
+    "arguments": {
+      "type": "array",
+      "description": "Structured argument definitions for the skill",
+      "items": {
+        "$ref": "#/$defs/argument"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "matcherGroupArray": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "matcher": { "type": "string" },
+          "hooks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": ["command", "prompt"] },
+                "command": { "type": "string" },
+                "prompt": { "type": "string" },
+                "timeout": { "type": "number", "minimum": 0 }
+              },
+              "required": ["type"]
+            }
+          }
+        },
+        "required": ["hooks"]
+      }
+    },
+    "argument": {
+      "type": "object",
+      "description": "A structured argument definition",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Argument name"
+        },
+        "description": {
+          "type": "string",
+          "description": "What this argument does"
+        },
+        "required": {
+          "type": "boolean",
+          "description": "Whether the argument is required",
+          "default": false
+        }
+      },
+      "required": ["name"],
+      "additionalProperties": false
+    }
+  }
+}

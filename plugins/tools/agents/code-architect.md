@@ -5,7 +5,6 @@ tools:
   - Glob
   - Grep
 model: inherit
-color: green
 ---
 
 # Code Architect Agent

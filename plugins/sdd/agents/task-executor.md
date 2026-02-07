@@ -1,9 +1,7 @@
 ---
 name: task-executor
-description: Executes a single Claude Code Task through a 4-phase workflow with adaptive verification
-when_to_use: Use this agent to execute a specific task by understanding requirements, implementing code changes, verifying against acceptance criteria, and reporting completion.
+description: Executes a single Claude Code Task through a 4-phase workflow with adaptive verification. Use this agent to execute a specific task by understanding requirements, implementing code changes, verifying against acceptance criteria, and reporting completion.
 model: inherit
-color: cyan
 skills:
   - execute-tasks
 tools:

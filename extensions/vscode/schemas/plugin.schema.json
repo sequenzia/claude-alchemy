@@ -1,0 +1,167 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/sequenzia/claude-alchemy/schemas/plugin.schema.json",
+  "$comment": "Source: https://code.claude.com/docs/en/plugins-reference — Last validated: 2026-02-07",
+  "title": "Claude Code Plugin Manifest",
+  "description": "Schema for .claude-plugin/plugin.json — the manifest file for Claude Code plugins",
+  "type": "object",
+  "required": ["name"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Unique plugin identifier (kebab-case)",
+      "pattern": "^[a-z0-9]([a-z0-9-]*[a-z0-9])?$"
+    },
+    "version": {
+      "type": "string",
+      "description": "Plugin version following semantic versioning (MAJOR.MINOR.PATCH)",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9.]+)?(\\+[a-zA-Z0-9.]+)?$"
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief explanation of the plugin's purpose"
+    },
+    "author": {
+      "description": "Plugin author information",
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Author's full name"
+            },
+            "email": {
+              "type": "string",
+              "description": "Author's email address",
+              "format": "email"
+            },
+            "url": {
+              "type": "string",
+              "description": "Author's website URL",
+              "format": "uri"
+            }
+          },
+          "required": ["name"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "homepage": {
+      "type": "string",
+      "description": "URL for plugin documentation or homepage",
+      "format": "uri"
+    },
+    "repository": {
+      "description": "Source code repository",
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Version control type (e.g., 'git')"
+            },
+            "url": {
+              "type": "string",
+              "description": "Repository URL",
+              "format": "uri"
+            }
+          },
+          "required": ["type", "url"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "license": {
+      "type": "string",
+      "description": "SPDX license identifier (e.g., 'MIT', 'Apache-2.0')"
+    },
+    "keywords": {
+      "type": "array",
+      "description": "Tags for plugin discovery and categorization",
+      "items": {
+        "type": "string"
+      }
+    },
+    "commands": {
+      "description": "Path(s) to command file directories",
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      ]
+    },
+    "agents": {
+      "description": "Path(s) to agent definition directories",
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      ]
+    },
+    "skills": {
+      "description": "Path(s) to skill directories (each containing a SKILL.md)",
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      ]
+    },
+    "hooks": {
+      "description": "Hook configuration — path to hooks.json, array of paths, or inline hook object",
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        { "type": "object" }
+      ]
+    },
+    "mcpServers": {
+      "description": "MCP server configuration — path to .mcp.json, array of paths, or inline config",
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        { "type": "object" }
+      ]
+    },
+    "outputStyles": {
+      "description": "Path(s) to output style definition files",
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      ]
+    },
+    "lspServers": {
+      "description": "LSP server configuration — path to .lsp.json, array of paths, or inline config",
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        { "type": "object" }
+      ]
+    }
+  },
+  "additionalProperties": false
+}

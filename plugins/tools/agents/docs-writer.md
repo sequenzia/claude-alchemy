@@ -6,7 +6,6 @@ tools:
   - Grep
   - Bash
 model: inherit
-color: purple
 ---
 
 # Documentation Writer Agent

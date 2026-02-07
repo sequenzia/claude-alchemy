@@ -1,6 +1,6 @@
 {
   "name": "claude-alchemy-tools",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Developer tools for feature development, Git workflows, and release automation",
   "author": {
     "name": "Stephen Sequenzia",

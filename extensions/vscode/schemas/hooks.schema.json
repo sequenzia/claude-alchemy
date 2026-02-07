@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/sequenzia/claude-alchemy/schemas/hooks.schema.json",
+  "$comment": "Source: https://code.claude.com/docs/en/hooks — Last validated: 2026-02-07",
+  "title": "Claude Code Hooks Configuration",
+  "description": "Schema for hooks/hooks.json — lifecycle hook definitions for Claude Code plugins",
+  "type": "object",
+  "properties": {
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of this hooks configuration"
+    },
+    "hooks": {
+      "type": "object",
+      "description": "Hook event handlers keyed by event name",
+      "properties": {
+        "PreToolUse": { "$ref": "#/$defs/matcherGroupArray" },
+        "PostToolUse": { "$ref": "#/$defs/matcherGroupArray" },
+        "PostToolUseFailure": { "$ref": "#/$defs/matcherGroupArray" },
+        "Stop": { "$ref": "#/$defs/matcherGroupArray" },
+        "SubagentStop": { "$ref": "#/$defs/matcherGroupArray" },
+        "SubagentStart": { "$ref": "#/$defs/matcherGroupArray" },
+        "SessionStart": { "$ref": "#/$defs/matcherGroupArray" },
+        "SessionEnd": { "$ref": "#/$defs/matcherGroupArray" },
+        "UserPromptSubmit": { "$ref": "#/$defs/matcherGroupArray" },
+        "PreCompact": { "$ref": "#/$defs/matcherGroupArray" },
+        "Notification": { "$ref": "#/$defs/matcherGroupArray" },
+        "PermissionRequest": { "$ref": "#/$defs/matcherGroupArray" },
+        "TeammateIdle": { "$ref": "#/$defs/matcherGroupArray" },
+        "TaskCompleted": { "$ref": "#/$defs/matcherGroupArray" }
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/matcherGroupArray"
+      }
+    }
+  },
+  "required": ["hooks"],
+  "additionalProperties": false,
+  "$defs": {
+    "matcherGroupArray": {
+      "type": "array",
+      "description": "Array of matcher groups for this event",
+      "items": {
+        "$ref": "#/$defs/matcherGroup"
+      }
+    },
+    "matcherGroup": {
+      "type": "object",
+      "description": "A group of hooks that fire when the matcher pattern matches",
+      "properties": {
+        "matcher": {
+          "type": "string",
+          "description": "Regex pattern to match against the tool name or event context (e.g., 'Write|Edit|Bash')"
+        },
+        "hooks": {
+          "type": "array",
+          "description": "Hooks to execute when the matcher matches",
+          "items": {
+            "$ref": "#/$defs/hookHandler"
+          }
+        }
+      },
+      "required": ["hooks"],
+      "additionalProperties": false
+    },
+    "hookHandler": {
+      "type": "object",
+      "description": "A single hook handler definition",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Hook handler type",
+          "enum": ["command", "prompt", "agent"]
+        },
+        "command": {
+          "type": "string",
+          "description": "Shell command to execute (for type: command). Supports ${CLAUDE_PLUGIN_ROOT} variable."
+        },
+        "prompt": {
+          "type": "string",
+          "description": "Prompt text to inject (for type: prompt)"
+        },
+        "timeout": {
+          "type": "number",
+          "description": "Timeout in seconds for command execution",
+          "minimum": 0
+        },
+        "async": {
+          "type": "boolean",
+          "description": "Whether to run the hook asynchronously (default: false)",
+          "default": false
+        },
+        "statusMessage": {
+          "type": "string",
+          "description": "Status message displayed while the hook is running"
+        },
+        "once": {
+          "type": "boolean",
+          "description": "Whether the hook should only run once per session (default: false)",
+          "default": false
+        },
+        "model": {
+          "type": "string",
+          "description": "Model to use for prompt/agent handler types"
+        }
+      },
+      "required": ["type"],
+      "additionalProperties": false
+    }
+  }
+}
