@@ -9,7 +9,7 @@
     {
       "name": "claude-alchemy-tools",
       "description": "General Developer Skills & Agents for Claude Alchemy",
-      "version": "0.1.6",
+      "version": "0.2.0",
       "author": {
         "name": "Stephen Sequenzia",
         "email": "sequenzia@gmail.com"
