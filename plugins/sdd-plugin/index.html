@@ -1,0 +1,3877 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A monorepo combining Claude Code plugins and a real-time Task Manager application">
+      
+      
+      
+      
+        <link rel="prev" href="../tools-plugin/">
+      
+      
+        <link rel="next" href="../sdd-workflow/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>SDD Plugin - Claude Alchemy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sdd-plugin" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Claude Alchemy" class="md-header__button md-logo" aria-label="Claude Alchemy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Claude Alchemy
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              SDD Plugin
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sequenzia/claude-alchemy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sequenzia/claude-alchemy
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../task-manager/overview/" class="md-tabs__link">
+          
+  
+  
+  Task Manager
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../overview/" class="md-tabs__link">
+          
+  
+  
+  Plugins
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/setup/" class="md-tabs__link">
+          
+  
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Claude Alchemy" class="md-nav__button md-logo" aria-label="Claude Alchemy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Claude Alchemy
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sequenzia/claude-alchemy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sequenzia/claude-alchemy
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/filesystem-message-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Filesystem Message Bus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task Manager
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Task Manager
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/real-time-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Real-Time System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugins
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Plugins
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tools-plugin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools Plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDD Plugin
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDD Plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workflow Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#directory-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skills
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Skills">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create-spec
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="create-spec">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#7-phase-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7-Phase Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spec-depth-levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spec Depth Levels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interview-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Categories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proactive-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proactive Recommendations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        External Research
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#early-exit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Early Exit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analyze-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        analyze-spec
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="analyze-spec">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#5-phase-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5-Phase Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#finding-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding Categories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#severity-levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Severity Levels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#depth-aware-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Depth-Aware Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#review-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review Modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create-tasks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="create-tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#8-phase-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8-Phase Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-granularity-by-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task Granularity by Depth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-decomposition-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task Decomposition Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task Metadata
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acceptance-criteria-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Acceptance Criteria Categories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependency-inference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependency Inference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merge-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Merge Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execute-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        execute-tasks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="execute-tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#10-step-orchestration-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10-Step Orchestration Loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wave-based-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wave-Based Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-execution-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared Execution Context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retry-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retry Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configurable-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configurable Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-id-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session ID Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agents
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-executor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        task-executor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="task-executor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4-phase-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4-Phase Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task Classification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-determination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status Determination
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-behaviors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Behaviors
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spec-analyzer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spec-analyzer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="spec-analyzer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#analysis-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analysis Process
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-review-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTML Review Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hook
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auto-approve-sessionsh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        auto-approve-session.sh
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="auto-approve-session.sh">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#approval-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Approval Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-materials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference Materials
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference Materials">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-spec-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create-spec References
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analyze-spec-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        analyze-spec References
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-tasks-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create-tasks References
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execute-tasks-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        execute-tasks References
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integration-with-task-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Integration with Task Manager
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related Pages
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sdd-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDD Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/conventions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workflow Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#directory-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skills
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Skills">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create-spec
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="create-spec">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#7-phase-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7-Phase Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spec-depth-levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spec Depth Levels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interview-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Categories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proactive-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proactive Recommendations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        External Research
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#early-exit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Early Exit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analyze-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        analyze-spec
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="analyze-spec">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#5-phase-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5-Phase Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#finding-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding Categories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#severity-levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Severity Levels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#depth-aware-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Depth-Aware Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#review-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review Modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create-tasks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="create-tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#8-phase-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8-Phase Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-granularity-by-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task Granularity by Depth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-decomposition-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task Decomposition Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task Metadata
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acceptance-criteria-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Acceptance Criteria Categories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependency-inference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependency Inference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merge-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Merge Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execute-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        execute-tasks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="execute-tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#10-step-orchestration-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10-Step Orchestration Loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wave-based-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wave-Based Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-execution-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared Execution Context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retry-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retry Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configurable-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configurable Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-id-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session ID Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agents
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-executor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        task-executor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="task-executor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4-phase-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4-Phase Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task Classification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-determination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status Determination
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-behaviors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Behaviors
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spec-analyzer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spec-analyzer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="spec-analyzer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#analysis-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analysis Process
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-review-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTML Review Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hook
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auto-approve-sessionsh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        auto-approve-session.sh
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="auto-approve-session.sh">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#approval-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Approval Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-materials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference Materials
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference Materials">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-spec-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create-spec References
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analyze-spec-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        analyze-spec References
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-tasks-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create-tasks References
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execute-tasks-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        execute-tasks References
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integration-with-task-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Integration with Task Manager
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related Pages
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<!-- docs/plugins/sdd-plugin.md -->
+<h1 id="sdd-plugin">SDD Plugin<a class="headerlink" href="#sdd-plugin" title="Permanent link">&para;</a></h1>
+<p>The <code>claude-alchemy-sdd</code> plugin (v0.2.6) implements a <strong>Spec-Driven Development</strong> workflow for Claude Code. It covers the full lifecycle from specification authoring through quality analysis and task decomposition to autonomous, wave-based parallel execution.</p>
+<p>All four skills are user-invocable with the <code>/sdd:</code> prefix. The plugin is pure markdown with no build step -- skills, agents, and reference materials are loaded as context at runtime.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Package</strong></td>
+<td><code>claude-alchemy-sdd</code></td>
+</tr>
+<tr>
+<td><strong>Version</strong></td>
+<td>0.2.6</td>
+</tr>
+<tr>
+<td><strong>Skills</strong></td>
+<td>4 (all user-invocable)</td>
+</tr>
+<tr>
+<td><strong>Agents</strong></td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>Hooks</strong></td>
+<td>1 (<code>PreToolUse</code>)</td>
+</tr>
+<tr>
+<td><strong>License</strong></td>
+<td>MIT</td>
+</tr>
+</tbody>
+</table>
+<h2 id="workflow-overview">Workflow Overview<a class="headerlink" href="#workflow-overview" title="Permanent link">&para;</a></h2>
+<p>The SDD plugin is designed around a four-step pipeline. Each step maps to a skill:</p>
+<pre class="mermaid"><code>graph LR
+    A["/sdd:create-spec"] --&gt; B["/sdd:analyze-spec"]
+    B --&gt; C["/sdd:create-tasks"]
+    C --&gt; D["/sdd:execute-tasks"]
+
+    A -.-&gt;|"specs/SPEC-*.md"| B
+    B -.-&gt;|"*.analysis.md\n*.analysis.html"| B
+    C -.-&gt;|"Claude Code Tasks"| D</code></pre>
+<ol>
+<li><strong>Create Spec</strong> -- Define requirements through an adaptive interview</li>
+<li><strong>Analyze Spec</strong> -- Review the spec for quality issues</li>
+<li><strong>Create Tasks</strong> -- Decompose the spec into dependency-aware tasks</li>
+<li><strong>Execute Tasks</strong> -- Run tasks autonomously with wave-based parallelism</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Typical Usage</p>
+<p>You do not have to run all four skills sequentially. Each skill works independently. You can analyze an existing spec, create tasks from a hand-written document, or execute tasks that were created manually.</p>
+</div>
+<h2 id="directory-structure">Directory Structure<a class="headerlink" href="#directory-structure" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>plugins/sdd/
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── .claude-plugin/
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│   └── plugin.json              # Plugin manifest (name, version, metadata)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── agents/
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   ├── task-executor.md         # Per-task execution agent
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   └── spec-analyzer.md         # Spec quality analysis agent
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├── hooks/
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│   └── auto-approve-session.sh  # PreToolUse hook for session files
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>├── skills/
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│   ├── create-spec/
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│   │   ├── SKILL.md
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│   │   └── references/
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│   │       ├── interview-questions.md
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│   │       ├── recommendation-format.md
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│   │       ├── recommendation-triggers.md
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>│   │       └── templates/
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│   │           ├── high-level.md
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│   │           ├── detailed.md
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>│   │           └── full-tech.md
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>│   ├── analyze-spec/
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>│   │   ├── SKILL.md
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>│   │   ├── references/
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>│   │   │   ├── analysis-criteria.md
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>│   │   │   ├── common-issues.md
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>│   │   │   ├── html-review-guide.md
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>│   │   │   └── report-template.md
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>│   │   └── templates/
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>│   │       └── review-template.html
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>│   ├── create-tasks/
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>│   │   ├── SKILL.md
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>│   │   └── references/
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>│   │       ├── decomposition-patterns.md
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>│   │       ├── dependency-inference.md
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>│   │       └── testing-requirements.md
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>│   └── execute-tasks/
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>│       ├── SKILL.md
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>│       └── references/
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>│           ├── execution-workflow.md
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>│           ├── orchestration.md
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>│           └── verification-patterns.md
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>└── README.md
+</span></code></pre></div>
+<hr />
+<h2 id="skills">Skills<a class="headerlink" href="#skills" title="Permanent link">&para;</a></h2>
+<h3 id="create-spec">create-spec<a class="headerlink" href="#create-spec" title="Permanent link">&para;</a></h3>
+<p>Creates a new specification document through an adaptive, multi-round interview process with proactive recommendations and optional external research.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Invocation</strong></td>
+<td><code>/sdd:create-spec</code></td>
+</tr>
+<tr>
+<td><strong>Model</strong></td>
+<td>inherit</td>
+</tr>
+<tr>
+<td><strong>Allowed tools</strong></td>
+<td><code>AskUserQuestion</code>, <code>Task</code>, <code>Read</code>, <code>Write</code>, <code>Glob</code>, <code>Grep</code></td>
+</tr>
+<tr>
+<td><strong>Output</strong></td>
+<td><code>specs/SPEC-{name}.md</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-phase-workflow">7-Phase Workflow<a class="headerlink" href="#7-phase-workflow" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Settings Check</td>
+<td>Load user configuration from <code>.claude/claude-alchemy.local.md</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Initial Inputs</td>
+<td>Gather spec name, type (new product / new feature), depth level, and description</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Adaptive Interview</td>
+<td>Multi-round depth-aware interview with trigger-based recommendations</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Recommendations Round</td>
+<td>Dedicated round for accumulated best-practice suggestions</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Pre-Compilation Summary</td>
+<td>Present gathered requirements for user confirmation</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Spec Compilation</td>
+<td>Generate spec from depth-appropriate template and write to file</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Post-Compilation Analysis Offer</td>
+<td>Offer to analyze the spec for quality issues</td>
+</tr>
+</tbody>
+</table>
+<h4 id="spec-depth-levels">Spec Depth Levels<a class="headerlink" href="#spec-depth-levels" title="Permanent link">&para;</a></h4>
+<p>The interview adapts its scope and output template based on the chosen depth:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">High-Level Overview</label><label for="__tabbed_1_2">Detailed Specifications</label><label for="__tabbed_1_3">Full Technical Documentation</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li><strong>Rounds</strong>: 2-3 interview rounds, 6-10 questions total</li>
+<li><strong>Focus</strong>: Problem, goals, key features, success metrics</li>
+<li><strong>Template</strong>: <code>references/templates/high-level.md</code></li>
+<li><strong>Use case</strong>: Executive summaries, stakeholder alignment, initial scoping</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><strong>Rounds</strong>: 3-4 interview rounds, 12-18 questions total</li>
+<li><strong>Focus</strong>: Balanced coverage of all categories, acceptance criteria, technical constraints</li>
+<li><strong>Template</strong>: <code>references/templates/detailed.md</code></li>
+<li><strong>Use case</strong>: Standard development specs with clear requirements</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><strong>Rounds</strong>: 4-5 interview rounds, 18-25 questions total</li>
+<li><strong>Focus</strong>: Deep technical probing, API endpoints, data models, performance targets</li>
+<li><strong>Template</strong>: <code>references/templates/full-tech.md</code></li>
+<li><strong>Use case</strong>: Complex features requiring API specs, data models, and architecture diagrams</li>
+</ul>
+</div>
+</div>
+</div>
+<h4 id="interview-categories">Interview Categories<a class="headerlink" href="#interview-categories" title="Permanent link">&para;</a></h4>
+<p>Questions are drawn from four categories, with depth adjusted per level:</p>
+<ol>
+<li><strong>Problem &amp; Goals</strong> -- Problem statement, success metrics, user personas, business value</li>
+<li><strong>Functional Requirements</strong> -- Features, user stories, acceptance criteria, workflows</li>
+<li><strong>Technical Specs</strong> -- Architecture, tech stack, data models, APIs, constraints</li>
+<li><strong>Implementation</strong> -- Phases, dependencies, risks, out-of-scope items</li>
+</ol>
+<h4 id="proactive-recommendations">Proactive Recommendations<a class="headerlink" href="#proactive-recommendations" title="Permanent link">&para;</a></h4>
+<p>The skill monitors user responses for patterns that indicate opportunities for best-practice suggestions. Trigger domains include authentication, scale and performance, security and compliance, real-time features, file and media handling, API design, search and discovery, testing, and accessibility.</p>
+<ul>
+<li><strong>Inline insights</strong>: Up to 2 brief suggestions per round when triggers are detected</li>
+<li><strong>Recommendations round</strong>: Accumulated recommendations presented in Phase 4 for user approval</li>
+<li>Recommendations are always presented for acceptance, modification, or rejection -- never assumed</li>
+</ul>
+<h4 id="external-research">External Research<a class="headerlink" href="#external-research" title="Permanent link">&para;</a></h4>
+<p>Research can be invoked on-demand when the user requests it, or proactively (up to 2 times per interview) for high-value topics such as compliance requirements (GDPR, HIPAA, PCI DSS) or when the user expresses uncertainty.</p>
+<h4 id="early-exit">Early Exit<a class="headerlink" href="#early-exit" title="Permanent link">&para;</a></h4>
+<p>If the user signals they want to wrap up early, the skill gracefully truncates the interview, presents a summary of what was gathered, and generates the spec with a <code>Draft (Partial)</code> status marker.</p>
+<h4 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>/sdd:create-spec
+</span></code></pre></div>
+<p>The skill will prompt for the spec name, type, depth, and description, then begin the adaptive interview.</p>
+<hr />
+<h3 id="analyze-spec">analyze-spec<a class="headerlink" href="#analyze-spec" title="Permanent link">&para;</a></h3>
+<p>Launches the <code>spec-analyzer</code> agent to perform a comprehensive quality review of an existing specification. Generates both a markdown report and an interactive HTML review page.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Invocation</strong></td>
+<td><code>/sdd:analyze-spec specs/SPEC-*.md</code></td>
+</tr>
+<tr>
+<td><strong>Model</strong></td>
+<td>inherit</td>
+</tr>
+<tr>
+<td><strong>Arguments</strong></td>
+<td><code>spec-path</code> (required) -- path to the spec file</td>
+</tr>
+<tr>
+<td><strong>Allowed tools</strong></td>
+<td><code>AskUserQuestion</code>, <code>Task</code>, <code>Read</code>, <code>Glob</code></td>
+</tr>
+<tr>
+<td><strong>Output</strong></td>
+<td><code>.analysis.md</code> report and <code>.analysis.html</code> interactive review</td>
+</tr>
+</tbody>
+</table>
+<h4 id="5-phase-analysis">5-Phase Analysis<a class="headerlink" href="#5-phase-analysis" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Structure Scan</td>
+<td>Verify all required sections for the depth level exist</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Consistency Scan</td>
+<td>Build glossary, track priorities, map goals to metrics, find contradictions</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Completeness Scan</td>
+<td>Check features for expected attributes, find missing dependencies</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Clarity Scan</td>
+<td>Flag vague quantifiers, ambiguous pronouns, open-ended lists</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Interactive Resolution</td>
+<td>Walk through findings with the user to apply fixes</td>
+</tr>
+</tbody>
+</table>
+<h4 id="finding-categories">Finding Categories<a class="headerlink" href="#finding-categories" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>What It Catches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Inconsistencies</strong></td>
+<td>Feature naming mismatches, priority contradictions, conflicting requirements</td>
+</tr>
+<tr>
+<td><strong>Missing Information</strong></td>
+<td>Absent sections, undefined terms, features without acceptance criteria</td>
+</tr>
+<tr>
+<td><strong>Ambiguities</strong></td>
+<td>Vague quantifiers ("fast", "scalable"), unclear pronouns, open-ended lists</td>
+</tr>
+<tr>
+<td><strong>Structure Issues</strong></td>
+<td>Missing sections, misplaced content, formatting inconsistencies</td>
+</tr>
+</tbody>
+</table>
+<h4 id="severity-levels">Severity Levels<a class="headerlink" href="#severity-levels" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Severity</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Critical</strong></td>
+<td>Would cause implementation to fail</td>
+<td>Auth required but no auth requirements defined</td>
+</tr>
+<tr>
+<td><strong>Warning</strong></td>
+<td>Could cause confusion or implementation problems</td>
+<td>"Search should be fast" without defining "fast"</td>
+</tr>
+<tr>
+<td><strong>Suggestion</strong></td>
+<td>Quality improvements, not blocking</td>
+<td>Inconsistent user story formatting</td>
+</tr>
+</tbody>
+</table>
+<h4 id="depth-aware-analysis">Depth-Aware Analysis<a class="headerlink" href="#depth-aware-analysis" title="Permanent link">&para;</a></h4>
+<p>The analysis adapts to the spec's depth level. A high-level spec is not flagged for missing API specifications, and a full-tech spec is scrutinized for technical completeness. Depth is auto-detected from content or read from the <code>**Spec Depth**:</code> metadata field.</p>
+<h4 id="review-modes">Review Modes<a class="headerlink" href="#review-modes" title="Permanent link">&para;</a></h4>
+<p>After generating the report, the user chooses how to review findings:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Interactive HTML Review (Recommended)</label><label for="__tabbed_2_2">CLI Update Mode</label><label for="__tabbed_2_3">Reports Only</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Opens a self-contained <code>.analysis.html</code> file in the browser. The user can:</p>
+<ul>
+<li>Filter findings by status, severity, and category</li>
+<li>Approve or reject each finding</li>
+<li>Add comments</li>
+<li>Click <strong>Copy Prompt</strong> to generate a natural-language prompt</li>
+<li>Paste the prompt back into Claude Code to apply approved changes</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<p>Walks through each finding interactively in the terminal. For each finding, the user can:</p>
+<ul>
+<li><strong>Apply</strong> the proposed fix</li>
+<li><strong>Modify</strong> with custom text</li>
+<li><strong>Skip</strong> with an optional reason</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<p>Keeps the <code>.analysis.md</code> and <code>.analysis.html</code> files as-is with no interactive resolution.</p>
+</div>
+</div>
+</div>
+<h4 id="example_1">Example<a class="headerlink" href="#example_1" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>/sdd:analyze-spec specs/SPEC-User-Authentication.md
+</span></code></pre></div>
+<hr />
+<h3 id="create-tasks">create-tasks<a class="headerlink" href="#create-tasks" title="Permanent link">&para;</a></h3>
+<p>Decomposes a specification into Claude Code native Tasks with acceptance criteria, dependency relationships, testing requirements, and task UIDs for merge tracking.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Invocation</strong></td>
+<td><code>/sdd:create-tasks specs/SPEC-*.md</code></td>
+</tr>
+<tr>
+<td><strong>Model</strong></td>
+<td>inherit</td>
+</tr>
+<tr>
+<td><strong>Arguments</strong></td>
+<td><code>spec-path</code> (required) -- path to the spec file</td>
+</tr>
+<tr>
+<td><strong>Allowed tools</strong></td>
+<td><code>AskUserQuestion</code>, <code>Read</code>, <code>Glob</code>, <code>Grep</code>, <code>TaskCreate</code>, <code>TaskUpdate</code>, <code>TaskList</code>, <code>TaskGet</code></td>
+</tr>
+<tr>
+<td><strong>Output</strong></td>
+<td>Claude Code native Tasks</td>
+</tr>
+</tbody>
+</table>
+<h4 id="8-phase-workflow">8-Phase Workflow<a class="headerlink" href="#8-phase-workflow" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Validate &amp; Load</td>
+<td>Validate spec file, read content, check settings, load reference files</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Detect Depth &amp; Check Existing</td>
+<td>Detect spec depth level, check for existing tasks (merge mode)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Analyze Spec</td>
+<td>Extract features, requirements, priorities, and structure</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Decompose Tasks</td>
+<td>Break features into atomic tasks with categorized acceptance criteria</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Infer Dependencies</td>
+<td>Map blocking relationships between tasks</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Preview &amp; Confirm</td>
+<td>Show summary, get user approval before creating</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Create Tasks</td>
+<td>Create tasks via <code>TaskCreate</code>/<code>TaskUpdate</code> (fresh or merge mode)</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Error Handling</td>
+<td>Handle spec parsing issues, circular deps, missing info</td>
+</tr>
+</tbody>
+</table>
+<h4 id="task-granularity-by-depth">Task Granularity by Depth<a class="headerlink" href="#task-granularity-by-depth" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Depth</th>
+<th>Tasks per Feature</th>
+<th>Granularity</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>High-Level</td>
+<td>1-2</td>
+<td>Feature-level deliverables</td>
+<td>"Implement user authentication"</td>
+</tr>
+<tr>
+<td>Detailed</td>
+<td>3-5</td>
+<td>Functional decomposition</td>
+<td>"Implement login endpoint", "Add password validation"</td>
+</tr>
+<tr>
+<td>Full-Tech</td>
+<td>5-10</td>
+<td>Technical decomposition</td>
+<td>"Create User model", "Implement POST /auth/login", "Add auth middleware"</td>
+</tr>
+</tbody>
+</table>
+<h4 id="task-decomposition-pattern">Task Decomposition Pattern<a class="headerlink" href="#task-decomposition-pattern" title="Permanent link">&para;</a></h4>
+<p>For each feature, the skill applies a standard layer pattern:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>1. Data Model Tasks      → &quot;Create {Entity} data model&quot;
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>2. API/Service Tasks     → &quot;Implement {endpoint} endpoint&quot;
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>3. Business Logic Tasks  → &quot;Implement {feature} business logic&quot;
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>4. UI/Frontend Tasks     → &quot;Build {feature} UI component&quot;
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>5. Test Tasks            → &quot;Add tests for {feature}&quot;
+</span></code></pre></div>
+<h4 id="task-metadata">Task Metadata<a class="headerlink" href="#task-metadata" title="Permanent link">&para;</a></h4>
+<p>Every task includes structured metadata for tracking and execution:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>priority</code></td>
+<td>Mapped from P0-P3</td>
+<td><code>critical</code>, <code>high</code>, <code>medium</code>, <code>low</code></td>
+</tr>
+<tr>
+<td><code>complexity</code></td>
+<td>Estimated size</td>
+<td><code>XS</code>, <code>S</code>, <code>M</code>, <code>L</code>, <code>XL</code></td>
+</tr>
+<tr>
+<td><code>source_section</code></td>
+<td>Spec section reference</td>
+<td><code>"7.3 Data Models"</code></td>
+</tr>
+<tr>
+<td><code>spec_path</code></td>
+<td>Source spec file</td>
+<td><code>"specs/SPEC-Auth.md"</code></td>
+</tr>
+<tr>
+<td><code>feature_name</code></td>
+<td>Parent feature</td>
+<td><code>"User Authentication"</code></td>
+</tr>
+<tr>
+<td><code>task_uid</code></td>
+<td>Unique ID for merge tracking</td>
+<td><code>"specs/SPEC-Auth.md:user-auth:model:001"</code></td>
+</tr>
+<tr>
+<td><code>task_group</code></td>
+<td>Group name from spec title</td>
+<td><code>"user-authentication"</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">task_group is Required</p>
+<p>The <code>task_group</code> field is set on every task. The <code>execute-tasks</code> skill relies on <code>metadata.task_group</code> for <code>--task-group</code> filtering and session ID generation. Tasks without <code>task_group</code> will be invisible to group-filtered execution runs.</p>
+</div>
+<h4 id="acceptance-criteria-categories">Acceptance Criteria Categories<a class="headerlink" href="#acceptance-criteria-categories" title="Permanent link">&para;</a></h4>
+<p>Each task's acceptance criteria are organized into four categories:</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>What to Include</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Functional</strong></td>
+<td>Core behavior, expected outputs, state changes</td>
+</tr>
+<tr>
+<td><strong>Edge Cases</strong></td>
+<td>Boundaries, empty/null, max values, concurrent operations</td>
+</tr>
+<tr>
+<td><strong>Error Handling</strong></td>
+<td>Invalid input, failures, timeouts, graceful degradation</td>
+</tr>
+<tr>
+<td><strong>Performance</strong></td>
+<td>Response times, throughput, resource limits (if applicable)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="dependency-inference">Dependency Inference<a class="headerlink" href="#dependency-inference" title="Permanent link">&para;</a></h4>
+<p>Dependencies are inferred automatically from three sources:</p>
+<ol>
+<li><strong>Layer dependencies</strong> -- Data Model → API → UI → Tests</li>
+<li><strong>Phase dependencies</strong> -- Phase 2 tasks blocked by Phase 1 completion</li>
+<li><strong>Explicit spec dependencies</strong> -- Section 10 "requires X" → <code>blockedBy</code> X</li>
+<li><strong>Cross-feature dependencies</strong> -- Shared data models, shared services, auth dependencies</li>
+</ol>
+<h4 id="merge-mode">Merge Mode<a class="headerlink" href="#merge-mode" title="Permanent link">&para;</a></h4>
+<p>When tasks already exist for a spec (matched by <code>task_uid</code>), the skill enters merge mode:</p>
+<table>
+<thead>
+<tr>
+<th>Existing Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pending</code></td>
+<td>Update description if changed</td>
+</tr>
+<tr>
+<td><code>in_progress</code></td>
+<td>Preserve status, optionally update description</td>
+</tr>
+<tr>
+<td><code>completed</code></td>
+<td>Never modify</td>
+</tr>
+<tr>
+<td>No match</td>
+<td>Create as new task</td>
+</tr>
+<tr>
+<td>No spec requirement</td>
+<td>Flag as potentially obsolete, ask user</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example_2">Example<a class="headerlink" href="#example_2" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/sdd:create-tasks specs/SPEC-User-Authentication.md
+</span></code></pre></div>
+<hr />
+<h3 id="execute-tasks">execute-tasks<a class="headerlink" href="#execute-tasks" title="Permanent link">&para;</a></h3>
+<p>Orchestrates autonomous task execution with wave-based concurrent parallelism, dependency-aware ordering, shared execution context, and session management.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Invocation</strong></td>
+<td><code>/sdd:execute-tasks</code></td>
+</tr>
+<tr>
+<td><strong>Model</strong></td>
+<td>inherit</td>
+</tr>
+<tr>
+<td><strong>Arguments</strong></td>
+<td><code>task-id</code> (optional), <code>--task-group &lt;group&gt;</code>, <code>--retries &lt;n&gt;</code> (default 3), <code>--max-parallel &lt;n&gt;</code> (default 5)</td>
+</tr>
+<tr>
+<td><strong>Allowed tools</strong></td>
+<td><code>Task</code>, <code>Read</code>, <code>Write</code>, <code>Glob</code>, <code>Grep</code>, <code>Bash</code>, <code>AskUserQuestion</code>, <code>TaskList</code>, <code>TaskGet</code>, <code>TaskUpdate</code></td>
+</tr>
+<tr>
+<td><strong>Output</strong></td>
+<td>Completed tasks, session artifacts in <code>.claude/sessions/</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="10-step-orchestration-loop">10-Step Orchestration Loop<a class="headerlink" href="#10-step-orchestration-loop" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Load Task List</td>
+<td>Retrieve tasks, apply <code>--task-group</code> filter if specified</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Validate State</td>
+<td>Handle empty list, all completed, blocked tasks, circular deps</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Build Execution Plan</td>
+<td>Build dependency graph, assign tasks to waves by topological level</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Check Settings</td>
+<td>Read <code>.claude/claude-alchemy.local.md</code> for execution preferences</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Initialize Execution Directory</td>
+<td>Create session directory, <code>.lock</code> file, archive stale sessions</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Present Plan &amp; Confirm</td>
+<td>Display plan, ask user to confirm before executing</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Initialize Execution Context</td>
+<td>Read or merge prior execution context</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Execute Loop</td>
+<td>Wave-based execution with parallel agent launches and retry handling</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Session Summary</td>
+<td>Display results, archive session from <code>__live_session__/</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Update CLAUDE.md</td>
+<td>Add project-wide learnings discovered during execution</td>
+</tr>
+</tbody>
+</table>
+<h4 id="wave-based-execution">Wave-Based Execution<a class="headerlink" href="#wave-based-execution" title="Permanent link">&para;</a></h4>
+<p>Tasks are organized into waves based on their dependency graph. Within each wave, up to <code>max_parallel</code> tasks execute concurrently:</p>
+<pre class="mermaid"><code>graph TB
+    subgraph Wave1["Wave 1 (no dependencies)"]
+        T1["Create User model"]
+        T2["Create Session model"]
+    end
+
+    subgraph Wave2["Wave 2 (depends on Wave 1)"]
+        T3["Implement POST /auth/login"]
+        T4["Implement POST /auth/register"]
+    end
+
+    subgraph Wave3["Wave 3 (depends on Wave 2)"]
+        T5["Build login UI"]
+        T6["Add auth middleware"]
+    end
+
+    T1 --&gt; T3
+    T1 --&gt; T4
+    T2 --&gt; T3
+    T3 --&gt; T5
+    T3 --&gt; T6</code></pre>
+<p>Within each wave, tasks are sorted by priority (critical &gt; high &gt; medium &gt; low), with ties broken by which task unblocks the most downstream work.</p>
+<h4 id="session-management">Session Management<a class="headerlink" href="#session-management" title="Permanent link">&para;</a></h4>
+<p>The skill manages execution sessions through a dedicated directory structure:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>.claude/sessions/
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>├── __live_session__/              # Active session (only one at a time)
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>│   ├── .lock                      # Concurrency guard
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>│   ├── execution_plan.md          # Saved execution plan
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>│   ├── execution_context.md       # Shared learnings across tasks
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>│   ├── task_log.md                # Task results table
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>│   ├── progress.md                # Real-time progress for Task Manager
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>│   └── tasks/                     # Archived completed task JSONs
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>├── user-auth-20260208-143022/     # Archived session
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>└── interrupted-20260207-091500/   # Auto-recovered interrupted session
+</span></code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Execution Pointer</p>
+<p>An <code>execution_pointer.md</code> file is written to <code>~/.claude/tasks/{listId}/</code> containing the absolute path to <code>__live_session__/</code>. The Task Manager reads this pointer to locate and display execution artifacts.</p>
+</div>
+<p><strong>Concurrency guard</strong>: A <code>.lock</code> file in <code>__live_session__/</code> prevents concurrent execution sessions. Stale locks older than 4 hours auto-expire.</p>
+<p><strong>Interrupted session recovery</strong>: If a stale <code>__live_session__/</code> directory is found from a previous interrupted run, it is automatically archived and any <code>in_progress</code> tasks are reset to <code>pending</code>.</p>
+<h4 id="shared-execution-context">Shared Execution Context<a class="headerlink" href="#shared-execution-context" title="Permanent link">&para;</a></h4>
+<p>Tasks within a session share learnings through <code>execution_context.md</code>:</p>
+<ul>
+<li><strong>Before each wave</strong>: The orchestrator snapshots the context file so all agents in the wave read the same baseline</li>
+<li><strong>During execution</strong>: Each concurrent agent writes to an isolated <code>context-task-{id}.md</code> file to avoid write contention</li>
+<li><strong>After each wave</strong>: The orchestrator merges per-task context files into the shared <code>execution_context.md</code></li>
+<li><strong>Sections tracked</strong>: Project Patterns, Key Decisions, Known Issues, File Map, Task History</li>
+</ul>
+<p>This enables later tasks to benefit from discoveries made by earlier tasks, and retry attempts to learn from previous failures.</p>
+<h4 id="retry-behavior">Retry Behavior<a class="headerlink" href="#retry-behavior" title="Permanent link">&para;</a></h4>
+<p>Failed tasks are retried up to <code>--retries</code> times (default 3). Each retry includes the previous attempt's failure details so the agent can try a different approach. Failed tasks with retries remaining are re-launched immediately within the current wave.</p>
+<p>After all retries are exhausted, tasks remain <code>in_progress</code> (not falsely marked completed) and execution continues with the next wave.</p>
+<h4 id="configurable-parameters">Configurable Parameters<a class="headerlink" href="#configurable-parameters" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Source Precedence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>max_parallel</code></td>
+<td>5</td>
+<td>CLI <code>--max-parallel</code> &gt; <code>.claude/claude-alchemy.local.md</code> &gt; default</td>
+</tr>
+<tr>
+<td><code>retries</code></td>
+<td>3</td>
+<td>CLI <code>--retries</code> &gt; default</td>
+</tr>
+</tbody>
+</table>
+<h4 id="session-id-generation">Session ID Generation<a class="headerlink" href="#session-id-generation" title="Permanent link">&para;</a></h4>
+<p>The <code>task_execution_id</code> is generated using three-tier resolution:</p>
+<ol>
+<li>If <code>--task-group</code> provided: <code>{task_group}-{YYYYMMDD}-{HHMMSS}</code></li>
+<li>Else if all open tasks share the same <code>task_group</code>: <code>{task_group}-{YYYYMMDD}-{HHMMSS}</code></li>
+<li>Else: <code>exec-session-{YYYYMMDD}-{HHMMSS}</code></li>
+</ol>
+<h4 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Execute all unblocked tasks</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>/sdd:execute-tasks
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># Execute a specific task</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>/sdd:execute-tasks<span class="w"> </span><span class="m">5</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1"># Execute tasks for a specific group</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>/sdd:execute-tasks<span class="w"> </span>--task-group<span class="w"> </span>user-authentication
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="c1"># Execute with limited parallelism</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>/sdd:execute-tasks<span class="w"> </span>--max-parallel<span class="w"> </span><span class="m">2</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="c1"># Execute sequentially (no concurrency)</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>/sdd:execute-tasks<span class="w"> </span>--max-parallel<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="c1"># Execute with custom retry limit and parallelism</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>/sdd:execute-tasks<span class="w"> </span>--task-group<span class="w"> </span>payments<span class="w"> </span>--max-parallel<span class="w"> </span><span class="m">3</span><span class="w"> </span>--retries<span class="w"> </span><span class="m">1</span>
+</span></code></pre></div>
+<hr />
+<h2 id="agents">Agents<a class="headerlink" href="#agents" title="Permanent link">&para;</a></h2>
+<h3 id="task-executor">task-executor<a class="headerlink" href="#task-executor" title="Permanent link">&para;</a></h3>
+<p>A per-task execution agent that implements code changes autonomously through a 4-phase workflow. Spawned by the <code>execute-tasks</code> skill -- one agent instance per task.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model</strong></td>
+<td>inherit</td>
+</tr>
+<tr>
+<td><strong>Spawned by</strong></td>
+<td><code>execute-tasks</code> skill</td>
+</tr>
+<tr>
+<td><strong>Skills loaded</strong></td>
+<td><code>execute-tasks</code> (for reference files and verification patterns)</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td><code>Read</code>, <code>Write</code>, <code>Edit</code>, <code>Glob</code>, <code>Grep</code>, <code>Bash</code>, <code>TaskGet</code>, <code>TaskUpdate</code>, <code>TaskList</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="4-phase-execution">4-Phase Execution<a class="headerlink" href="#4-phase-execution" title="Permanent link">&para;</a></h4>
+<pre class="mermaid"><code>graph LR
+    A["Phase 1\nUnderstand"] --&gt; B["Phase 2\nImplement"]
+    B --&gt; C["Phase 3\nVerify"]
+    C --&gt; D["Phase 4\nComplete"]</code></pre>
+<p><strong>Phase 1 -- Understand</strong>: Load execution context, read task details, classify the task (spec-generated vs. general), parse acceptance criteria, explore the codebase, and plan the implementation.</p>
+<p><strong>Phase 2 -- Implement</strong>: Read all target files before modifying them. Follow the project's implementation order (data → service → interface → tests). Match existing coding patterns. Run mid-implementation checks (linter, existing tests) to catch issues early.</p>
+<p><strong>Phase 3 -- Verify</strong>: Walk each acceptance criteria category (Functional, Edge Cases, Error Handling, Performance) for spec-generated tasks, or infer a checklist from the description for general tasks. Run the test suite. Determine pass/fail status.</p>
+<p><strong>Phase 4 -- Complete</strong>: Update task status via <code>TaskUpdate</code>, append learnings to the execution context, and return a structured verification report.</p>
+<h4 id="task-classification">Task Classification<a class="headerlink" href="#task-classification" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Detection Check</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Description contains <code>**Acceptance Criteria:**</code> with categorized criteria</td>
+<td>Spec-generated</td>
+</tr>
+<tr>
+<td>Metadata contains <code>spec_path</code></td>
+<td>Spec-generated</td>
+</tr>
+<tr>
+<td>Description contains <code>Source: {path} Section {number}</code></td>
+<td>Spec-generated</td>
+</tr>
+<tr>
+<td>None of the above</td>
+<td>General task</td>
+</tr>
+</tbody>
+</table>
+<h4 id="status-determination">Status Determination<a class="headerlink" href="#status-determination" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>All Functional criteria pass + Tests pass</td>
+<td><strong>PASS</strong> → task marked <code>completed</code></td>
+</tr>
+<tr>
+<td>All Functional pass + Tests pass + Edge/Error/Perf issues</td>
+<td><strong>PARTIAL</strong> → task stays <code>in_progress</code></td>
+</tr>
+<tr>
+<td>Any Functional criterion fails</td>
+<td><strong>FAIL</strong> → task stays <code>in_progress</code></td>
+</tr>
+<tr>
+<td>Any test failure</td>
+<td><strong>FAIL</strong> → task stays <code>in_progress</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Honest Reporting</p>
+<p>The agent never marks a task as completed if verification fails. PARTIAL and FAIL results leave the task as <code>in_progress</code> for the orchestrator to decide whether to retry.</p>
+</div>
+<h4 id="key-behaviors">Key Behaviors<a class="headerlink" href="#key-behaviors" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>No user interaction</strong>: Works entirely autonomously once launched</li>
+<li><strong>No sub-agents</strong>: Does not use the <code>Task</code> tool; handles everything directly</li>
+<li><strong>Read before write</strong>: Always reads files before modifying them</li>
+<li><strong>Minimal changes</strong>: Only modifies what the task requires</li>
+<li><strong>Context sharing</strong>: Appends learnings to the execution context even on failure</li>
+</ul>
+<hr />
+<h3 id="spec-analyzer">spec-analyzer<a class="headerlink" href="#spec-analyzer" title="Permanent link">&para;</a></h3>
+<p>A comprehensive spec quality analysis agent that generates reports and guides users through interactive resolution of findings.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model</strong></td>
+<td>inherit</td>
+</tr>
+<tr>
+<td><strong>Spawned by</strong></td>
+<td><code>analyze-spec</code> skill (also launchable from <code>create-spec</code> Phase 7)</td>
+</tr>
+<tr>
+<td><strong>Skills loaded</strong></td>
+<td><code>analyze-spec</code></td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td><code>AskUserQuestion</code>, <code>Read</code>, <code>Write</code>, <code>Edit</code>, <code>Glob</code>, <code>Grep</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="analysis-process">Analysis Process<a class="headerlink" href="#analysis-process" title="Permanent link">&para;</a></h4>
+<ol>
+<li><strong>Load Knowledge</strong> -- Read analysis criteria, common issue patterns, report template, and HTML review guide</li>
+<li><strong>Systematic Analysis</strong> -- Four-pass scan (Structure, Consistency, Completeness, Clarity)</li>
+<li><strong>Categorize Findings</strong> -- Assign category, severity, location, and recommendation to each finding</li>
+<li><strong>Generate Report</strong> -- Save <code>.analysis.md</code> with summary statistics and findings by severity</li>
+<li><strong>Generate HTML Review</strong> -- Produce a self-contained <code>.analysis.html</code> with interactive filtering and approval</li>
+<li><strong>Present Results</strong> -- Show summary and offer review mode selection (HTML review, CLI update, reports only)</li>
+</ol>
+<h4 id="html-review-generation">HTML Review Generation<a class="headerlink" href="#html-review-generation" title="Permanent link">&para;</a></h4>
+<p>The agent produces a self-contained HTML file by injecting two JSON data structures into a template:</p>
+<ul>
+<li><strong>SPEC_CONTENT</strong> -- Spec path, name, depth level, timestamp, and full markdown content</li>
+<li><strong>FINDINGS_DATA</strong> -- Array of findings with id, title, category, severity, location, line number, current text, issue description, proposed fix, and status</li>
+</ul>
+<p>The resulting HTML file requires no external dependencies and can be opened directly in any browser.</p>
+<hr />
+<h2 id="hook">Hook<a class="headerlink" href="#hook" title="Permanent link">&para;</a></h2>
+<h3 id="auto-approve-sessionsh">auto-approve-session.sh<a class="headerlink" href="#auto-approve-sessionsh" title="Permanent link">&para;</a></h3>
+<p>A <code>PreToolUse</code> hook that enables unattended execution by auto-approving file operations targeting session directories. Without this hook, the <code>execute-tasks</code> skill would prompt for permission on every session file write, making autonomous execution impractical.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td>PreToolUse</td>
+</tr>
+<tr>
+<td><strong>Matches</strong></td>
+<td><code>Write</code>, <code>Edit</code>, <code>Bash</code> tool invocations</td>
+</tr>
+<tr>
+<td><strong>Location</strong></td>
+<td><code>plugins/sdd/hooks/auto-approve-session.sh</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="approval-rules">Approval Rules<a class="headerlink" href="#approval-rules" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Pattern</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Write</code> / <code>Edit</code></td>
+<td><code>~/.claude/tasks/*/execution_pointer.md</code></td>
+<td>Auto-approve</td>
+</tr>
+<tr>
+<td><code>Write</code> / <code>Edit</code></td>
+<td><code>*/.claude/sessions/*</code></td>
+<td>Auto-approve</td>
+</tr>
+<tr>
+<td><code>Bash</code></td>
+<td>Commands with <code>mkdir</code> or <code>mv</code> targeting <code>.claude/sessions/</code></td>
+<td>Auto-approve</td>
+</tr>
+<tr>
+<td>Any other</td>
+<td>Any other path</td>
+<td>No opinion (normal permission flow)</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Scope is Intentionally Narrow</p>
+<p>The hook only approves operations on execution session paths and the execution pointer file. All other file operations -- including writes to application code, configuration, and spec files -- go through the normal Claude Code permission flow. This keeps the autonomy boundary tight.</p>
+</div>
+<hr />
+<h2 id="reference-materials">Reference Materials<a class="headerlink" href="#reference-materials" title="Permanent link">&para;</a></h2>
+<p>Each skill loads reference materials at runtime to guide its behavior. These markdown files are never shown to the user directly but inform how the skill operates.</p>
+<h3 id="create-spec-references">create-spec References<a class="headerlink" href="#create-spec-references" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>interview-questions.md</code></td>
+<td>Question bank organized by category and depth level</td>
+</tr>
+<tr>
+<td><code>recommendation-triggers.md</code></td>
+<td>Trigger patterns for proactive recommendations across domains</td>
+</tr>
+<tr>
+<td><code>recommendation-format.md</code></td>
+<td>Templates for presenting recommendations to the user</td>
+</tr>
+<tr>
+<td><code>templates/high-level.md</code></td>
+<td>Streamlined executive overview spec template</td>
+</tr>
+<tr>
+<td><code>templates/detailed.md</code></td>
+<td>Standard spec template with all sections</td>
+</tr>
+<tr>
+<td><code>templates/full-tech.md</code></td>
+<td>Extended template with API specs, data models, architecture</td>
+</tr>
+</tbody>
+</table>
+<h3 id="analyze-spec-references">analyze-spec References<a class="headerlink" href="#analyze-spec-references" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>analysis-criteria.md</code></td>
+<td>Depth-specific checklists and detection algorithms</td>
+</tr>
+<tr>
+<td><code>common-issues.md</code></td>
+<td>Issue pattern library with examples</td>
+</tr>
+<tr>
+<td><code>html-review-guide.md</code></td>
+<td>HTML review generation instructions and JSON data schemas</td>
+</tr>
+<tr>
+<td><code>report-template.md</code></td>
+<td>Standard analysis report format</td>
+</tr>
+<tr>
+<td><code>templates/review-template.html</code></td>
+<td>Self-contained interactive HTML review template</td>
+</tr>
+</tbody>
+</table>
+<h3 id="create-tasks-references">create-tasks References<a class="headerlink" href="#create-tasks-references" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>decomposition-patterns.md</code></td>
+<td>Feature decomposition patterns by type</td>
+</tr>
+<tr>
+<td><code>dependency-inference.md</code></td>
+<td>Automatic dependency inference rules</td>
+</tr>
+<tr>
+<td><code>testing-requirements.md</code></td>
+<td>Test type mappings and acceptance criteria patterns</td>
+</tr>
+</tbody>
+</table>
+<h3 id="execute-tasks-references">execute-tasks References<a class="headerlink" href="#execute-tasks-references" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>orchestration.md</code></td>
+<td>10-step orchestration loop with retry handling and session summary</td>
+</tr>
+<tr>
+<td><code>execution-workflow.md</code></td>
+<td>Detailed phase-by-phase procedures for the 4-phase workflow</td>
+</tr>
+<tr>
+<td><code>verification-patterns.md</code></td>
+<td>Task classification, criterion verification, and pass/fail rules</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="integration-with-task-manager">Integration with Task Manager<a class="headerlink" href="#integration-with-task-manager" title="Permanent link">&para;</a></h2>
+<p>The SDD plugin communicates with the <a href="../../task-manager/overview/">Task Manager</a> exclusively through the filesystem:</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant User
+    participant SDD as SDD Plugin
+    participant FS as Filesystem
+    participant TM as Task Manager
+
+    User-&gt;&gt;SDD: /sdd:create-tasks
+    SDD-&gt;&gt;FS: Write task JSON files to ~/.claude/tasks/
+
+    User-&gt;&gt;SDD: /sdd:execute-tasks
+    SDD-&gt;&gt;FS: Write execution_pointer.md
+    SDD-&gt;&gt;FS: Create .claude/sessions/__live_session__/
+    SDD-&gt;&gt;FS: Update progress.md during execution
+
+    TM--&gt;&gt;FS: Chokidar watches for changes
+    TM-&gt;&gt;TM: Display tasks in Kanban board
+    TM-&gt;&gt;TM: Show real-time execution progress</code></pre>
+<table>
+<thead>
+<tr>
+<th>File Written by SDD</th>
+<th>Read by Task Manager</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>~/.claude/tasks/{listId}/*.json</code></td>
+<td><code>taskService.ts</code></td>
+<td>Task definitions (id, subject, status, dependencies)</td>
+</tr>
+<tr>
+<td><code>~/.claude/tasks/{listId}/execution_pointer.md</code></td>
+<td><code>taskService.ts</code></td>
+<td>Absolute path to <code>__live_session__/</code></td>
+</tr>
+<tr>
+<td><code>.claude/sessions/__live_session__/progress.md</code></td>
+<td>Via execution pointer</td>
+<td>Real-time execution status</td>
+</tr>
+<tr>
+<td><code>.claude/sessions/__live_session__/execution_context.md</code></td>
+<td>Via execution pointer</td>
+<td>Shared learnings and context</td>
+</tr>
+<tr>
+<td><code>.claude/sessions/__live_session__/task_log.md</code></td>
+<td>Via execution pointer</td>
+<td>Task results table</td>
+</tr>
+</tbody>
+</table>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>The SDD plugin reads optional settings from <code>.claude/claude-alchemy.local.md</code> in the project root. This file is not required -- all settings have sensible defaults.</p>
+<p>Supported settings:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Used by</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Output path</td>
+<td><code>create-spec</code>, <code>create-tasks</code></td>
+<td>Custom directory for spec output</td>
+</tr>
+<tr>
+<td>Author name</td>
+<td><code>create-spec</code>, <code>analyze-spec</code></td>
+<td>Attribution in spec metadata</td>
+</tr>
+<tr>
+<td><code>max_parallel</code></td>
+<td><code>execute-tasks</code></td>
+<td>Default concurrent task limit (overridden by <code>--max-parallel</code> CLI arg)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-pages">Related Pages<a class="headerlink" href="#related-pages" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../architecture/overview/">Architecture Overview</a> -- System-wide architecture and design decisions</li>
+<li><a href="../../task-manager/overview/">Task Manager Overview</a> -- The web UI that visualizes SDD execution</li>
+<li><a href="../../architecture/filesystem-message-bus/">Filesystem Message Bus</a> -- How plugins communicate through the filesystem</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

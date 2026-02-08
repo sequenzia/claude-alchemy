@@ -1,0 +1,2159 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A monorepo combining Claude Code plugins and a real-time Task Manager application">
+      
+      
+      
+      
+        <link rel="prev" href="../../architecture/data-flow/">
+      
+      
+        <link rel="next" href="../api-reference/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Overview - Claude Alchemy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#task-manager-overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Claude Alchemy" class="md-header__button md-logo" aria-label="Claude Alchemy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Claude Alchemy
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Overview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sequenzia/claude-alchemy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sequenzia/claude-alchemy
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Task Manager
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../plugins/overview/" class="md-tabs__link">
+          
+  
+  
+  Plugins
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/setup/" class="md-tabs__link">
+          
+  
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Claude Alchemy" class="md-nav__button md-logo" aria-label="Claude Alchemy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Claude Alchemy
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sequenzia/claude-alchemy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sequenzia/claude-alchemy
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/filesystem-message-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Filesystem Message Bus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task Manager
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Task Manager
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tech-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tech Stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Pattern
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-flow-in-five-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Flow in Five Steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Files
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#srclibtaskservicets-server-side-data-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        src/lib/taskService.ts — Server-Side Data Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srclibfilewatcherts-chokidar-singleton" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        src/lib/fileWatcher.ts — Chokidar Singleton
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srcappapieventsroutets-sse-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        src/app/api/events/route.ts — SSE Endpoint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srchooksusessets-client-side-sse-consumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        src/hooks/useSSE.ts — Client-Side SSE Consumer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srcapplistslistidpagetsx-server-component-entry-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        src/app/lists/[listId]/page.tsx — Server Component Entry Point
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srccomponentstaskboardclienttsx-root-client-component" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        src/components/TaskBoardClient.tsx — Root Client Component
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Application Lifecycle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Application Lifecycle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#startup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Startup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-time-update-cycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-Time Update Cycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execution-context-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Context Monitoring
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-file-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task File Format
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Endpoints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the Application
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related Pages
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../real-time-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Real-Time System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugins
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Plugins
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/tools-plugin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools Plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/sdd-plugin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDD Plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/sdd-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDD Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/conventions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tech-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tech Stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Pattern
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-flow-in-five-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Flow in Five Steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Files
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#srclibtaskservicets-server-side-data-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        src/lib/taskService.ts — Server-Side Data Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srclibfilewatcherts-chokidar-singleton" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        src/lib/fileWatcher.ts — Chokidar Singleton
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srcappapieventsroutets-sse-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        src/app/api/events/route.ts — SSE Endpoint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srchooksusessets-client-side-sse-consumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        src/hooks/useSSE.ts — Client-Side SSE Consumer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srcapplistslistidpagetsx-server-component-entry-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        src/app/lists/[listId]/page.tsx — Server Component Entry Point
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srccomponentstaskboardclienttsx-root-client-component" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        src/components/TaskBoardClient.tsx — Root Client Component
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Application Lifecycle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Application Lifecycle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#startup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Startup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-time-update-cycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-Time Update Cycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execution-context-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Context Monitoring
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-file-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task File Format
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Endpoints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the Application
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related Pages
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<!-- docs/task-manager/overview.md -->
+<h1 id="task-manager-overview">Task Manager Overview<a class="headerlink" href="#task-manager-overview" title="Permanent link">&para;</a></h1>
+<p>The Task Manager is a Next.js 16.1.4 application that provides a real-time Kanban board for visualizing and monitoring Claude AI task files. It reads JSON task files from the filesystem (<code>~/.claude/tasks/</code>), renders them in a three-column board (Pending, In Progress, Completed), and keeps the UI synchronized with file changes through Server-Sent Events. The dev server runs on port <strong>3030</strong>.</p>
+<h2 id="tech-stack">Tech Stack<a class="headerlink" href="#tech-stack" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Technology</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Framework</td>
+<td>Next.js 16.1.4 (App Router)</td>
+</tr>
+<tr>
+<td>UI Library</td>
+<td>React 19.2.3</td>
+</tr>
+<tr>
+<td>State Management</td>
+<td>TanStack Query v5.90.20</td>
+</tr>
+<tr>
+<td>Styling</td>
+<td>Tailwind CSS v4, tailwind-merge</td>
+</tr>
+<tr>
+<td>Components</td>
+<td>shadcn/ui (new-york style) with Radix primitives</td>
+</tr>
+<tr>
+<td>File Watching</td>
+<td>Chokidar 5 (polling mode, 300ms interval)</td>
+</tr>
+<tr>
+<td>Theming</td>
+<td>next-themes (dark/light/system)</td>
+</tr>
+<tr>
+<td>Markdown Rendering</td>
+<td>react-markdown 10.1.0 + remark-gfm 4.0.1</td>
+</tr>
+<tr>
+<td>Icons</td>
+<td>Lucide React</td>
+</tr>
+<tr>
+<td>Fonts</td>
+<td>Geist Sans + Geist Mono (via <code>next/font/google</code>)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="architecture-pattern">Architecture Pattern<a class="headerlink" href="#architecture-pattern" title="Permanent link">&para;</a></h2>
+<p>The Task Manager follows a <strong>Server-First with Real-Time Hydration</strong> pattern. Server Components fetch all data on initial page load, eliminating loading spinners. The client then takes over with TanStack Query for cache management and an SSE connection for real-time filesystem updates.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant FS as ~/.claude/tasks/
+    participant SC as Server Component
+    participant CC as Client Component
+    participant TQ as TanStack Query
+    participant SSE as SSE Connection
+    participant CK as Chokidar Watcher
+
+    SC-&gt;&gt;FS: Read tasks, taskLists, executionContext (parallel)
+    SC-&gt;&gt;CC: Pass as initialData props
+    CC-&gt;&gt;TQ: Initialize cache (no loading state)
+    CC-&gt;&gt;SSE: Open EventSource connection
+    FS--&gt;&gt;CK: File change detected
+    CK--&gt;&gt;SSE: Emit event via ReadableStream
+    SSE--&gt;&gt;TQ: Invalidate query cache
+    SSE--&gt;&gt;SC: router.refresh() triggers Server Component re-render</code></pre>
+<h3 id="data-flow-in-five-steps">Data Flow in Five Steps<a class="headerlink" href="#data-flow-in-five-steps" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Server Component</strong> (<code>page.tsx</code>) fetches <code>tasks</code>, <code>taskLists</code>, and <code>executionContext</code> in parallel via <code>Promise.all()</code>, then passes them as <code>initialData</code> to <code>TaskBoardClient</code>.</li>
+<li><strong>Client Component</strong> (<code>TaskBoardClient</code>) initializes TanStack Query with the server-provided data — the user sees a fully rendered board immediately.</li>
+<li><strong>SSE Connection</strong> (<code>useSSE</code> hook) opens an <code>EventSource</code> to <code>/api/events?taskListId=&lt;id&gt;</code> for real-time updates.</li>
+<li><strong>Chokidar</strong> (<code>fileWatcher.ts</code>) detects filesystem changes and emits typed events through the SSE <code>ReadableStream</code>.</li>
+<li><strong>Dual Invalidation</strong> — on every SSE event, the client both invalidates the TanStack Query cache <em>and</em> calls <code>router.refresh()</code> to re-run the Server Component, keeping both data layers in sync.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Why Dual Invalidation?</p>
+<p>TanStack Query handles client-side cache freshness, but Server Components fetch data independently on navigation. By calling <code>router.refresh()</code> alongside cache invalidation, the app guarantees that <em>both</em> the client cache and the server-rendered HTML stay current. This prevents stale data if the user navigates away and returns to the page.</p>
+</div>
+<h2 id="project-structure">Project Structure<a class="headerlink" href="#project-structure" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>apps/task-manager/
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── src/
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│   ├── app/
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│   │   ├── layout.tsx                  # Root layout with Providers
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   │   ├── page.tsx                    # Redirects to first task list
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   │   ├── globals.css                 # Tailwind CSS + shadcn/ui variables
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│   │   ├── lists/[listId]/
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│   │   │   ├── page.tsx                # Server Component — parallel data fetch
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│   │   │   └── loading.tsx             # Loading skeleton
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│   │   └── api/
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│   │       ├── task-lists/route.ts     # GET /api/task-lists
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│   │       ├── tasks/[listId]/route.ts # GET /api/tasks/:listId
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│   │       ├── events/route.ts         # SSE endpoint
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│   │       ├── execution-context/
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│   │       │   └── [listId]/route.ts   # GET /api/execution-context/:listId
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>│   │       └── health/route.ts         # Health check
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│   ├── components/
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│   │   ├── TaskBoardClient.tsx         # Root client component (state + SSE)
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>│   │   ├── KanbanBoard.tsx             # Three-column Kanban board
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>│   │   ├── TaskDetail.tsx              # Task detail slide-over dialog
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>│   │   ├── SummaryStats.tsx            # Task count statistics bar
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>│   │   ├── TaskListSelector.tsx        # Dropdown to switch task lists
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>│   │   ├── SearchInput.tsx             # Search/filter input
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>│   │   ├── ExecutionProgressBar.tsx    # Header progress indicator
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>│   │   ├── ExecutionDialog.tsx         # Execution artifacts viewer
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>│   │   ├── ThemeToggle.tsx             # Dark/light mode toggle
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>│   │   ├── Providers.tsx               # QueryClient + ThemeProvider
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>│   │   └── ui/                         # shadcn/ui primitives
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>│   ├── hooks/
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>│   │   ├── useSSE.ts                   # SSE consumer + dual invalidation
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>│   │   ├── useTasks.ts                 # TanStack Query — tasks
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>│   │   ├── useTaskLists.ts             # TanStack Query — task lists
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>│   │   ├── useExecutionContext.ts       # TanStack Query — execution context
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>│   │   └── useTaskStats.ts            # Computed task statistics
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>│   ├── lib/
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>│   │   ├── taskService.ts             # Server-side filesystem reading
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>│   │   ├── fileWatcher.ts             # Chokidar singleton + event emission
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>│   │   ├── api.ts                     # Client-side fetch wrappers
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>│   │   └── utils.ts                   # cn() classname utility
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>│   └── types/
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>│       ├── task.ts                    # Task, TaskList, SSE event types
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a>│       └── execution.ts              # ExecutionContext, artifacts, progress
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a>└── package.json
+</span></code></pre></div>
+<h2 id="key-files">Key Files<a class="headerlink" href="#key-files" title="Permanent link">&para;</a></h2>
+<h3 id="srclibtaskservicets-server-side-data-layer"><code>src/lib/taskService.ts</code> — Server-Side Data Layer<a class="headerlink" href="#srclibtaskservicets-server-side-data-layer" title="Permanent link">&para;</a></h3>
+<p>The central module for reading task data from the filesystem. All functions are <code>async</code> and use Node.js <code>fs/promises</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>getTaskLists()</code></td>
+<td>Scans <code>~/.claude/tasks/</code> for subdirectories containing <code>.json</code> files</td>
+</tr>
+<tr>
+<td><code>getTasks(listId)</code></td>
+<td>Reads and parses all <code>.json</code> files in a task list directory</td>
+</tr>
+<tr>
+<td><code>getTask(listId, id)</code></td>
+<td>Reads a single task by ID</td>
+</tr>
+<tr>
+<td><code>getExecutionContext(listId)</code></td>
+<td>Reads <code>execution_pointer.md</code>, resolves the session directory, and returns artifacts</td>
+</tr>
+<tr>
+<td><code>getTasksDir()</code></td>
+<td>Returns the base tasks directory path</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>parseTask()</code> helper defensively normalizes JSON: it defaults <code>status</code> to <code>"pending"</code> for unknown values, coerces <code>id</code> to string, and ensures <code>blocks</code>/<code>blockedBy</code> are arrays.</p>
+<p>For full API details, see <a href="../api-reference/">API Reference</a>.</p>
+<h3 id="srclibfilewatcherts-chokidar-singleton"><code>src/lib/fileWatcher.ts</code> — Chokidar Singleton<a class="headerlink" href="#srclibfilewatcherts-chokidar-singleton" title="Permanent link">&para;</a></h3>
+<p>A <code>FileWatcher</code> class extending Node.js <code>EventEmitter</code>, configured with Chokidar 5 for filesystem monitoring.</p>
+<div class="highlight"><span class="filename">Configuration</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Chokidar watcher settings</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">usePolling</span><span class="p">:</span> <span class="n">true</span>    <span class="c1"># Required for reliable cross-platform detection</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">interval</span><span class="p">:</span> <span class="mi">300</span>       <span class="c1"># 300ms polling interval</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">depth</span><span class="p">:</span> <span class="mi">2</span>            <span class="c1"># Watch two levels deep from base path</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">ignoreInitial</span><span class="p">:</span> <span class="n">true</span> <span class="c1"># Skip existing files on startup</span>
+</span></code></pre></div>
+<p>The singleton is stored on <code>globalThis</code> to survive Next.js Hot Module Replacement during development:</p>
+<div class="highlight"><span class="filename">src/lib/fileWatcher.ts</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">globalForWatcher</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">globalThis</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">unknown</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nx">fileWatcher</span><span class="o">:</span><span class="w"> </span><span class="kt">FileWatcher</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">undefined</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="p">}</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">fileWatcher</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">globalForWatcher</span><span class="p">.</span><span class="nx">fileWatcher</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">FileWatcher</span><span class="p">()</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">&#39;production&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="nx">globalForWatcher</span><span class="p">.</span><span class="nx">fileWatcher</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">fileWatcher</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>The watcher emits two event types:</p>
+<ul>
+<li><strong><code>taskEvent</code></strong> — fired when <code>.json</code> files are created, changed, or deleted</li>
+<li><strong><code>executionEvent</code></strong> — fired when <code>.md</code> or <code>.txt</code> files change in a watched execution directory</li>
+</ul>
+<p>For implementation details, see <a href="../real-time-system/">Real-Time System</a>.</p>
+<h3 id="srcappapieventsroutets-sse-endpoint"><code>src/app/api/events/route.ts</code> — SSE Endpoint<a class="headerlink" href="#srcappapieventsroutets-sse-endpoint" title="Permanent link">&para;</a></h3>
+<p>A Next.js Route Handler that creates a <code>ReadableStream</code> and subscribes to the <code>fileWatcher</code> singleton. Key behaviors:</p>
+<ul>
+<li>Sends an initial <code>connected</code> event on stream open</li>
+<li>Filters events by <code>taskListId</code> query parameter</li>
+<li>Sends heartbeat comments (<code>:heartbeat</code>) every 30 seconds to keep the connection alive</li>
+<li>Cleans up event listeners on <code>AbortSignal</code> from the request</li>
+<li>Dynamically registers execution directory watches when a <code>taskListId</code> is provided</li>
+</ul>
+<h3 id="srchooksusessets-client-side-sse-consumer"><code>src/hooks/useSSE.ts</code> — Client-Side SSE Consumer<a class="headerlink" href="#srchooksusessets-client-side-sse-consumer" title="Permanent link">&para;</a></h3>
+<p>Opens an <code>EventSource</code> to <code>/api/events</code> and performs <strong>dual invalidation</strong> on each event:</p>
+<table>
+<thead>
+<tr>
+<th>SSE Event</th>
+<th>Cache Invalidation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>task:created</code></td>
+<td><code>taskKeys.list(listId)</code> + <code>taskListKeys.all</code> + <code>router.refresh()</code></td>
+</tr>
+<tr>
+<td><code>task:updated</code></td>
+<td><code>taskKeys.list(listId)</code> + <code>taskListKeys.all</code> + <code>router.refresh()</code></td>
+</tr>
+<tr>
+<td><code>task:deleted</code></td>
+<td><code>taskKeys.list(listId)</code> + <code>taskListKeys.all</code> + <code>router.refresh()</code></td>
+</tr>
+<tr>
+<td><code>execution:updated</code></td>
+<td><code>executionContextKeys.list(listId)</code> + <code>router.refresh()</code></td>
+</tr>
+</tbody>
+</table>
+<p>On connection error, the hook automatically reconnects after a 3-second delay using a <code>reconnectKey</code> state variable.</p>
+<h3 id="srcapplistslistidpagetsx-server-component-entry-point"><code>src/app/lists/[listId]/page.tsx</code> — Server Component Entry Point<a class="headerlink" href="#srcapplistslistidpagetsx-server-component-entry-point" title="Permanent link">&para;</a></h3>
+<p>The main page Server Component. Fetches all data in parallel before rendering:</p>
+<div class="highlight"><span class="filename">src/app/lists/[listId]/page.tsx</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">taskLists</span><span class="p">,</span><span class="w"> </span><span class="nx">tasks</span><span class="p">,</span><span class="w"> </span><span class="nx">executionContext</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nb">Promise</span><span class="p">.</span><span class="nx">all</span><span class="p">([</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nx">getTaskLists</span><span class="p">(),</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nx">getTasks</span><span class="p">(</span><span class="nx">decodedListId</span><span class="p">),</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nx">getExecutionContext</span><span class="p">(</span><span class="nx">decodedListId</span><span class="p">),</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">])</span>
+</span></code></pre></div>
+<p>If the requested <code>listId</code> does not exist in the fetched task lists, the page returns a 404 via <code>notFound()</code>.</p>
+<h3 id="srccomponentstaskboardclienttsx-root-client-component"><code>src/components/TaskBoardClient.tsx</code> — Root Client Component<a class="headerlink" href="#srccomponentstaskboardclienttsx-root-client-component" title="Permanent link">&para;</a></h3>
+<p>The top-level client component that wires together state management, real-time updates, and all UI components:</p>
+<pre class="mermaid"><code>graph TD
+    TBC[TaskBoardClient] --&gt; KBD[KanbanBoard]
+    TBC --&gt; SS[SummaryStats]
+    TBC --&gt; TD[TaskDetail]
+    TBC --&gt; TLS[TaskListSelector]
+    TBC --&gt; SI[SearchInput]
+    TBC --&gt; EPB[ExecutionProgressBar]
+    TBC --&gt; TT[ThemeToggle]
+    TBC --&gt; ED[ExecutionDialog]</code></pre>
+<p>For details on individual components, see <a href="../components/">Components</a>.</p>
+<h2 id="application-lifecycle">Application Lifecycle<a class="headerlink" href="#application-lifecycle" title="Permanent link">&para;</a></h2>
+<h3 id="startup">Startup<a class="headerlink" href="#startup" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Root layout (<code>layout.tsx</code>) wraps the app in <code>Providers</code>, which initializes <code>QueryClient</code> (1-minute <code>staleTime</code>, no refetch-on-focus) and <code>ThemeProvider</code> (defaults to dark mode).</li>
+<li>The root page (<code>page.tsx</code>) fetches task lists and redirects to the first one, or shows an empty state if <code>~/.claude/tasks/</code> has no task lists.</li>
+<li>The <code>[listId]/page.tsx</code> Server Component fetches data and renders <code>TaskBoardClient</code> with <code>initialData</code>.</li>
+<li>On the client, <code>TaskBoardClient</code> calls <code>useSSE(listId)</code>, which opens the SSE connection. The SSE route handler lazily starts the Chokidar watcher if not already running.</li>
+</ol>
+<h3 id="real-time-update-cycle">Real-Time Update Cycle<a class="headerlink" href="#real-time-update-cycle" title="Permanent link">&para;</a></h3>
+<ol>
+<li>A Claude AI agent writes or updates a <code>.json</code> file in <code>~/.claude/tasks/&lt;listId&gt;/</code>.</li>
+<li>Chokidar detects the change (within ~300ms) and the <code>FileWatcher</code> emits a <code>taskEvent</code>.</li>
+<li>The SSE route handler serializes the event and pushes it to the <code>ReadableStream</code>.</li>
+<li>The browser's <code>EventSource</code> receives the event and fires the appropriate listener.</li>
+<li><code>useSSE</code> invalidates the TanStack Query cache and calls <code>router.refresh()</code>.</li>
+<li>TanStack Query re-fetches task data from the API route; the Server Component re-executes on the server.</li>
+<li>The UI updates without a full page reload.</li>
+</ol>
+<h3 id="execution-context-monitoring">Execution Context Monitoring<a class="headerlink" href="#execution-context-monitoring" title="Permanent link">&para;</a></h3>
+<p>When the <code>execute-tasks</code> plugin skill is running, it writes an <code>execution_pointer.md</code> file into the task list directory. This pointer contains the absolute path to the live session directory (e.g., <code>.claude/sessions/__live_session__/</code>).</p>
+<p>The SSE route handler detects this pointer and dynamically adds the execution directory to the Chokidar watcher. As execution artifacts (<code>progress.md</code>, <code>task_log.md</code>, <code>execution_plan.md</code>) are updated, the watcher emits <code>execution:updated</code> events.</p>
+<p>The <code>useExecutionContext</code> hook has a shorter <code>staleTime</code> (2 seconds) and a 5-second <code>refetchInterval</code> to keep execution state fresh even if SSE events are missed.</p>
+<div class="admonition tip">
+<p class="admonition-title">Execution Artifacts</p>
+<p>Artifacts are sorted in a fixed display order: <code>execution_context</code> first, then <code>task_log</code>, <code>execution_plan</code>, <code>session_summary</code>, with any remaining files sorted alphabetically. Temporary per-wave context files (<code>context-task-*</code>) are filtered out.</p>
+</div>
+<h2 id="task-file-format">Task File Format<a class="headerlink" href="#task-file-format" title="Permanent link">&para;</a></h2>
+<p>Task files are JSON stored at <code>~/.claude/tasks/&lt;list-name&gt;/&lt;id&gt;.json</code>:</p>
+<div class="highlight"><span class="filename">Example: ~/.claude/tasks/my-project/1.json</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">&quot;subject&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Implement user authentication&quot;</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Add OAuth2 login flow with session management&quot;</span><span class="p">,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;in_progress&quot;</span><span class="p">,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nt">&quot;activeForm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Working on token refresh logic&quot;</span><span class="p">,</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nt">&quot;blocks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;3&quot;</span><span class="p">],</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="nt">&quot;blockedBy&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">    </span><span class="nt">&quot;priority&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;high&quot;</span><span class="p">,</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="nt">&quot;complexity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;L&quot;</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="p">}</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>Unique identifier (coerced from number if needed)</td>
+</tr>
+<tr>
+<td><code>subject</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>Short task title</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>Detailed description (defaults to <code>""</code>)</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td><code>pending</code>, <code>in_progress</code>, or <code>completed</code> (defaults to <code>pending</code>)</td>
+</tr>
+<tr>
+<td><code>activeForm</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>Current work-in-progress note</td>
+</tr>
+<tr>
+<td><code>blocks</code></td>
+<td><code>string[]</code></td>
+<td>No</td>
+<td>IDs of tasks this task blocks (defaults to <code>[]</code>)</td>
+</tr>
+<tr>
+<td><code>blockedBy</code></td>
+<td><code>string[]</code></td>
+<td>No</td>
+<td>IDs of tasks blocking this one (defaults to <code>[]</code>)</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td><code>object</code></td>
+<td>No</td>
+<td>Arbitrary metadata (priority, complexity, etc.)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Valid <code>status</code> values:</strong> <code>pending</code> | <code>in_progress</code> | <code>completed</code></p>
+<p><strong>Valid <code>priority</code> values:</strong> <code>critical</code> | <code>high</code> | <code>medium</code> | <code>low</code></p>
+<p><strong>Valid <code>complexity</code> values:</strong> <code>XS</code> | <code>S</code> | <code>M</code> | <code>L</code> | <code>XL</code></p>
+<h2 id="api-endpoints">API Endpoints<a class="headerlink" href="#api-endpoints" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/api/health</code></td>
+<td>Health check</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/task-lists</code></td>
+<td>List all task lists</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/tasks/:listId</code></td>
+<td>Get tasks for a specific list</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/execution-context/:listId</code></td>
+<td>Get execution context for a list</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/events?taskListId=&lt;id&gt;</code></td>
+<td>SSE stream for real-time updates</td>
+</tr>
+</tbody>
+</table>
+<p>For request/response schemas and detailed endpoint documentation, see <a href="../api-reference/">API Reference</a>.</p>
+<h2 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h2>
+<p>The Task Manager implements several security measures to safely read from the filesystem:</p>
+<ul>
+<li><strong>Path traversal guard</strong> — <code>resolveExecutionDir()</code> in <code>taskService.ts</code> uses <code>path.relative()</code> to verify that execution pointer targets stay under <code>$HOME</code>. Paths that escape the home directory are rejected.</li>
+<li><strong>API route validation</strong> — The <code>GET /api/tasks/:listId</code> route rejects <code>listId</code> values containing <code>..</code> or <code>/</code> to prevent directory traversal.</li>
+<li><strong>Defensive parsing</strong> — <code>parseTask()</code> normalizes all fields, defaulting unknown statuses to <code>"pending"</code> and coercing types, preventing malformed JSON from crashing the application.</li>
+<li><strong>Read-only access</strong> — The Task Manager never writes to the filesystem. It is a pure read-only viewer.</li>
+</ul>
+<p>For a complete security analysis, see <a href="../security/">Security</a>.</p>
+<h2 id="running-the-application">Running the Application<a class="headerlink" href="#running-the-application" title="Permanent link">&para;</a></h2>
+<div class="highlight"><span class="filename">Development</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">cd</span><span class="w"> </span>apps/task-manager
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>pnpm<span class="w"> </span>install
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>pnpm<span class="w"> </span>dev<span class="w">          </span><span class="c1"># Starts on http://localhost:3030</span>
+</span></code></pre></div>
+<div class="highlight"><span class="filename">Production</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">cd</span><span class="w"> </span>apps/task-manager
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>pnpm<span class="w"> </span>build
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>pnpm<span class="w"> </span>start
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Prerequisites</p>
+<p>Task files must exist in <code>~/.claude/tasks/</code> for the board to display data. If no task lists are found, the app shows an empty state with instructions. Task files are typically created by the Claude Alchemy plugin skills — see the <a href="../../plugins/overview/">Plugin Architecture</a> docs.</p>
+</div>
+<h2 id="related-pages">Related Pages<a class="headerlink" href="#related-pages" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../api-reference/">API Reference</a> — Detailed endpoint documentation with request/response schemas</li>
+<li><a href="../real-time-system/">Real-Time System</a> — Deep dive into the Chokidar + SSE pipeline</li>
+<li><a href="../components/">Components</a> — UI component breakdown and props reference</li>
+<li><a href="../security/">Security</a> — Path traversal guards, input validation, and threat model</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

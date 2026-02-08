@@ -1,0 +1,2606 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A monorepo combining Claude Code plugins and a real-time Task Manager application">
+      
+      
+      
+      
+        <link rel="prev" href="../../task-manager/security/">
+      
+      
+        <link rel="next" href="../tools-plugin/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Overview - Claude Alchemy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#plugin-system-overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Claude Alchemy" class="md-header__button md-logo" aria-label="Claude Alchemy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Claude Alchemy
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Overview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sequenzia/claude-alchemy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sequenzia/claude-alchemy
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../task-manager/overview/" class="md-tabs__link">
+          
+  
+  
+  Task Manager
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Plugins
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/setup/" class="md-tabs__link">
+          
+  
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Claude Alchemy" class="md-nav__button md-logo" aria-label="Claude Alchemy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Claude Alchemy
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sequenzia/claude-alchemy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sequenzia/claude-alchemy
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/filesystem-message-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Filesystem Message Bus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task Manager
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Task Manager
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/real-time-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Real-Time System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugins
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Plugins
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-two-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Two Plugins
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Concepts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skills
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Skills">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#invocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invocation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frontmatter-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontmatter Schema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#skill-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skill Categories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference-materials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference Materials
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#skill-composition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skill Composition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agents
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frontmatter-schema_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontmatter Schema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Inventory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-tiering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model Tiering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spawning-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spawning Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hooks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hook-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hook Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-the-auto-approve-hook-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the Auto-Approve Hook Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plugin-manifests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plugin Manifests
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agent-orchestration-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Orchestration Patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agent Orchestration Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parallel-exploration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parallel Exploration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sequential-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequential Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#team-collaboration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Team Collaboration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wave-based-concurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wave-Based Concurrency
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plugin-directory-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plugin Directory Layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runtime-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Variables
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related Pages
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tools-plugin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools Plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sdd-plugin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDD Plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sdd-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDD Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/conventions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-two-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Two Plugins
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Concepts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skills
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Skills">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#invocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invocation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frontmatter-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontmatter Schema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#skill-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skill Categories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference-materials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference Materials
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#skill-composition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skill Composition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agents
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frontmatter-schema_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontmatter Schema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Inventory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-tiering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model Tiering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spawning-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spawning Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hooks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hook-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hook Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-the-auto-approve-hook-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the Auto-Approve Hook Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plugin-manifests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plugin Manifests
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agent-orchestration-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Orchestration Patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agent Orchestration Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parallel-exploration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parallel Exploration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sequential-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequential Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#team-collaboration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Team Collaboration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wave-based-concurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wave-Based Concurrency
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plugin-directory-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plugin Directory Layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runtime-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Variables
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related Pages
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<!-- docs/plugins/overview.md -->
+<h1 id="plugin-system-overview">Plugin System Overview<a class="headerlink" href="#plugin-system-overview" title="Permanent link">&para;</a></h1>
+<p>Claude Alchemy ships two Claude Code plugins that extend Claude's capabilities with structured workflows, specialized agents, and event-driven automation. Both plugins are <strong>markdown-only</strong> -- they have no <code>package.json</code>, no build step, and no runtime dependencies. Claude Code loads them as context at conversation start and interprets their instructions directly.</p>
+<p>This page covers the core concepts that both plugins share. For plugin-specific details, see <a href="../tools-plugin/">Tools Plugin</a> and <a href="../sdd-plugin/">SDD Plugin</a>.</p>
+<h2 id="the-two-plugins">The Two Plugins<a class="headerlink" href="#the-two-plugins" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Version</th>
+<th>Agents</th>
+<th>Skills</th>
+<th>Prefix</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>claude-alchemy-tools</code></td>
+<td>0.2.2</td>
+<td>10</td>
+<td>13</td>
+<td><code>/tools:</code></td>
+<td>Feature development, codebase analysis, documentation, Git, releases</td>
+</tr>
+<tr>
+<td><code>claude-alchemy-sdd</code></td>
+<td>0.2.6</td>
+<td>2</td>
+<td>4</td>
+<td><code>/sdd:</code></td>
+<td>Spec-driven development: spec creation, analysis, task decomposition, autonomous execution</td>
+</tr>
+</tbody>
+</table>
+<p>Both plugins live under <code>plugins/</code> in the monorepo but are <strong>excluded from the pnpm workspace</strong>. They are pure markdown -- no <code>node_modules</code>, no compilation, no transpilation.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>plugins/
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── tools/                      # claude-alchemy-tools
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│   ├── agents/                 # 10 agent definitions
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│   ├── skills/                 # 13 skill definitions
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   ├── .claude-plugin/
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   │   └── plugin.json         # Plugin manifest
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│   └── README.md
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>└── sdd/                        # claude-alchemy-sdd
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    ├── agents/                 # 2 agent definitions
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    ├── skills/                 # 4 skill definitions
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    ├── hooks/                  # Event-driven automation
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    │   ├── hooks.json          # Hook configuration
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    │   └── auto-approve-session.sh
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    ├── .claude-plugin/
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    │   └── plugin.json         # Plugin manifest
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    └── README.md
+</span></code></pre></div>
+<h2 id="core-concepts">Core Concepts<a class="headerlink" href="#core-concepts" title="Permanent link">&para;</a></h2>
+<p>The plugin system is built on four primitives: <strong>skills</strong>, <strong>agents</strong>, <strong>hooks</strong>, and <strong>plugin manifests</strong>. Skills are user-facing workflows. Agents are specialized sub-processes that skills launch to do focused work. Hooks automate permission decisions. Manifests track plugin metadata and versions.</p>
+<h3 id="skills">Skills<a class="headerlink" href="#skills" title="Permanent link">&para;</a></h3>
+<p>A skill is a <code>SKILL.md</code> file inside a <code>skills/{skill-name}/</code> directory. It contains YAML frontmatter with metadata followed by a markdown body with instructions, workflow phases, and behavioral guidelines. Skills are the primary user-facing interface to the plugin system.</p>
+<h4 id="invocation">Invocation<a class="headerlink" href="#invocation" title="Permanent link">&para;</a></h4>
+<p>Users invoke skills with the plugin prefix and skill name:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>/tools:feature-dev implement user authentication with OAuth2
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>/tools:git-commit
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>/sdd:create-spec
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>/sdd:execute-tasks --max-parallel 3
+</span></code></pre></div>
+<p>The text after the skill name is passed as <code>$ARGUMENTS</code> and can include flags like <code>--teams</code> or <code>--max-parallel</code>.</p>
+<h4 id="frontmatter-schema">Frontmatter Schema<a class="headerlink" href="#frontmatter-schema" title="Permanent link">&para;</a></h4>
+<p>Every <code>SKILL.md</code> starts with YAML frontmatter that defines the skill's metadata:</p>
+<div class="highlight"><span class="filename">plugins/tools/skills/feature-dev/SKILL.md</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nn">---</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">feature-dev</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Feature development workflow with exploration, architecture, implementation, and review phases.</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nt">argument-hint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;feature-description&gt; [--teams]</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">inherit</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nt">user-invocable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="nt">disable-model-invocation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="nt">allowed-tools</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="nn">---</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Skill identifier used in invocation (<code>/tools:{name}</code>)</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>What the skill does and when to use it</td>
+</tr>
+<tr>
+<td><code>argument-hint</code></td>
+<td>string</td>
+<td>Shows users what arguments the skill accepts</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td>string</td>
+<td>Model to run the skill with (<code>opus</code>, <code>sonnet</code>, <code>haiku</code>, or <code>inherit</code>)</td>
+</tr>
+<tr>
+<td><code>user-invocable</code></td>
+<td>boolean</td>
+<td>Whether users can invoke this skill directly</td>
+</tr>
+<tr>
+<td><code>disable-model-invocation</code></td>
+<td>boolean</td>
+<td>Whether Claude can invoke this skill autonomously</td>
+</tr>
+<tr>
+<td><code>allowed-tools</code></td>
+<td>list</td>
+<td>Tools the skill is permitted to use</td>
+</tr>
+<tr>
+<td><code>arguments</code></td>
+<td>list</td>
+<td>Structured argument definitions with <code>name</code>, <code>description</code>, <code>required</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="skill-categories">Skill Categories<a class="headerlink" href="#skill-categories" title="Permanent link">&para;</a></h4>
+<p>Skills fall into two categories based on their <code>user-invocable</code> flag:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">User-Invocable Skills</label><label for="__tabbed_1_2">Supporting Skills</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>These are the primary entry points. Users invoke them directly to trigger workflows.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Skill</th>
+<th>Model</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tools</td>
+<td><code>feature-dev</code></td>
+<td>inherit</td>
+<td>7-phase feature development workflow</td>
+</tr>
+<tr>
+<td>tools</td>
+<td><code>codebase-analysis</code></td>
+<td>inherit</td>
+<td>Structured codebase exploration and analysis</td>
+</tr>
+<tr>
+<td>tools</td>
+<td><code>docs-manager</code></td>
+<td>inherit</td>
+<td>Documentation management for MkDocs and standalone markdown</td>
+</tr>
+<tr>
+<td>tools</td>
+<td><code>deep-analysis</code></td>
+<td>inherit</td>
+<td>Reusable exploration + synthesis workflow</td>
+</tr>
+<tr>
+<td>tools</td>
+<td><code>teams-deep-analysis</code></td>
+<td>inherit</td>
+<td>Team-based collaborative analysis with Agent Teams</td>
+</tr>
+<tr>
+<td>tools</td>
+<td><code>git-commit</code></td>
+<td>haiku</td>
+<td>Conventional commit message generation</td>
+</tr>
+<tr>
+<td>tools</td>
+<td><code>release</code></td>
+<td>haiku</td>
+<td>Package release preparation and verification</td>
+</tr>
+<tr>
+<td>tools</td>
+<td><code>bump-plugin-version</code></td>
+<td>haiku</td>
+<td>Plugin version bumping in manifest files</td>
+</tr>
+<tr>
+<td>sdd</td>
+<td><code>create-spec</code></td>
+<td>inherit</td>
+<td>Interactive specification creation</td>
+</tr>
+<tr>
+<td>sdd</td>
+<td><code>analyze-spec</code></td>
+<td>inherit</td>
+<td>Spec quality analysis and issue detection</td>
+</tr>
+<tr>
+<td>sdd</td>
+<td><code>create-tasks</code></td>
+<td>inherit</td>
+<td>Spec decomposition into Claude Code Tasks</td>
+</tr>
+<tr>
+<td>sdd</td>
+<td><code>execute-tasks</code></td>
+<td>inherit</td>
+<td>Autonomous wave-based parallel task execution</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<p>These are building blocks loaded by other skills at runtime. They provide domain knowledge and pattern guidance rather than standalone workflows.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Skill</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tools</td>
+<td><code>architecture-patterns</code></td>
+<td>Architectural pattern knowledge (MVC, event-driven, CQRS)</td>
+</tr>
+<tr>
+<td>tools</td>
+<td><code>language-patterns</code></td>
+<td>Language-specific idioms and best practices</td>
+</tr>
+<tr>
+<td>tools</td>
+<td><code>project-conventions</code></td>
+<td>Project convention detection and enforcement</td>
+</tr>
+<tr>
+<td>tools</td>
+<td><code>code-quality</code></td>
+<td>Code quality review standards</td>
+</tr>
+<tr>
+<td>tools</td>
+<td><code>changelog-format</code></td>
+<td>Keep a Changelog formatting guidelines</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h4 id="reference-materials">Reference Materials<a class="headerlink" href="#reference-materials" title="Permanent link">&para;</a></h4>
+<p>Skills can include reference materials in a <code>references/</code> subdirectory alongside <code>SKILL.md</code>. These are markdown files loaded at runtime to provide templates, examples, and domain knowledge:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>skills/create-spec/
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>├── SKILL.md
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>└── references/
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    ├── interview-questions.md
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    ├── recommendation-format.md
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    ├── recommendation-triggers.md
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    └── templates/
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>        ├── detailed.md
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>        ├── full-tech.md
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>        └── high-level.md
+</span></code></pre></div>
+<p>Skills load references using the <code>${CLAUDE_PLUGIN_ROOT}</code> variable:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Read <span class="sb">`${CLAUDE_PLUGIN_ROOT}/skills/create-spec/references/interview-questions.md`</span>
+</span></code></pre></div>
+<h4 id="skill-composition">Skill Composition<a class="headerlink" href="#skill-composition" title="Permanent link">&para;</a></h4>
+<p>Skills can load other skills as reusable building blocks. The calling skill reads the target <code>SKILL.md</code> and follows its workflow inline. For example, <code>feature-dev</code> loads <code>deep-analysis</code> for its codebase exploration phase:</p>
+<pre class="mermaid"><code>graph LR
+    FD["feature-dev"] --&gt;|"loads"| DA["deep-analysis"]
+    FD --&gt;|"loads"| PJ["project-conventions"]
+    CA["codebase-analysis"] --&gt;|"loads"| DA
+    DA --&gt;|"loads"| PJ
+    DA --&gt;|"loads"| LP["language-patterns"]</code></pre>
+<p>This composition pattern avoids duplicating workflow logic across skills. Changes to <code>deep-analysis</code> automatically propagate to every skill that loads it.</p>
+<hr />
+<h3 id="agents">Agents<a class="headerlink" href="#agents" title="Permanent link">&para;</a></h3>
+<p>An agent is a <code>{kebab-case-name}.md</code> file in the <code>agents/</code> directory. Agents are specialized sub-processes that skills spawn via Claude Code's <code>Task</code> tool to perform focused work. Each agent has a narrow scope, a specific model tier, and a constrained tool set.</p>
+<h4 id="frontmatter-schema_1">Frontmatter Schema<a class="headerlink" href="#frontmatter-schema_1" title="Permanent link">&para;</a></h4>
+<div class="highlight"><span class="filename">plugins/tools/agents/code-explorer.md</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nn">---</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Explores codebases to find relevant files, trace execution paths, and map architecture</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nt">tools</span><span class="p">:</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Read</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Glob</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Grep</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Bash</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sonnet</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="nt">skills</span><span class="p">:</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">project-conventions</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">language-patterns</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="nn">---</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>What the agent does</td>
+</tr>
+<tr>
+<td><code>tools</code></td>
+<td>list</td>
+<td>Tools the agent is permitted to use</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td>string</td>
+<td>Model tier for this agent (<code>opus</code>, <code>sonnet</code>, <code>haiku</code>, or <code>inherit</code>)</td>
+</tr>
+<tr>
+<td><code>skills</code></td>
+<td>list</td>
+<td>Supporting skills the agent can access</td>
+</tr>
+</tbody>
+</table>
+<h4 id="agent-inventory">Agent Inventory<a class="headerlink" href="#agent-inventory" title="Permanent link">&para;</a></h4>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Tools Plugin Agents</label><label for="__tabbed_2_2">SDD Plugin Agents</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Model</th>
+<th>Tools</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code-explorer</code></td>
+<td>sonnet</td>
+<td>Read, Glob, Grep, Bash</td>
+<td>Explore codebases to find relevant files and map architecture</td>
+</tr>
+<tr>
+<td><code>code-architect</code></td>
+<td>inherit</td>
+<td>Read, Glob, Grep</td>
+<td>Design implementation blueprints from exploration findings</td>
+</tr>
+<tr>
+<td><code>code-reviewer</code></td>
+<td>inherit</td>
+<td>Read, Glob, Grep</td>
+<td>Review code for correctness, security, and maintainability</td>
+</tr>
+<tr>
+<td><code>codebase-synthesizer</code></td>
+<td>inherit</td>
+<td>Read, Glob, Grep</td>
+<td>Merge findings from multiple code-explorer agents</td>
+</tr>
+<tr>
+<td><code>docs-writer</code></td>
+<td>inherit</td>
+<td>Read, Glob, Grep, Bash</td>
+<td>Generate MkDocs or GitHub-flavored Markdown documentation</td>
+</tr>
+<tr>
+<td><code>researcher</code></td>
+<td>inherit</td>
+<td>(web tools)</td>
+<td>Research technical docs via web search and Context7</td>
+</tr>
+<tr>
+<td><code>changelog-agent</code></td>
+<td>(default)</td>
+<td>Bash, Read, Edit, Glob, Grep</td>
+<td>Analyze git history and update CHANGELOG.md</td>
+</tr>
+<tr>
+<td><code>team-code-explorer</code></td>
+<td>sonnet</td>
+<td>Read, Glob, Grep, Bash, SendMessage, TaskUpdate, TaskGet, TaskList</td>
+<td>Code explorer with team communication capabilities</td>
+</tr>
+<tr>
+<td><code>team-codebase-synthesizer</code></td>
+<td>inherit</td>
+<td>Read, Glob, Grep, SendMessage, TaskUpdate, TaskGet, TaskList</td>
+<td>Synthesizer with interactive follow-up via Agent Teams</td>
+</tr>
+<tr>
+<td><code>team-deep-analyst</code></td>
+<td>opus</td>
+<td>Read, Glob, Grep, Bash, SendMessage, TaskUpdate, TaskGet, TaskList</td>
+<td>Specialist for cross-cutting concerns, security audits, git history</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Model</th>
+<th>Tools</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>task-executor</code></td>
+<td>inherit</td>
+<td>Read, Write, Edit, Glob, Grep, Bash, TaskGet, TaskUpdate, TaskList</td>
+<td>Execute a single task through understand-implement-verify-complete phases</td>
+</tr>
+<tr>
+<td><code>spec-analyzer</code></td>
+<td>inherit</td>
+<td>AskUserQuestion, Read, Write, Edit, Glob, Grep</td>
+<td>Analyze specs for quality issues and guide interactive resolution</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h4 id="model-tiering">Model Tiering<a class="headerlink" href="#model-tiering" title="Permanent link">&para;</a></h4>
+<p>Agents are assigned to model tiers based on the cognitive demands of their work:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Cost</th>
+<th>When to Use</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>opus</code></td>
+<td>Highest</td>
+<td>Complex reasoning, synthesis, architecture design</td>
+<td><code>codebase-synthesizer</code>, <code>team-deep-analyst</code></td>
+</tr>
+<tr>
+<td><code>sonnet</code></td>
+<td>Medium</td>
+<td>Exploration, pattern detection, broad search</td>
+<td><code>code-explorer</code>, <code>team-code-explorer</code></td>
+</tr>
+<tr>
+<td><code>haiku</code></td>
+<td>Lowest</td>
+<td>Mechanical, procedural tasks with clear rules</td>
+<td><code>git-commit</code>, <code>bump-plugin-version</code></td>
+</tr>
+<tr>
+<td><code>inherit</code></td>
+<td>Varies</td>
+<td>Use the parent session's model</td>
+<td><code>code-architect</code>, <code>researcher</code>, <code>task-executor</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Cost Optimization</p>
+<p>Model tiering is a deliberate cost optimization strategy. Exploratory work that benefits from breadth (scanning many files) uses the faster, cheaper <code>sonnet</code>. Synthesis work that requires depth (merging findings, designing architecture) uses the more capable <code>opus</code>. Simple procedural tasks that follow rigid rules use the cheapest <code>haiku</code>.</p>
+</div>
+<h4 id="spawning-agents">Spawning Agents<a class="headerlink" href="#spawning-agents" title="Permanent link">&para;</a></h4>
+<p>Skills spawn agents using the <code>Task</code> tool with the <code>subagent_type</code> parameter. The agent type follows the format <code>{plugin-name}:{agent-name}</code>:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Launch a code-explorer agent using the Task tool:
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">-</span><span class="w"> </span>subagent_type: &quot;claude-alchemy-tools:code-explorer&quot;
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">-</span><span class="w"> </span>model: &quot;sonnet&quot;
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="k">-</span><span class="w"> </span>prompt: &quot;Explore entry points and user-facing code at /path/to/project...&quot;
+</span></code></pre></div>
+<p>For team-based agents, the <code>team_name</code> parameter is also required to join the agent to a team:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Launch a team-code-explorer agent:
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">-</span><span class="w"> </span>subagent_type: &quot;claude-alchemy-tools:team-code-explorer&quot;
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">-</span><span class="w"> </span>model: &quot;sonnet&quot;
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">-</span><span class="w"> </span>team_name: &quot;deep-analysis-1707300000&quot;
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="k">-</span><span class="w"> </span>prompt: &quot;You are part of a deep analysis team...&quot;
+</span></code></pre></div>
+<hr />
+<h3 id="hooks">Hooks<a class="headerlink" href="#hooks" title="Permanent link">&para;</a></h3>
+<p>Hooks provide event-driven automation by running shell scripts in response to Claude Code tool invocations. They are defined in a <code>hooks/hooks.json</code> file within the plugin directory.</p>
+<h4 id="hook-configuration">Hook Configuration<a class="headerlink" href="#hook-configuration" title="Permanent link">&para;</a></h4>
+<div class="highlight"><span class="filename">plugins/sdd/hooks/hooks.json</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Auto-approve file operations for execute-tasks session management&quot;</span><span class="p">,</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">&quot;hooks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="nt">&quot;PreToolUse&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">        </span><span class="nt">&quot;matcher&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Write|Edit|Bash&quot;</span><span class="p">,</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">        </span><span class="nt">&quot;hooks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">          </span><span class="p">{</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;command&quot;</span><span class="p">,</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">            </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bash ${CLAUDE_PLUGIN_ROOT}/hooks/auto-approve-session.sh&quot;</span><span class="p">,</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">            </span><span class="nt">&quot;timeout&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">          </span><span class="p">}</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">        </span><span class="p">]</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">    </span><span class="p">]</span>
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="p">}</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PreToolUse</code> / <code>PostToolUse</code></td>
+<td>Event type -- fires before or after a tool is invoked</td>
+</tr>
+<tr>
+<td><code>matcher</code></td>
+<td>Regex pattern matching tool names (e.g., <code>Write\|Edit\|Bash</code>)</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>Hook type -- currently only <code>command</code> is supported</td>
+</tr>
+<tr>
+<td><code>command</code></td>
+<td>Shell command to execute. <code>${CLAUDE_PLUGIN_ROOT}</code> resolves to the plugin directory</td>
+</tr>
+<tr>
+<td><code>timeout</code></td>
+<td>Maximum execution time in seconds</td>
+</tr>
+</tbody>
+</table>
+<h4 id="how-the-auto-approve-hook-works">How the Auto-Approve Hook Works<a class="headerlink" href="#how-the-auto-approve-hook-works" title="Permanent link">&para;</a></h4>
+<p>The SDD plugin's <code>auto-approve-session.sh</code> hook enables the <code>execute-tasks</code> skill to write session files without prompting the user for permission on every file operation. The hook receives the tool invocation as JSON on stdin and returns a permission decision:</p>
+<pre class="mermaid"><code>flowchart TD
+    A["Claude invokes Write/Edit/Bash"] --&gt; B{"Hook receives tool input"}
+    B --&gt; C{"Is target path a session file?"}
+    C --&gt;|"~/.claude/tasks/*/execution_pointer.md"| D["Return: allow"]
+    C --&gt;|"*/.claude/sessions/*"| D
+    C --&gt;|"Bash with mkdir/mv targeting .claude/sessions/"| D
+    C --&gt;|"Other path"| E["Exit silently (no opinion)"]
+    E --&gt; F["Normal permission flow"]</code></pre>
+<div class="admonition warning">
+<p class="admonition-title">Scope Limitation</p>
+<p>The auto-approve hook only approves operations on session-related paths. All other file operations fall through to Claude Code's normal permission flow, where the user is prompted for approval.</p>
+</div>
+<hr />
+<h3 id="plugin-manifests">Plugin Manifests<a class="headerlink" href="#plugin-manifests" title="Permanent link">&para;</a></h3>
+<p>Each plugin has its own <code>plugin.json</code> manifest, and a root-level <code>marketplace.json</code> tracks all plugins. Both files must be kept in sync when versions change.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Plugin Manifest</label><label for="__tabbed_3_2">Marketplace Registry</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">plugins/tools/.claude-plugin/plugin.json</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;claude-alchemy-tools&quot;</span><span class="p">,</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.2.2&quot;</span><span class="p">,</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Developer tools for feature development, Git workflows, and release automation&quot;</span><span class="p">,</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">  </span><span class="nt">&quot;author&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Stephen Sequenzia&quot;</span><span class="p">,</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">    </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sequenzia@gmail.com&quot;</span><span class="p">,</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">    </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://sequenzia.com&quot;</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">  </span><span class="nt">&quot;homepage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://github.com/sequenzia/claude-alchemy/tree/main/plugins/tools&quot;</span><span class="p">,</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">  </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://github.com/sequenzia/claude-alchemy/tree/main/plugins/tools&quot;</span><span class="p">,</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">  </span><span class="nt">&quot;license&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MIT&quot;</span><span class="p">,</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">  </span><span class="nt">&quot;keywords&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;claude-code&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;agents&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;skills&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;hooks&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;workflow&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;automation&quot;</span><span class="p">]</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">.claude-plugin/marketplace.json</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;claude-alchemy&quot;</span><span class="p">,</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Custom plugins for Claude Alchemy&quot;</span><span class="p">,</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="nt">&quot;plugins&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;claude-alchemy-tools&quot;</span><span class="p">,</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">      </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.2.2&quot;</span><span class="p">,</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">      </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./plugins/tools/&quot;</span><span class="p">,</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">      </span><span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;development&quot;</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;claude-alchemy-sdd&quot;</span><span class="p">,</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="w">      </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.2.6&quot;</span><span class="p">,</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="w">      </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./plugins/sdd/&quot;</span><span class="p">,</span>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="w">      </span><span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;development&quot;</span>
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="w">  </span><span class="p">]</span>
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Version Synchronization</p>
+<p>The <code>version</code> field must match between <code>plugin.json</code> and the corresponding entry in <code>marketplace.json</code>. The <code>/tools:bump-plugin-version</code> skill handles this automatically -- it updates both files in a single operation.</p>
+</div>
+<hr />
+<h2 id="agent-orchestration-patterns">Agent Orchestration Patterns<a class="headerlink" href="#agent-orchestration-patterns" title="Permanent link">&para;</a></h2>
+<p>Skills use several orchestration patterns to coordinate agents. The choice of pattern depends on the nature of the work: independent exploration benefits from parallelism, while synthesis requires sequential dependencies.</p>
+<h3 id="parallel-exploration">Parallel Exploration<a class="headerlink" href="#parallel-exploration" title="Permanent link">&para;</a></h3>
+<p>Multiple agents are launched simultaneously, each with a distinct focus area to minimize overlap. The skill waits for all agents to complete before proceeding.</p>
+<pre class="mermaid"><code>graph LR
+    S["Skill (orchestrator)"] --&gt;|"launch"| E1["Explorer 1\n(entry points)"]
+    S --&gt;|"launch"| E2["Explorer 2\n(data models)"]
+    S --&gt;|"launch"| E3["Explorer 3\n(infrastructure)"]
+    E1 --&gt;|"findings"| S
+    E2 --&gt;|"findings"| S
+    E3 --&gt;|"findings"| S</code></pre>
+<p><strong>Used by:</strong> <code>deep-analysis</code>, <code>teams-deep-analysis</code>, <code>feature-dev</code>, <code>codebase-analysis</code></p>
+<p>The <code>deep-analysis</code> skill launches 2-3 <code>code-explorer</code> agents in parallel, each assigned a focus area like "entry points and user-facing code", "data models and storage", or "utilities and shared infrastructure". The skill waits for all agents to report back, then passes their combined findings to a synthesizer.</p>
+<h3 id="sequential-pipeline">Sequential Pipeline<a class="headerlink" href="#sequential-pipeline" title="Permanent link">&para;</a></h3>
+<p>The output of one phase becomes the input of the next. A synthesizer agent only starts after all explorers have completed.</p>
+<pre class="mermaid"><code>graph LR
+    E1["Explorer 1"] --&gt; W["Wait for all"]
+    E2["Explorer 2"] --&gt; W
+    E3["Explorer 3"] --&gt; W
+    W --&gt; SY["Synthesizer\n(opus)"]
+    SY --&gt; R["Results"]</code></pre>
+<p><strong>Used by:</strong> <code>deep-analysis</code>, <code>codebase-analysis</code></p>
+<p>This pattern combines parallel exploration with sequential synthesis. The synthesizer reads all exploration reports, merges duplicates, resolves conflicts, and produces a unified analysis. The synthesizer uses <code>opus</code> for its deeper reasoning capabilities.</p>
+<h3 id="team-collaboration">Team Collaboration<a class="headerlink" href="#team-collaboration" title="Permanent link">&para;</a></h3>
+<p>Agent Teams enable real-time inter-agent communication via <code>SendMessage</code>. Explorers share discoveries with each other as they work, and the synthesizer can ask follow-up questions to resolve conflicts.</p>
+<pre class="mermaid"><code>graph TB
+    Lead["Lead (skill orchestrator)"]
+    Lead --&gt;|"spawn + assign"| E1["Explorer 1"]
+    Lead --&gt;|"spawn + assign"| E2["Explorer 2"]
+    Lead --&gt;|"spawn + assign"| E3["Explorer 3"]
+    Lead --&gt;|"spawn"| SY["Synthesizer"]
+    Lead --&gt;|"spawn"| AN["Deep Analyst"]
+
+    E1 &lt;--&gt;|"SendMessage"| E2
+    E2 &lt;--&gt;|"SendMessage"| E3
+    E1 &lt;--&gt;|"SendMessage"| E3
+    SY --&gt;|"follow-up questions"| E1
+    SY --&gt;|"follow-up questions"| E2
+    SY --&gt;|"follow-up questions"| E3
+    SY --&gt;|"delegate investigation"| AN</code></pre>
+<p><strong>Used by:</strong> <code>teams-deep-analysis</code></p>
+<p>The team-based workflow creates a named team with 5 agents: 3 explorers, 1 synthesizer, and 1 deep analyst. Explorers proactively share significant discoveries (shared utilities, unexpected integration points, cross-cutting patterns) with their teammates via <code>SendMessage</code>. The synthesizer can ask explorers follow-up questions to clarify conflicts. The deep analyst activates on demand for complex investigations that require <code>Bash</code> access (git history, dependency trees, static analysis).</p>
+<h3 id="wave-based-concurrency">Wave-Based Concurrency<a class="headerlink" href="#wave-based-concurrency" title="Permanent link">&para;</a></h3>
+<p>Tasks are organized into dependency-based waves using topological sorting. Within each wave, up to <code>max_parallel</code> agents execute simultaneously. The next wave starts only after the current wave completes.</p>
+<pre class="mermaid"><code>graph TB
+    subgraph Wave1["Wave 1 (no dependencies)"]
+        T1["Task 1"]
+        T2["Task 2"]
+        T3["Task 3"]
+    end
+    subgraph Wave2["Wave 2 (depends on Wave 1)"]
+        T4["Task 4"]
+        T5["Task 5"]
+    end
+    subgraph Wave3["Wave 3 (depends on Wave 2)"]
+        T6["Task 6"]
+    end
+    Wave1 --&gt; Wave2
+    Wave2 --&gt; Wave3</code></pre>
+<p><strong>Used by:</strong> <code>execute-tasks</code></p>
+<p>The <code>execute-tasks</code> skill builds a dependency graph from task <code>blockedBy</code> relationships and assigns tasks to waves via topological sort. Wave 1 contains all tasks with no dependencies, Wave 2 contains tasks that depend only on Wave 1 tasks, and so on. Within each wave, tasks are sorted by priority (<code>critical</code> &gt; <code>high</code> &gt; <code>medium</code> &gt; <code>low</code>) and by how many other tasks they unblock. If a wave exceeds <code>max_parallel</code>, it splits into sub-waves.</p>
+<p>Each task in a wave is executed by a dedicated <code>task-executor</code> agent that follows a 4-phase workflow: Understand, Implement, Verify, Complete. Agents share learnings across tasks through a shared <code>execution_context.md</code> file.</p>
+<hr />
+<h2 id="plugin-directory-layout">Plugin Directory Layout<a class="headerlink" href="#plugin-directory-layout" title="Permanent link">&para;</a></h2>
+<p>Both plugins follow the same structural conventions:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>plugins/{name}/
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>├── agents/
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>│   └── {agent-name}.md            # Agent definition (kebab-case filename)
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>├── skills/
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>│   └── {skill-name}/
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>│       ├── SKILL.md                # Skill definition with YAML frontmatter
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>│       └── references/             # Optional: reference materials loaded at runtime
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>│           ├── template.md
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>│           └── examples.md
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>├── hooks/                          # Optional: event-driven automation
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>│   ├── hooks.json                  # Hook configuration
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>│   └── *.sh                        # Hook scripts
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>├── .claude-plugin/
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>│   └── plugin.json                 # Plugin manifest (name, version, metadata)
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>└── README.md                       # Plugin documentation
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Naming Conventions</p>
+<ul>
+<li><strong>Plugin names</strong>: <code>claude-alchemy-{category}</code> (e.g., <code>claude-alchemy-tools</code>, <code>claude-alchemy-sdd</code>)</li>
+<li><strong>Skill directories</strong>: kebab-case matching the <code>name</code> field in <code>SKILL.md</code> (e.g., <code>feature-dev/</code>, <code>git-commit/</code>)</li>
+<li><strong>Agent files</strong>: kebab-case with <code>.md</code> extension (e.g., <code>code-explorer.md</code>, <code>task-executor.md</code>)</li>
+<li><strong>Skill definitions</strong>: Always named <code>SKILL.md</code> (uppercase)</li>
+</ul>
+</div>
+<h2 id="runtime-variables">Runtime Variables<a class="headerlink" href="#runtime-variables" title="Permanent link">&para;</a></h2>
+<p>Plugins have access to these variables at runtime:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>${CLAUDE_PLUGIN_ROOT}</code></td>
+<td>Absolute path to the plugin root directory</td>
+<td><code>/path/to/plugins/tools</code></td>
+</tr>
+<tr>
+<td><code>$ARGUMENTS</code></td>
+<td>Raw text passed after the skill name during invocation</td>
+<td><code>implement auth --teams</code></td>
+</tr>
+</tbody>
+</table>
+<p>Skills use <code>${CLAUDE_PLUGIN_ROOT}</code> to load reference materials and compose other skills:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Read <span class="sb">`${CLAUDE_PLUGIN_ROOT}/skills/deep-analysis/SKILL.md`</span> and follow its workflow.
+</span></code></pre></div>
+<h2 id="related-pages">Related Pages<a class="headerlink" href="#related-pages" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../tools-plugin/">Tools Plugin</a> -- Detailed reference for all tools plugin skills and agents</li>
+<li><a href="../sdd-plugin/">SDD Plugin</a> -- Detailed reference for the spec-driven development plugin</li>
+<li><a href="../sdd-workflow/">SDD Workflow</a> -- End-to-end walkthrough of the SDD lifecycle</li>
+<li><a href="../../architecture/overview/">Architecture Overview</a> -- High-level system architecture including plugins</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

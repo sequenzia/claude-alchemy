@@ -1,0 +1,2844 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A monorepo combining Claude Code plugins and a real-time Task Manager application">
+      
+      
+      
+      
+        <link rel="prev" href="../overview/">
+      
+      
+        <link rel="next" href="../sdd-plugin/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Tools Plugin - Claude Alchemy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#tools-plugin" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Claude Alchemy" class="md-header__button md-logo" aria-label="Claude Alchemy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Claude Alchemy
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Tools Plugin
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sequenzia/claude-alchemy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sequenzia/claude-alchemy
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../task-manager/overview/" class="md-tabs__link">
+          
+  
+  
+  Task Manager
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../overview/" class="md-tabs__link">
+          
+  
+  
+  Plugins
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/setup/" class="md-tabs__link">
+          
+  
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Claude Alchemy" class="md-nav__button md-logo" aria-label="Claude Alchemy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Claude Alchemy
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sequenzia/claude-alchemy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sequenzia/claude-alchemy
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/filesystem-message-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Filesystem Message Bus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task Manager
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Task Manager
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/real-time-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Real-Time System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugins
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Plugins
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools Plugin
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools Plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-invocable-skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User-Invocable Skills
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="User-Invocable Skills">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#feature-dev" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        feature-dev
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#codebase-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        codebase-analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deep-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        deep-analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teams-deep-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        teams-deep-analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docs-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        docs-manager
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        git-commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bump-plugin-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bump-plugin-version
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        release
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supporting-skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supporting Skills
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Supporting Skills">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        architecture-patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#language-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        language-patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#project-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        project-conventions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        code-quality
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changelog-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        changelog-format
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agents
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        code-explorer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#team-code-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        team-code-explorer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-architect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        code-architect
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-reviewer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        code-reviewer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#codebase-synthesizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        codebase-synthesizer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#team-codebase-synthesizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        team-codebase-synthesizer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#team-deep-analyst" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        team-deep-analyst
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changelog-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        changelog-agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docs-writer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        docs-writer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#researcher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        researcher
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plugin-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plugin Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model-tiering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model Tiering
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-materials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference Materials
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sdd-plugin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDD Plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sdd-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDD Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/conventions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-invocable-skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User-Invocable Skills
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="User-Invocable Skills">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#feature-dev" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        feature-dev
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#codebase-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        codebase-analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deep-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        deep-analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teams-deep-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        teams-deep-analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docs-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        docs-manager
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        git-commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bump-plugin-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bump-plugin-version
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        release
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supporting-skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supporting Skills
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Supporting Skills">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        architecture-patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#language-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        language-patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#project-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        project-conventions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        code-quality
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changelog-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        changelog-format
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agents
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        code-explorer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#team-code-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        team-code-explorer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-architect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        code-architect
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-reviewer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        code-reviewer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#codebase-synthesizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        codebase-synthesizer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#team-codebase-synthesizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        team-codebase-synthesizer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#team-deep-analyst" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        team-deep-analyst
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changelog-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        changelog-agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docs-writer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        docs-writer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#researcher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        researcher
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plugin-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plugin Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model-tiering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model Tiering
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-materials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference Materials
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<!-- docs/plugins/tools-plugin.md -->
+<h1 id="tools-plugin">Tools Plugin<a class="headerlink" href="#tools-plugin" title="Permanent link">&para;</a></h1>
+<p><strong>claude-alchemy-tools v0.2.2</strong> --- General developer skills and agents for codebase analysis, feature development, documentation management, Git workflows, and release automation.</p>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>The Tools Plugin provides 8 user-invocable skills, 5 supporting skills, and 10 specialized agents that work together to automate common development workflows. Skills orchestrate agents via the Task tool with model tiering --- lightweight tasks run on Haiku, exploration on Sonnet, and synthesis/architecture/review work on Opus.</p>
+<pre class="mermaid"><code>graph TD
+    subgraph "User-Invocable Skills"
+        FD[feature-dev]
+        CA[codebase-analysis]
+        DA[deep-analysis]
+        TDA[teams-deep-analysis]
+        DM[docs-manager]
+        GC[git-commit]
+        BPV[bump-plugin-version]
+        REL[release]
+    end
+
+    subgraph "Agents"
+        CE[code-explorer]
+        TCE[team-code-explorer]
+        CAR[code-architect]
+        CR[code-reviewer]
+        CS[codebase-synthesizer]
+        TCS[team-codebase-synthesizer]
+        TDNA[team-deep-analyst]
+        CHA[changelog-agent]
+        DW[docs-writer]
+        RES[researcher]
+    end
+
+    FD --&gt; CE
+    FD --&gt; CS
+    FD --&gt; CAR
+    FD --&gt; CR
+    CA --&gt; CE
+    CA --&gt; CS
+    DA --&gt; CE
+    DA --&gt; CS
+    TDA --&gt; TCE
+    TDA --&gt; TCS
+    TDA --&gt; TDNA
+    DM --&gt; CE
+    DM --&gt; CS
+    DM --&gt; DW
+    REL --&gt; CHA</code></pre>
+<hr />
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<p>The plugin is located at <code>plugins/tools/</code> within the Claude Alchemy monorepo. It requires no build step --- skills are Markdown files with YAML frontmatter, and agents are standalone Markdown definitions.</p>
+<p>All skills are invoked with the <code>/tools:</code> prefix:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>/tools:skill-name [arguments]
+</span></code></pre></div>
+<hr />
+<h2 id="user-invocable-skills">User-Invocable Skills<a class="headerlink" href="#user-invocable-skills" title="Permanent link">&para;</a></h2>
+<p>These skills are triggered directly by the user via the <code>/tools:</code> prefix.</p>
+<h3 id="feature-dev">feature-dev<a class="headerlink" href="#feature-dev" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Model: inherit | Invocation: <code>/tools:feature-dev &lt;feature-description&gt; [--teams]</code></p>
+</div>
+<p>A comprehensive 7-phase feature development workflow that guides a feature from understanding through implementation and review.</p>
+<p><strong>Phases:</strong></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Phase</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Discovery</td>
+<td>Analyze feature requirements and confirm understanding with the user</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Codebase Exploration</td>
+<td>Run <code>deep-analysis</code> (or <code>teams-deep-analysis</code> with <code>--teams</code>) to map relevant code</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Clarifying Questions</td>
+<td>Resolve ambiguities that would impact implementation</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Architecture Design</td>
+<td>Launch 2--3 <code>code-architect</code> agents with different approaches, present trade-offs, user selects, and an ADR is generated</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Implementation</td>
+<td>Build the feature following the chosen architecture design</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Quality Review</td>
+<td>Launch 3 <code>code-reviewer</code> agents (correctness, security, maintainability) with confidence-scored findings (&gt;=80 threshold)</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Summary</td>
+<td>Document accomplishments and update CHANGELOG.md</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Agents spawned:</strong> <code>code-explorer</code> (Sonnet), <code>codebase-synthesizer</code> (Opus), <code>code-architect</code> (Opus), <code>code-reviewer</code> (Opus)</p>
+<p><strong>Supporting skills loaded:</strong> <code>project-conventions</code>, <code>language-patterns</code>, <code>architecture-patterns</code>, <code>code-quality</code>, <code>changelog-format</code></p>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<div class="highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>/tools:feature-dev Add OAuth2 login flow with Google and GitHub providers
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>/tools:feature-dev Add dark mode toggle --teams
+</span></code></pre></div>
+</div>
+<hr />
+<h3 id="codebase-analysis">codebase-analysis<a class="headerlink" href="#codebase-analysis" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Model: inherit | Invocation: <code>/tools:codebase-analysis &lt;analysis-context&gt; [--teams]</code></p>
+</div>
+<p>A 3-phase structured codebase analysis workflow that explores the codebase, presents a detailed report, and offers post-analysis actions.</p>
+<p><strong>Phases:</strong></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Phase</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Deep Analysis</td>
+<td>Run <code>deep-analysis</code> (or <code>teams-deep-analysis</code> with <code>--teams</code>) for exploration and synthesis</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Reporting</td>
+<td>Present structured report: executive summary, architecture overview, critical files, patterns, risks, recommendations</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Post-Analysis Actions</td>
+<td>Multi-select menu: save report, update README/CLAUDE.md, retain summary in memory, address actionable insights</td>
+</tr>
+</tbody>
+</table>
+<p>The post-analysis "Address Actionable Insights" action extracts challenges and recommendations from the report, ranks them by severity, and lets the user select which ones to fix --- spawning <code>code-architect</code> or <code>code-explorer</code> agents as needed for complex items.</p>
+<p><strong>Agents spawned:</strong> <code>code-explorer</code> (Sonnet), <code>codebase-synthesizer</code> (Opus)</p>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<div class="highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>/tools:codebase-analysis authentication and authorization flow
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>/tools:codebase-analysis --teams
+</span></code></pre></div>
+</div>
+<hr />
+<h3 id="deep-analysis">deep-analysis<a class="headerlink" href="#deep-analysis" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Model: inherit | Invocation: <code>/tools:deep-analysis &lt;analysis-context&gt;</code></p>
+</div>
+<p>A reusable exploration and synthesis building block. Launches parallel <code>code-explorer</code> agents to investigate distinct focus areas, then merges findings with a <code>codebase-synthesizer</code> agent. Other skills (like <code>feature-dev</code> and <code>codebase-analysis</code>) load this skill as an internal workflow step.</p>
+<p><strong>Workflow:</strong></p>
+<ol>
+<li>Determine focus areas (2--3 agents depending on scope)</li>
+<li>Launch <code>code-explorer</code> agents in parallel with distinct focus areas</li>
+<li>Wait for all explorers to complete</li>
+<li>Launch <code>codebase-synthesizer</code> to merge, deduplicate, and deepen the analysis</li>
+<li>Return synthesized results (standalone: present to user; loaded by another skill: return control)</li>
+</ol>
+<p><strong>Agents spawned:</strong> <code>code-explorer</code> (Sonnet, 2--3 instances), <code>codebase-synthesizer</code> (Opus)</p>
+<p><strong>Supporting skills loaded:</strong> <code>project-conventions</code>, <code>language-patterns</code></p>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<div class="highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/tools:deep-analysis real-time data synchronization layer
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>/tools:deep-analysis
+</span></code></pre></div>
+</div>
+<hr />
+<h3 id="teams-deep-analysis">teams-deep-analysis<a class="headerlink" href="#teams-deep-analysis" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Model: inherit | Invocation: <code>/tools:teams-deep-analysis &lt;analysis-context&gt;</code></p>
+</div>
+<p>A team-based variant of <code>deep-analysis</code> that uses Agent Teams for inter-agent collaboration. Explorers share discoveries with each other via <code>SendMessage</code> as they work, the synthesizer can ask explorers follow-up questions, and a deep analyst agent is available on demand for complex cross-cutting investigations.</p>
+<p><strong>Phases:</strong></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Phase</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Team Setup</td>
+<td>Create team, spawn 5 teammates (3 explorers + 1 synthesizer + 1 analyst), create and assign tasks with dependencies</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Collaborative Exploration</td>
+<td>Explorers work in parallel, proactively sharing discoveries with each other</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Lead Checkpoint + Synthesis</td>
+<td>Verify exploration completeness, launch synthesizer with access to all explorers and the deep analyst</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Completion + Cleanup</td>
+<td>Collect results, present or return, shut down all teammates, delete team</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Agents spawned:</strong> <code>team-code-explorer</code> (Sonnet, 3 instances), <code>team-codebase-synthesizer</code> (Opus), <code>team-deep-analyst</code> (Opus)</p>
+<p><strong>Supporting skills loaded:</strong> <code>project-conventions</code>, <code>language-patterns</code></p>
+<div class="admonition tip">
+<p class="admonition-title">When to use teams</p>
+<p>Use the <code>--teams</code> flag (or invoke this skill directly) when analyzing large or complex codebases where inter-agent collaboration and follow-up questions would improve analysis depth. For simpler codebases, the standard <code>deep-analysis</code> is faster and uses fewer resources.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<div class="highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/tools:teams-deep-analysis microservices communication patterns
+</span></code></pre></div>
+</div>
+<hr />
+<h3 id="docs-manager">docs-manager<a class="headerlink" href="#docs-manager" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Model: inherit | Invocation: <code>/tools:docs-manager &lt;action-or-description&gt; [--teams]</code></p>
+</div>
+<p>A 6-phase documentation management workflow that supports three documentation formats and multiple action types.</p>
+<p><strong>Supported documentation types:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Output</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MkDocs site</td>
+<td>Material for MkDocs pages under <code>docs/</code></td>
+<td>API reference, architecture guides, getting started</td>
+</tr>
+<tr>
+<td>Basic Markdown</td>
+<td>Standalone GFM files</td>
+<td>README.md, CONTRIBUTING.md, ARCHITECTURE.md</td>
+</tr>
+<tr>
+<td>Change Summary</td>
+<td>Changelog entries, release notes</td>
+<td>Markdown changelog, commit message, MkDocs page</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Phases:</strong></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Phase</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Interactive Discovery</td>
+<td>Determine doc type, format, and scope through user interaction</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Project Detection &amp; Setup</td>
+<td>Detect project metadata, check existing docs, conditionally scaffold MkDocs</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Codebase Analysis</td>
+<td>Run <code>deep-analysis</code> for documentation-focused exploration (skipped for change summaries)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Documentation Planning</td>
+<td>Translate findings into a concrete plan with page list, outlines, and nav structure</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Documentation Generation</td>
+<td>Launch <code>docs-writer</code> agents --- parallel for independent pages, sequential for dependent pages</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Integration &amp; Finalization</td>
+<td>Write files, validate cross-references, present results</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Agents spawned:</strong> <code>code-explorer</code> (Sonnet), <code>codebase-synthesizer</code> (Opus), <code>docs-writer</code> (Opus)</p>
+<p><strong>Reference materials:</strong> <code>mkdocs-config-template.md</code>, <code>change-summary-templates.md</code>, <code>markdown-file-templates.md</code></p>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<div class="highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>/tools:docs-manager create MkDocs documentation site
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>/tools:docs-manager write README and CONTRIBUTING
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>/tools:docs-manager changelog since last tag
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>/tools:docs-manager update API docs --teams
+</span></code></pre></div>
+</div>
+<hr />
+<h3 id="git-commit">git-commit<a class="headerlink" href="#git-commit" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Model: haiku | Invocation: <code>/tools:git-commit</code></p>
+</div>
+<p>Stages all changes, analyzes the diff, and generates a conventional commit message. Runs on Haiku for speed and cost efficiency.</p>
+<p><strong>Workflow:</strong></p>
+<ol>
+<li>Check repository state (<code>git status</code>)</li>
+<li>Stage all changes (<code>git add .</code>)</li>
+<li>Analyze the staged diff to determine type, scope, and description</li>
+<li>Construct a conventional commit message (imperative mood, lowercase, under 72 characters)</li>
+<li>Create the commit</li>
+<li>Report the result (or handle pre-commit hook failures)</li>
+</ol>
+<p><strong>Commit types:</strong> <code>feat</code>, <code>fix</code>, <code>docs</code>, <code>style</code>, <code>refactor</code>, <code>test</code>, <code>chore</code>, <code>build</code>, <code>ci</code>, <code>perf</code></p>
+<div class="admonition warning">
+<p class="admonition-title">Stages all changes</p>
+<p>This skill runs <code>git add .</code> before committing. All untracked files and modifications will be included. Review your working directory before invoking.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<div class="highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>/tools:git-commit
+</span></code></pre></div>
+</div>
+<hr />
+<h3 id="bump-plugin-version">bump-plugin-version<a class="headerlink" href="#bump-plugin-version" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Model: haiku | Invocation: <code>/tools:bump-plugin-version</code></p>
+</div>
+<p>Discovers all plugins in the repository, prompts the user to select one and choose a bump level, then updates both the plugin's <code>plugin.json</code> and the root <code>marketplace.json</code>.</p>
+<p><strong>Workflow:</strong></p>
+<ol>
+<li>Discover plugins by scanning <code>plugins/*/</code> directories</li>
+<li>Present plugins with current versions for user selection</li>
+<li>Prompt for bump level: patch, minor, or major</li>
+<li>Calculate the new version using semver rules</li>
+<li>Update <code>plugins/{name}/.claude-plugin/plugin.json</code></li>
+<li>Update <code>.claude-plugin/marketplace.json</code></li>
+</ol>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<div class="highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>/tools:bump-plugin-version
+</span></code></pre></div>
+</div>
+<hr />
+<h3 id="release">release<a class="headerlink" href="#release" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Model: haiku | Invocation: <code>/tools:release [version-override]</code></p>
+</div>
+<p>A Python release workflow with pre-flight checks, automated tests, version calculation from CHANGELOG.md, and git tag creation. Uses <code>uv</code> and <code>ruff</code> for Python tooling.</p>
+<p><strong>Workflow (9 steps, fail-fast):</strong></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Step</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Pre-flight Checks</td>
+<td>Must be on <code>main</code>, clean working directory, pull latest</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Run Tests</td>
+<td><code>uv run pytest</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Run Linting</td>
+<td><code>uv run ruff check</code> and <code>uv run ruff format --check</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Verify Build</td>
+<td><code>uv build</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Changelog Update Check</td>
+<td>Optionally spawn <code>changelog-agent</code> to update <code>[Unreleased]</code> section</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Calculate Version</td>
+<td>Parse CHANGELOG.md, apply semver rules based on change types, user confirms</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Update CHANGELOG.md</td>
+<td>Move <code>[Unreleased]</code> entries to new version section with date and comparison links</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Commit Changelog</td>
+<td>Stage, commit, and push the changelog update</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Create and Push Tag</td>
+<td>Annotated tag <code>v{version}</code>, push to remote</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Agents spawned (optional):</strong> <code>changelog-agent</code></p>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<div class="highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>/tools:release
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>/tools:release 2.0.0
+</span></code></pre></div>
+</div>
+<hr />
+<h2 id="supporting-skills">Supporting Skills<a class="headerlink" href="#supporting-skills" title="Permanent link">&para;</a></h2>
+<p>These skills are not directly invocable by the user. They are loaded at runtime by other skills to provide domain knowledge and guidance.</p>
+<h3 id="architecture-patterns">architecture-patterns<a class="headerlink" href="#architecture-patterns" title="Permanent link">&para;</a></h3>
+<p>Provides architectural pattern knowledge including MVC, event-driven, layered, microservices, and CQRS patterns. Includes a pattern selection guide based on existing architecture, team familiarity, feature requirements, and scale.</p>
+<p><strong>Loaded by:</strong> <code>feature-dev</code> (Phase 4: Architecture Design)</p>
+<hr />
+<h3 id="language-patterns">language-patterns<a class="headerlink" href="#language-patterns" title="Permanent link">&para;</a></h3>
+<p>Provides language-specific patterns and idioms for TypeScript, Python, and React. Covers type safety, error handling, component patterns, and framework-specific best practices.</p>
+<p><strong>Loaded by:</strong> <code>feature-dev</code> (Phase 4: Architecture Design), <code>deep-analysis</code> (Phase 1), <code>teams-deep-analysis</code> (Phase 1)</p>
+<hr />
+<h3 id="project-conventions">project-conventions<a class="headerlink" href="#project-conventions" title="Permanent link">&para;</a></h3>
+<p>Guides discovery and application of project-specific conventions by inspecting configuration files (<code>tsconfig.json</code>, <code>pyproject.toml</code>, <code>.eslintrc</code>, etc.) and existing code patterns. Covers naming, structure, and team practices.</p>
+<p><strong>Loaded by:</strong> <code>deep-analysis</code> (Phase 1), <code>teams-deep-analysis</code> (Phase 1)</p>
+<hr />
+<h3 id="code-quality">code-quality<a class="headerlink" href="#code-quality" title="Permanent link">&para;</a></h3>
+<p>Provides code quality principles including SOLID, DRY, testing strategies, and review standards. Used as a reference during code review phases.</p>
+<p><strong>Loaded by:</strong> <code>feature-dev</code> (Phase 6: Quality Review)</p>
+<hr />
+<h3 id="changelog-format">changelog-format<a class="headerlink" href="#changelog-format" title="Permanent link">&para;</a></h3>
+<p>Keep a Changelog specification and entry writing best practices. Covers change categories (Added, Changed, Deprecated, Removed, Fixed, Security), formatting rules, and version comparison links.</p>
+<p><strong>Loaded by:</strong> <code>feature-dev</code> (Phase 7: Summary), <code>changelog-agent</code></p>
+<hr />
+<h2 id="agents">Agents<a class="headerlink" href="#agents" title="Permanent link">&para;</a></h2>
+<p>Agents are specialized sub-agents spawned by skills via the Task tool. Each agent has a focused role, a specific model tier, and a defined set of tools.</p>
+<h3 id="code-explorer">code-explorer<a class="headerlink" href="#code-explorer" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model</strong></td>
+<td>Sonnet</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>Read, Glob, Grep, Bash</td>
+</tr>
+<tr>
+<td><strong>Skills</strong></td>
+<td>project-conventions, language-patterns</td>
+</tr>
+</tbody>
+</table>
+<p>A codebase exploration specialist. Given a focus area and analysis context, it investigates the codebase to find relevant files, traces execution paths, maps architecture, and reports structured findings including key files, code patterns, important functions, integration points, and potential challenges.</p>
+<p><strong>Exploration strategies:</strong> Start from entry points, follow the data, find similar features, map dependencies.</p>
+<p><strong>Spawned by:</strong> <code>deep-analysis</code>, <code>codebase-analysis</code> (change-summary path), <code>docs-manager</code> (change-summary path)</p>
+<hr />
+<h3 id="team-code-explorer">team-code-explorer<a class="headerlink" href="#team-code-explorer" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model</strong></td>
+<td>Sonnet</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>Read, Glob, Grep, Bash, SendMessage, TaskUpdate, TaskGet, TaskList</td>
+</tr>
+<tr>
+<td><strong>Skills</strong></td>
+<td>project-conventions, language-patterns</td>
+</tr>
+</tbody>
+</table>
+<p>The team-enabled variant of <code>code-explorer</code>. Same exploration capabilities, plus the ability to proactively share significant discoveries with other explorers via <code>SendMessage</code> and respond to follow-up questions from the synthesizer.</p>
+<p><strong>Communication guidelines:</strong> Shares cross-cutting patterns, shared utilities, unexpected integration points, and critical configuration. Does not broadcast routine findings.</p>
+<p><strong>Spawned by:</strong> <code>teams-deep-analysis</code></p>
+<hr />
+<h3 id="code-architect">code-architect<a class="headerlink" href="#code-architect" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model</strong></td>
+<td>inherit (Opus when launched by feature-dev)</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>Read, Glob, Grep</td>
+</tr>
+</tbody>
+</table>
+<p>Designs implementation blueprints for features. Given a feature description, exploration findings, and a design approach, it produces a detailed blueprint covering files to create/modify, code structure, data flow, API changes, error handling, risks, and testing strategy.</p>
+<p><strong>Design approaches:</strong></p>
+<ul>
+<li><strong>Minimal/Simple</strong> --- Fewest files changed, direct implementation, good for small features</li>
+<li><strong>Flexible/Extensible</strong> --- Abstractions for reuse, configuration over hardcoding, good for growing features</li>
+<li><strong>Project-Aligned</strong> --- Match existing patterns exactly, follow team conventions</li>
+</ul>
+<p><strong>Spawned by:</strong> <code>feature-dev</code> (Phase 4, 2--3 instances), <code>codebase-analysis</code> (actionable insights, complex items)</p>
+<hr />
+<h3 id="code-reviewer">code-reviewer<a class="headerlink" href="#code-reviewer" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model</strong></td>
+<td>inherit (Opus when launched by feature-dev)</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>Read, Glob, Grep</td>
+</tr>
+</tbody>
+</table>
+<p>Reviews code for correctness, security, and maintainability with confidence-scored findings. Only reports issues with confidence &gt;= 80 to minimize noise.</p>
+<p><strong>Review focuses:</strong></p>
+<ul>
+<li><strong>Correctness &amp; Edge Cases</strong> --- Logic errors, null handling, race conditions, type mismatches</li>
+<li><strong>Security &amp; Error Handling</strong> --- Input validation, auth, data sanitization, error exposure</li>
+<li><strong>Maintainability &amp; Code Quality</strong> --- Readability, naming, duplication, abstractions</li>
+</ul>
+<p><strong>Confidence scoring:</strong> 90--100 = definite issue, 80--89 = very likely issue, below 80 = not reported.</p>
+<p><strong>Spawned by:</strong> <code>feature-dev</code> (Phase 6, 3 instances with different focuses)</p>
+<hr />
+<h3 id="codebase-synthesizer">codebase-synthesizer<a class="headerlink" href="#codebase-synthesizer" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model</strong></td>
+<td>inherit (Opus)</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>Read, Glob, Grep</td>
+</tr>
+</tbody>
+</table>
+<p>Merges raw exploration findings from multiple <code>code-explorer</code> agents into a unified, actionable analysis. Deduplicates entries, reads critical files in depth, maps relationships between components, identifies patterns and conventions, and assesses challenges.</p>
+<p><strong>Synthesis process:</strong> Merge findings, read critical files, map relationships, identify patterns, assess challenges.</p>
+<p><strong>Output sections:</strong> Architecture overview, critical files with details, relationship map, patterns and conventions, challenges and risks, recommendations, open questions.</p>
+<p><strong>Spawned by:</strong> <code>deep-analysis</code></p>
+<hr />
+<h3 id="team-codebase-synthesizer">team-codebase-synthesizer<a class="headerlink" href="#team-codebase-synthesizer" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model</strong></td>
+<td>inherit (Opus)</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>Read, Glob, Grep, SendMessage, TaskUpdate, TaskGet, TaskList</td>
+</tr>
+</tbody>
+</table>
+<p>The team-enabled variant of <code>codebase-synthesizer</code>. Same synthesis capabilities, plus the ability to ask explorers targeted follow-up questions to resolve conflicts and fill gaps, and to delegate complex investigations to the <code>team-deep-analyst</code>.</p>
+<p><strong>Key differentiator:</strong> Interactive synthesis --- identifies conflicting assessments, thin coverage, and missing connections, then messages specific explorers for clarification before finalizing.</p>
+<p><strong>Delegation to analyst:</strong> Cross-cutting concerns, security audits, performance investigations, architecture assessments, and conflict resolution requiring git history.</p>
+<p><strong>Spawned by:</strong> <code>teams-deep-analysis</code></p>
+<hr />
+<h3 id="team-deep-analyst">team-deep-analyst<a class="headerlink" href="#team-deep-analyst" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model</strong></td>
+<td>Opus</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>Read, Glob, Grep, Bash, SendMessage, TaskUpdate, TaskGet, TaskList</td>
+</tr>
+<tr>
+<td><strong>Skills</strong></td>
+<td>project-conventions, language-patterns</td>
+</tr>
+</tbody>
+</table>
+<p>An on-demand specialist analyst that activates when the <code>team-codebase-synthesizer</code> delegates complex investigations. Has Bash access for git history analysis, dependency trees, and static analysis --- capabilities the synthesizer lacks.</p>
+<p><strong>Analysis capabilities:</strong></p>
+<ul>
+<li><strong>Cross-cutting concerns</strong> --- Trace patterns across 3+ modules</li>
+<li><strong>Security audits</strong> --- End-to-end auth review, vulnerability analysis, secret handling</li>
+<li><strong>Performance analysis</strong> --- N+1 queries, hot paths, bundle sizes</li>
+<li><strong>Architecture assessment</strong> --- Pattern adherence, boundary violations, dependency direction</li>
+<li><strong>Conflict resolution</strong> --- Use <code>git blame</code>/<code>git log</code> when explorer reports conflict</li>
+</ul>
+<p><strong>Communication:</strong> Receives from and reports to the synthesizer only.</p>
+<p><strong>Spawned by:</strong> <code>teams-deep-analysis</code></p>
+<hr />
+<h3 id="changelog-agent">changelog-agent<a class="headerlink" href="#changelog-agent" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model</strong></td>
+<td>inherit</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>Bash, Read, Edit, Glob, Grep, AskUserQuestion</td>
+</tr>
+</tbody>
+</table>
+<p>Analyzes git history and updates CHANGELOG.md following the Keep a Changelog specification. Performs deep diff analysis to detect new/removed public APIs and breaking changes, enriches entries with PR/issue context via <code>gh</code> CLI, and presents categorized entries for user approval before writing.</p>
+<p><strong>Detection capabilities:</strong> New public interfaces, removed interfaces (breaking), dependency changes, PR labels (<code>breaking-change</code>, <code>security</code>), conventional commit prefixes.</p>
+<p><strong>Spawned by:</strong> <code>release</code> (Step 5, optional)</p>
+<hr />
+<h3 id="docs-writer">docs-writer<a class="headerlink" href="#docs-writer" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model</strong></td>
+<td>inherit (Opus)</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>Read, Glob, Grep, Bash</td>
+</tr>
+</tbody>
+</table>
+<p>Generates complete documentation pages in either MkDocs-flavored or standard GitHub-flavored Markdown. Supports API references, architecture guides, how-to guides, standalone markdown files (README, CONTRIBUTING, ARCHITECTURE), and change summaries.</p>
+<p><strong>MkDocs mode features:</strong> Admonitions, tabbed content, code block titles, Mermaid diagrams.</p>
+<p><strong>Basic Markdown mode features:</strong> Blockquote callouts, standard code blocks, Mermaid diagrams (GitHub-native).</p>
+<p><strong>Spawned by:</strong> <code>docs-manager</code> (Phase 5)</p>
+<hr />
+<h3 id="researcher">researcher<a class="headerlink" href="#researcher" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model</strong></td>
+<td>inherit</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>WebSearch, WebFetch, Context7 (resolve-library-id, query-docs)</td>
+</tr>
+</tbody>
+</table>
+<p>Researches technical documentation, domain knowledge, competitive landscape, and best practices using web search and Context7 MCP tools. Prioritizes Context7 for library/framework documentation and falls back to web search for general topics.</p>
+<p><strong>Research types:</strong> Library/framework docs, third-party API specs, best practices, competitive analysis, compliance/regulatory, domain knowledge.</p>
+<p><strong>Spawned by:</strong> Available for use by any skill that needs external research context.</p>
+<hr />
+<h2 id="plugin-structure">Plugin Structure<a class="headerlink" href="#plugin-structure" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>plugins/tools/
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>├── .claude-plugin/
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>│   └── plugin.json              # Plugin metadata and version
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>├── agents/
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>│   ├── changelog-agent.md
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>│   ├── code-architect.md
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>│   ├── code-explorer.md
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>│   ├── code-reviewer.md
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>│   ├── codebase-synthesizer.md
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>│   ├── docs-writer.md
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>│   ├── researcher.md
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>│   ├── team-code-explorer.md
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>│   ├── team-codebase-synthesizer.md
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>│   └── team-deep-analyst.md
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>├── skills/
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>│   ├── architecture-patterns/
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>│   │   └── SKILL.md
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>│   ├── bump-plugin-version/
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>│   │   └── SKILL.md
+</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>│   ├── changelog-format/
+</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a>│   │   ├── SKILL.md
+</span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a>│   │   └── references/
+</span><span id="__span-9-23"><a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a>│   │       └── entry-examples.md
+</span><span id="__span-9-24"><a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a>│   ├── codebase-analysis/
+</span><span id="__span-9-25"><a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a>│   │   ├── SKILL.md
+</span><span id="__span-9-26"><a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a>│   │   └── references/
+</span><span id="__span-9-27"><a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a>│   │       ├── actionable-insights-template.md
+</span><span id="__span-9-28"><a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a>│   │       └── report-template.md
+</span><span id="__span-9-29"><a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a>│   ├── code-quality/
+</span><span id="__span-9-30"><a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a>│   │   └── SKILL.md
+</span><span id="__span-9-31"><a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a>│   ├── deep-analysis/
+</span><span id="__span-9-32"><a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a>│   │   └── SKILL.md
+</span><span id="__span-9-33"><a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a>│   ├── docs-manager/
+</span><span id="__span-9-34"><a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a>│   │   ├── SKILL.md
+</span><span id="__span-9-35"><a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a>│   │   └── references/
+</span><span id="__span-9-36"><a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a>│   │       ├── change-summary-templates.md
+</span><span id="__span-9-37"><a id="__codelineno-9-37" name="__codelineno-9-37" href="#__codelineno-9-37"></a>│   │       ├── markdown-file-templates.md
+</span><span id="__span-9-38"><a id="__codelineno-9-38" name="__codelineno-9-38" href="#__codelineno-9-38"></a>│   │       └── mkdocs-config-template.md
+</span><span id="__span-9-39"><a id="__codelineno-9-39" name="__codelineno-9-39" href="#__codelineno-9-39"></a>│   ├── feature-dev/
+</span><span id="__span-9-40"><a id="__codelineno-9-40" name="__codelineno-9-40" href="#__codelineno-9-40"></a>│   │   ├── SKILL.md
+</span><span id="__span-9-41"><a id="__codelineno-9-41" name="__codelineno-9-41" href="#__codelineno-9-41"></a>│   │   └── references/
+</span><span id="__span-9-42"><a id="__codelineno-9-42" name="__codelineno-9-42" href="#__codelineno-9-42"></a>│   │       ├── adr-template.md
+</span><span id="__span-9-43"><a id="__codelineno-9-43" name="__codelineno-9-43" href="#__codelineno-9-43"></a>│   │       └── changelog-entry-template.md
+</span><span id="__span-9-44"><a id="__codelineno-9-44" name="__codelineno-9-44" href="#__codelineno-9-44"></a>│   ├── git-commit/
+</span><span id="__span-9-45"><a id="__codelineno-9-45" name="__codelineno-9-45" href="#__codelineno-9-45"></a>│   │   └── SKILL.md
+</span><span id="__span-9-46"><a id="__codelineno-9-46" name="__codelineno-9-46" href="#__codelineno-9-46"></a>│   ├── language-patterns/
+</span><span id="__span-9-47"><a id="__codelineno-9-47" name="__codelineno-9-47" href="#__codelineno-9-47"></a>│   │   └── SKILL.md
+</span><span id="__span-9-48"><a id="__codelineno-9-48" name="__codelineno-9-48" href="#__codelineno-9-48"></a>│   ├── project-conventions/
+</span><span id="__span-9-49"><a id="__codelineno-9-49" name="__codelineno-9-49" href="#__codelineno-9-49"></a>│   │   └── SKILL.md
+</span><span id="__span-9-50"><a id="__codelineno-9-50" name="__codelineno-9-50" href="#__codelineno-9-50"></a>│   ├── release/
+</span><span id="__span-9-51"><a id="__codelineno-9-51" name="__codelineno-9-51" href="#__codelineno-9-51"></a>│   │   └── SKILL.md
+</span><span id="__span-9-52"><a id="__codelineno-9-52" name="__codelineno-9-52" href="#__codelineno-9-52"></a>│   └── teams-deep-analysis/
+</span><span id="__span-9-53"><a id="__codelineno-9-53" name="__codelineno-9-53" href="#__codelineno-9-53"></a>│       └── SKILL.md
+</span><span id="__span-9-54"><a id="__codelineno-9-54" name="__codelineno-9-54" href="#__codelineno-9-54"></a>└── README.md
+</span></code></pre></div>
+<hr />
+<h2 id="model-tiering">Model Tiering<a class="headerlink" href="#model-tiering" title="Permanent link">&para;</a></h2>
+<p>The plugin uses a deliberate model tiering strategy to balance quality, speed, and cost:</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Model</th>
+<th>Used For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fast</strong></td>
+<td>Haiku</td>
+<td>Git commits, version bumps, release automation</td>
+</tr>
+<tr>
+<td><strong>Balanced</strong></td>
+<td>Sonnet</td>
+<td>Codebase exploration (code-explorer agents)</td>
+</tr>
+<tr>
+<td><strong>Deep</strong></td>
+<td>Opus</td>
+<td>Synthesis, architecture design, code review, documentation writing, deep analysis</td>
+</tr>
+<tr>
+<td><strong>Inherit</strong></td>
+<td>Parent model</td>
+<td>Skills that adapt to whatever model the user is running</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Model inheritance</p>
+<p>Skills with <code>model: inherit</code> run at whatever model the user's Claude Code session is using. Agents spawned by those skills may specify their own model (e.g., <code>code-explorer</code> always runs Sonnet, <code>codebase-synthesizer</code> always runs Opus regardless of the parent skill's model).</p>
+</div>
+<hr />
+<h2 id="reference-materials">Reference Materials<a class="headerlink" href="#reference-materials" title="Permanent link">&para;</a></h2>
+<p>Skills bundle reference materials in <code>references/</code> subdirectories that are loaded at runtime to provide templates and formatting guidance:</p>
+<table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>Reference File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>feature-dev</code></td>
+<td><code>adr-template.md</code></td>
+<td>Architecture Decision Record template</td>
+</tr>
+<tr>
+<td><code>feature-dev</code></td>
+<td><code>changelog-entry-template.md</code></td>
+<td>Changelog entry format</td>
+</tr>
+<tr>
+<td><code>codebase-analysis</code></td>
+<td><code>report-template.md</code></td>
+<td>Structured analysis report template</td>
+</tr>
+<tr>
+<td><code>codebase-analysis</code></td>
+<td><code>actionable-insights-template.md</code></td>
+<td>Severity-ranked insight presentation</td>
+</tr>
+<tr>
+<td><code>docs-manager</code></td>
+<td><code>mkdocs-config-template.md</code></td>
+<td>MkDocs configuration scaffold</td>
+</tr>
+<tr>
+<td><code>docs-manager</code></td>
+<td><code>change-summary-templates.md</code></td>
+<td>Changelog and release note formats</td>
+</tr>
+<tr>
+<td><code>docs-manager</code></td>
+<td><code>markdown-file-templates.md</code></td>
+<td>README, CONTRIBUTING, ARCHITECTURE structures</td>
+</tr>
+<tr>
+<td><code>changelog-format</code></td>
+<td><code>entry-examples.md</code></td>
+<td>Good and poor changelog entry examples</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

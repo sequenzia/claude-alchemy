@@ -1,0 +1,2106 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A monorepo combining Claude Code plugins and a real-time Task Manager application">
+      
+      
+      
+      
+        <link rel="prev" href="../../getting-started/">
+      
+      
+        <link rel="next" href="../filesystem-message-bus/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Overview - Claude Alchemy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#architecture-overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Claude Alchemy" class="md-header__button md-logo" aria-label="Claude Alchemy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Claude Alchemy
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Overview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sequenzia/claude-alchemy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sequenzia/claude-alchemy
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../task-manager/overview/" class="md-tabs__link">
+          
+  
+  
+  Task Manager
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../plugins/overview/" class="md-tabs__link">
+          
+  
+  
+  Plugins
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/setup/" class="md-tabs__link">
+          
+  
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Claude Alchemy" class="md-nav__button md-logo" aria-label="Claude Alchemy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Claude Alchemy
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sequenzia/claude-alchemy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sequenzia/claude-alchemy
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#system-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monorepo-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Monorepo Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-three-subsystems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Three Subsystems
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Three Subsystems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-task-manager-appstask-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Task Manager (apps/task-manager/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-developer-tools-plugin-pluginstools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Developer Tools Plugin (plugins/tools/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-sdd-plugin-pluginssdd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. SDD Plugin (plugins/sdd/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-vs-code-extension-extensionsvscode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. VS Code Extension (extensions/vscode/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filesystem-as-message-bus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filesystem as Message Bus
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Filesystem as Message Bus">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-gets-written-where" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Gets Written Where
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-time-data-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-Time Data Flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plugin-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plugin Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Plugin Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#skills-and-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skills and Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hooks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tech-stack-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tech Stack Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Decisions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-filesystem-as-message-bus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Filesystem as Message Bus?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-markdown-only-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Markdown-Only Plugins?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-server-sent-events-over-websockets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Server-Sent Events Over WebSockets?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related Pages
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../filesystem-message-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Filesystem Message Bus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task Manager
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Task Manager
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/real-time-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Real-Time System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugins
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Plugins
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/tools-plugin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools Plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/sdd-plugin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDD Plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/sdd-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDD Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/conventions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#system-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monorepo-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Monorepo Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-three-subsystems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Three Subsystems
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Three Subsystems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-task-manager-appstask-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Task Manager (apps/task-manager/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-developer-tools-plugin-pluginstools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Developer Tools Plugin (plugins/tools/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-sdd-plugin-pluginssdd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. SDD Plugin (plugins/sdd/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-vs-code-extension-extensionsvscode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. VS Code Extension (extensions/vscode/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filesystem-as-message-bus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filesystem as Message Bus
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Filesystem as Message Bus">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-gets-written-where" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Gets Written Where
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-time-data-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-Time Data Flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plugin-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plugin Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Plugin Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#skills-and-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skills and Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hooks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tech-stack-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tech Stack Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Decisions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-filesystem-as-message-bus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Filesystem as Message Bus?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-markdown-only-plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Markdown-Only Plugins?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-server-sent-events-over-websockets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Server-Sent Events Over WebSockets?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related Pages
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<!-- docs/architecture/overview.md -->
+<h1 id="architecture-overview">Architecture Overview<a class="headerlink" href="#architecture-overview" title="Permanent link">&para;</a></h1>
+<p>Claude Alchemy is a pnpm monorepo consisting of three subsystems that communicate exclusively through the filesystem. There is no shared runtime code, no database, and no IPC mechanism -- the filesystem itself serves as the message bus between components.</p>
+<p>This page provides a high-level tour of the monorepo structure, the relationships between subsystems, and the key design decisions that shape the project.</p>
+<h2 id="system-architecture">System Architecture<a class="headerlink" href="#system-architecture" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>graph TB
+    subgraph Monorepo["Claude Alchemy Monorepo"]
+        subgraph Plugins["Claude Code Plugins (markdown-only, no build step)"]
+            Tools["claude-alchemy-tools v0.2.2\n10 agents · 13 skills"]
+            SDD["claude-alchemy-sdd v0.2.6\n2 agents · 4 skills"]
+        end
+
+        subgraph Apps["pnpm Workspace (apps/*)"]
+            TM["Task Manager\nNext.js 16.1.4 · port 3030"]
+        end
+
+        subgraph Extensions["Editor Extensions (npm, separate)"]
+            VSCode["VS Code Extension\nPlugin file schema validation"]
+        end
+    end
+
+    subgraph FS["Filesystem (message bus)"]
+        Tasks["~/.claude/tasks/\nTask JSON files"]
+        Sessions[".claude/sessions/\nExecution artifacts"]
+        Pointer["execution_pointer.md\nSession path reference"]
+    end
+
+    SDD -- "writes tasks" --&gt; Tasks
+    SDD -- "writes execution artifacts" --&gt; Sessions
+    SDD -- "writes pointer" --&gt; Pointer
+    TM -- "reads tasks" --&gt; Tasks
+    TM -- "reads artifacts via pointer" --&gt; Pointer
+    TM -- "watches for changes" --&gt; Tasks
+    Tools -- "analyzes &amp; documents" --&gt; Monorepo
+    VSCode -- "validates" --&gt; Plugins</code></pre>
+<h2 id="monorepo-structure">Monorepo Structure<a class="headerlink" href="#monorepo-structure" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>claude-alchemy/
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── apps/
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│   └── task-manager/          # Next.js 16.1.4 app (pnpm workspace member)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── plugins/
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   ├── tools/                 # Developer tools plugin (markdown-only)
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   └── sdd/                   # Spec-driven development plugin (markdown-only)
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├── extensions/
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│   └── vscode/                # VS Code extension (npm, separate)
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>├── internal/
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│   └── docs/                  # Internal documentation and cheatsheets
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>├── pnpm-workspace.yaml        # Only includes apps/*
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>├── .claude-plugin/
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│   └── marketplace.json       # Plugin registry with versions
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>└── CLAUDE.md                  # Project conventions for Claude Code
+</span></code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Workspace Boundaries</p>
+<p>The <code>pnpm-workspace.yaml</code> file only includes <code>apps/*</code>. Plugins are pure markdown with no <code>package.json</code> and no build step -- they are excluded from the pnpm workspace entirely. The VS Code extension manages its own dependencies with npm.</p>
+</div>
+<h2 id="the-three-subsystems">The Three Subsystems<a class="headerlink" href="#the-three-subsystems" title="Permanent link">&para;</a></h2>
+<h3 id="1-task-manager-appstask-manager">1. Task Manager (<code>apps/task-manager/</code>)<a class="headerlink" href="#1-task-manager-appstask-manager" title="Permanent link">&para;</a></h3>
+<p>A Next.js 16.1.4 web application that provides a real-time Kanban board for visualizing and monitoring Claude Code task execution. It runs on port 3030 and is the only subsystem with a runtime build step.</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Technology</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Framework</td>
+<td>Next.js 16.1.4 (App Router)</td>
+</tr>
+<tr>
+<td>UI</td>
+<td>React 19.2.3, Tailwind CSS v4, shadcn/ui (Radix primitives)</td>
+</tr>
+<tr>
+<td>State</td>
+<td>TanStack Query v5.90.20</td>
+</tr>
+<tr>
+<td>Real-time</td>
+<td>Chokidar 5 (filesystem watching), Server-Sent Events</td>
+</tr>
+<tr>
+<td>Language</td>
+<td>TypeScript 5</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key responsibilities:</strong></p>
+<ul>
+<li>Read task JSON files from <code>~/.claude/tasks/</code> and display them in a three-column Kanban board (Pending, In Progress, Completed)</li>
+<li>Watch the filesystem for changes and push real-time updates to the browser via SSE</li>
+<li>Display execution progress, artifacts, and session context from the SDD plugin's execution sessions</li>
+<li>Provide search, filtering, task list selection, and dark/light theme switching</li>
+</ul>
+<p>The Task Manager never writes to the filesystem. It is a read-only consumer of data produced by the plugins.</p>
+<h3 id="2-developer-tools-plugin-pluginstools">2. Developer Tools Plugin (<code>plugins/tools/</code>)<a class="headerlink" href="#2-developer-tools-plugin-pluginstools" title="Permanent link">&para;</a></h3>
+<p>The <code>claude-alchemy-tools</code> plugin (v0.2.2) provides general-purpose development skills and agents for Claude Code. It covers feature development workflows, codebase analysis, documentation management, Git operations, and release automation.</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Count</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agents</td>
+<td>10</td>
+<td><code>code-explorer</code>, <code>code-architect</code>, <code>code-reviewer</code>, <code>codebase-synthesizer</code>, <code>docs-writer</code>, <code>researcher</code></td>
+</tr>
+<tr>
+<td>User-invocable skills</td>
+<td>7</td>
+<td><code>feature-dev</code>, <code>codebase-analysis</code>, <code>docs-manager</code>, <code>git-commit</code>, <code>release</code>, <code>bump-plugin-version</code>, <code>teams-deep-analysis</code></td>
+</tr>
+<tr>
+<td>Supporting skills</td>
+<td>6</td>
+<td><code>architecture-patterns</code>, <code>language-patterns</code>, <code>project-conventions</code>, <code>code-quality</code>, <code>changelog-format</code>, <code>deep-analysis</code></td>
+</tr>
+</tbody>
+</table>
+<p>Skills are invoked with the <code>/tools:</code> prefix (e.g., <code>/tools:feature-dev</code>, <code>/tools:git-commit</code>). Each skill is defined as a <code>SKILL.md</code> file with YAML frontmatter specifying metadata, allowed tools, and arguments.</p>
+<h3 id="3-sdd-plugin-pluginssdd">3. SDD Plugin (<code>plugins/sdd/</code>)<a class="headerlink" href="#3-sdd-plugin-pluginssdd" title="Permanent link">&para;</a></h3>
+<p>The <code>claude-alchemy-sdd</code> plugin (v0.2.6) implements a Spec-Driven Development workflow. It handles the full lifecycle from specification creation through task decomposition to autonomous, wave-based parallel execution.</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Count</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agents</td>
+<td>2</td>
+<td><code>task-executor</code>, <code>spec-analyzer</code></td>
+</tr>
+<tr>
+<td>Skills</td>
+<td>4</td>
+<td><code>create-spec</code>, <code>analyze-spec</code>, <code>create-tasks</code>, <code>execute-tasks</code></td>
+</tr>
+</tbody>
+</table>
+<p>Skills are invoked with the <code>/sdd:</code> prefix (e.g., <code>/sdd:create-spec</code>, <code>/sdd:execute-tasks</code>). The <code>execute-tasks</code> skill is the most complex component in the system -- it orchestrates wave-based parallel task execution with dependency resolution, retry logic, shared execution context, and session management.</p>
+<div class="admonition tip">
+<p class="admonition-title">SDD Workflow</p>
+<p>The typical SDD workflow is: <code>/sdd:create-spec</code> to define requirements, <code>/sdd:analyze-spec</code> to review the spec, <code>/sdd:create-tasks</code> to decompose it into tasks, then <code>/sdd:execute-tasks</code> to run them autonomously.</p>
+</div>
+<h3 id="4-vs-code-extension-extensionsvscode">4. VS Code Extension (<code>extensions/vscode/</code>)<a class="headerlink" href="#4-vs-code-extension-extensionsvscode" title="Permanent link">&para;</a></h3>
+<p>A development-time editor extension that validates Claude Code plugin files (SKILL.md and agent markdown files) against their expected schemas. It provides:</p>
+<ul>
+<li><strong>Diagnostics</strong>: Real-time validation of YAML frontmatter in skill and agent files</li>
+<li><strong>Completions</strong>: Autocomplete for frontmatter keys and enum values</li>
+<li><strong>Hover info</strong>: Documentation tooltips for frontmatter fields</li>
+</ul>
+<p>The extension is not part of the pnpm workspace and manages its own dependencies via npm.</p>
+<h2 id="filesystem-as-message-bus">Filesystem as Message Bus<a class="headerlink" href="#filesystem-as-message-bus" title="Permanent link">&para;</a></h2>
+<p>The defining architectural pattern of Claude Alchemy is the use of the filesystem as the sole communication channel between subsystems. No subsystem imports code from another, calls an API on another, or shares a database.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant User
+    participant SDD as SDD Plugin
+    participant FS as Filesystem
+    participant Chokidar as Chokidar Watcher
+    participant SSE as SSE Endpoint
+    participant Browser as Task Manager UI
+
+    User-&gt;&gt;SDD: /sdd:execute-tasks
+    SDD-&gt;&gt;FS: Write task JSON files to ~/.claude/tasks/
+    SDD-&gt;&gt;FS: Write execution_pointer.md
+    SDD-&gt;&gt;FS: Write session artifacts to .claude/sessions/
+
+    Chokidar--&gt;&gt;FS: Detects file changes (300ms polling)
+    Chokidar-&gt;&gt;SSE: Emits taskEvent / executionEvent
+    SSE-&gt;&gt;Browser: Streams SSE events
+    Browser-&gt;&gt;Browser: Invalidates TanStack Query cache
+    Browser-&gt;&gt;Browser: Calls router.refresh()</code></pre>
+<p>For a deep dive into this pattern, see <a href="../filesystem-message-bus/">Filesystem Message Bus</a>.</p>
+<h3 id="what-gets-written-where">What Gets Written Where<a class="headerlink" href="#what-gets-written-where" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Writer</th>
+<th>Reader</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>~/.claude/tasks/{listId}/*.json</code></td>
+<td>SDD plugin (<code>create-tasks</code>, <code>execute-tasks</code>)</td>
+<td>Task Manager (<code>taskService.ts</code>)</td>
+<td>Individual task definitions (id, subject, status, dependencies)</td>
+</tr>
+<tr>
+<td><code>~/.claude/tasks/{listId}/execution_pointer.md</code></td>
+<td>SDD plugin (<code>execute-tasks</code>)</td>
+<td>Task Manager (<code>taskService.ts</code>)</td>
+<td>Absolute path to the active <code>__live_session__/</code> directory</td>
+</tr>
+<tr>
+<td><code>.claude/sessions/__live_session__/</code></td>
+<td>SDD plugin (<code>execute-tasks</code>)</td>
+<td>Task Manager (via pointer)</td>
+<td><code>execution_context.md</code>, <code>task_log.md</code>, <code>progress.md</code>, <code>execution_plan.md</code>, <code>.lock</code></td>
+</tr>
+<tr>
+<td><code>.claude/sessions/{session-id}/</code></td>
+<td>SDD plugin (session archive)</td>
+<td>Task Manager (via pointer)</td>
+<td>Archived session artifacts after execution completes</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Path Security</p>
+<p>The Task Manager's <code>resolveExecutionDir()</code> function guards against path traversal attacks. It uses <code>path.relative()</code> to verify that any execution pointer target stays within the user's home directory. Pointers that resolve outside <code>$HOME</code> are rejected.</p>
+</div>
+<h2 id="real-time-data-flow">Real-Time Data Flow<a class="headerlink" href="#real-time-data-flow" title="Permanent link">&para;</a></h2>
+<p>The Task Manager achieves real-time updates through a three-layer pipeline:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>~/.claude/tasks/*.json → Chokidar → SSE route → useSSE hook → TanStack Query invalidation → UI
+</span></code></pre></div>
+<ol>
+<li>
+<p><strong>Chokidar singleton</strong> watches <code>~/.claude/tasks/</code> with 300ms polling interval. A <code>globalThis</code> singleton pattern prevents duplicate watchers during Next.js HMR in development.</p>
+</li>
+<li>
+<p><strong>SSE route</strong> (<code>/api/events</code>) creates a <code>ReadableStream</code> per client connection. It subscribes to the file watcher's <code>taskEvent</code> and <code>executionEvent</code> emitters, filtering events by <code>taskListId</code>. A heartbeat keeps connections alive.</p>
+</li>
+<li>
+<p><strong><code>useSSE</code> hook</strong> on the client opens an <code>EventSource</code> connection and listens for <code>task:created</code>, <code>task:updated</code>, <code>task:deleted</code>, and <code>execution:updated</code> events. Each event triggers dual invalidation: TanStack Query cache invalidation plus <code>router.refresh()</code> to update Server Component data.</p>
+</li>
+</ol>
+<p>For the complete data flow details, see <a href="../data-flow/">Data Flow</a>.</p>
+<h2 id="plugin-architecture">Plugin Architecture<a class="headerlink" href="#plugin-architecture" title="Permanent link">&para;</a></h2>
+<p>Both plugins follow the same structural conventions:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>plugins/{name}/
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>├── agents/
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>│   └── {agent-name}.md        # Agent definitions (kebab-case)
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>├── skills/
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>│   └── {skill-name}/
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>│       ├── SKILL.md            # Skill definition with YAML frontmatter
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>│       └── references/         # Reference materials loaded at runtime
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>├── hooks/                      # Optional: PreToolUse/PostToolUse hooks
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>└── README.md
+</span></code></pre></div>
+<h3 id="skills-and-agents">Skills and Agents<a class="headerlink" href="#skills-and-agents" title="Permanent link">&para;</a></h3>
+<p><strong>Skills</strong> are the user-facing entry points. Each <code>SKILL.md</code> file contains:</p>
+<ul>
+<li>YAML frontmatter with metadata (<code>name</code>, <code>description</code>, <code>user-invocable</code>, <code>allowed-tools</code>, <code>arguments</code>)</li>
+<li>Markdown body with instructions, workflow phases, and behavioral guidelines</li>
+</ul>
+<p><strong>Agents</strong> are sub-processes launched by skills via Claude Code's <code>Task</code> tool. They run with a specified model tier:</p>
+<table>
+<thead>
+<tr>
+<th>Model Tier</th>
+<th>Used For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>opus</code></td>
+<td>Complex reasoning: architecture design, code review, codebase synthesis, documentation writing</td>
+</tr>
+<tr>
+<td><code>sonnet</code></td>
+<td>Exploration and analysis: code exploration, pattern detection</td>
+</tr>
+<tr>
+<td><code>haiku</code></td>
+<td>Mechanical tasks: git commits, version bumping, changelog formatting</td>
+</tr>
+<tr>
+<td><code>inherit</code></td>
+<td>Uses the parent's model: research, feature development orchestration</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hooks">Hooks<a class="headerlink" href="#hooks" title="Permanent link">&para;</a></h3>
+<p>The SDD plugin includes a <code>PreToolUse</code> hook (<code>auto-approve-session.sh</code>) that auto-approves file operations targeting execution session directories. This enables the <code>execute-tasks</code> skill to run autonomously without prompting the user for permission on every session file write.</p>
+<div class="admonition note">
+<p class="admonition-title">Hook Scope</p>
+<p>The auto-approve hook only applies to paths matching <code>~/.claude/tasks/*/execution_pointer.md</code> and <code>*/.claude/sessions/*</code>. All other file operations follow the normal Claude Code permission flow.</p>
+</div>
+<h2 id="tech-stack-summary">Tech Stack Summary<a class="headerlink" href="#tech-stack-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Technology</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runtime</td>
+<td>Node.js</td>
+<td>&gt;= 18</td>
+</tr>
+<tr>
+<td>Package Manager</td>
+<td>pnpm</td>
+<td>&gt;= 8</td>
+</tr>
+<tr>
+<td>Framework</td>
+<td>Next.js</td>
+<td>16.1.4</td>
+</tr>
+<tr>
+<td>UI Library</td>
+<td>React</td>
+<td>19.2.3</td>
+</tr>
+<tr>
+<td>Type System</td>
+<td>TypeScript</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Server State</td>
+<td>TanStack Query</td>
+<td>5.90.20</td>
+</tr>
+<tr>
+<td>Styling</td>
+<td>Tailwind CSS</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Component Library</td>
+<td>shadcn/ui</td>
+<td>Radix primitives</td>
+</tr>
+<tr>
+<td>File Watching</td>
+<td>Chokidar</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Theme</td>
+<td>next-themes</td>
+<td>SSR-safe dark/light mode</td>
+</tr>
+</tbody>
+</table>
+<h2 id="design-decisions">Design Decisions<a class="headerlink" href="#design-decisions" title="Permanent link">&para;</a></h2>
+<h3 id="why-filesystem-as-message-bus">Why Filesystem as Message Bus?<a class="headerlink" href="#why-filesystem-as-message-bus" title="Permanent link">&para;</a></h3>
+<p>Claude Code plugins run as markdown instructions -- they have no build step, no runtime, and no way to call APIs or import shared code. The filesystem is the only communication channel available to them. Rather than fighting this constraint, Claude Alchemy embraces it: tasks are JSON files, execution state is markdown, and the web app watches for changes with Chokidar.</p>
+<p>This constraint produces several benefits:</p>
+<ul>
+<li><strong>Inspectability</strong>: Every piece of state is a human-readable file you can <code>cat</code> or open in an editor</li>
+<li><strong>Resilience</strong>: Interrupted sessions leave files on disk that can be recovered</li>
+<li><strong>Simplicity</strong>: No message broker, no database migrations, no connection pooling</li>
+<li><strong>Debuggability</strong>: <code>ls</code> and <code>cat</code> are your debugging tools</li>
+</ul>
+<h3 id="why-markdown-only-plugins">Why Markdown-Only Plugins?<a class="headerlink" href="#why-markdown-only-plugins" title="Permanent link">&para;</a></h3>
+<p>Claude Code plugins are loaded as context at the start of a conversation. They need no compilation, no bundling, and no runtime dependencies. Making them pure markdown means:</p>
+<ul>
+<li>Zero build step for plugin development</li>
+<li>Skills and agents can be edited and tested immediately</li>
+<li>Reference materials are loaded alongside instructions at runtime</li>
+<li>The VS Code extension provides schema validation as a development aid</li>
+</ul>
+<h3 id="why-server-sent-events-over-websockets">Why Server-Sent Events Over WebSockets?<a class="headerlink" href="#why-server-sent-events-over-websockets" title="Permanent link">&para;</a></h3>
+<p>SSE is a simpler protocol that fits the unidirectional data flow: file changes flow from the filesystem to the browser, never the other way. The Task Manager is read-only, so there is no need for bidirectional communication. SSE also works natively with Next.js route handlers without additional infrastructure.</p>
+<h2 id="related-pages">Related Pages<a class="headerlink" href="#related-pages" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../filesystem-message-bus/">Filesystem Message Bus</a> -- Deep dive into the filesystem communication pattern</li>
+<li><a href="../data-flow/">Data Flow</a> -- Complete data flow from file changes to UI updates</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

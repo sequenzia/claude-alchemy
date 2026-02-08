@@ -1,0 +1,3288 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A monorepo combining Claude Code plugins and a real-time Task Manager application">
+      
+      
+      
+      
+        <link rel="prev" href="../overview/">
+      
+      
+        <link rel="next" href="../real-time-system/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>API Reference - Claude Alchemy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#task-manager-api-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Claude Alchemy" class="md-header__button md-logo" aria-label="Claude Alchemy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Claude Alchemy
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sequenzia/claude-alchemy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sequenzia/claude-alchemy
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../overview/" class="md-tabs__link">
+          
+  
+  
+  Task Manager
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../plugins/overview/" class="md-tabs__link">
+          
+  
+  
+  Plugins
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/setup/" class="md-tabs__link">
+          
+  
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Claude Alchemy" class="md-nav__button md-logo" aria-label="Claude Alchemy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Claude Alchemy
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sequenzia/claude-alchemy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sequenzia/claude-alchemy
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/filesystem-message-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Filesystem Message Bus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task Manager
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Task Manager
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#endpoints-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoints Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-apihealth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/health
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GET /api/health">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-apitask-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/task-lists
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GET /api/task-lists">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#response_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-apitaskslistid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/tasks/:listId
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GET /api/tasks/:listId">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#path-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Path Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-responses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Responses
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsing-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parsing Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-apiexecution-contextlistid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/execution-context/:listId
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GET /api/execution-context/:listId">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#path-parameters_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Path Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-active-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response — Active Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-no-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response — No Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artifact-sort-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Artifact Sort Order
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-responses_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Responses
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-apievents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/events
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GET /api/events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response Headers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connection-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#event-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event Types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Event Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        connected
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taskcreated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        task:created
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taskupdated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        task:updated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taskdeleted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        task:deleted
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executionupdated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        execution:updated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heartbeat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Heartbeat
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client Usage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taskmetadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TaskMetadata
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tasklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TaskList
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executioncontext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ExecutionContext
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executionartifact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ExecutionArtifact
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executionprogress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ExecutionProgress
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sse-event-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSE Event Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Notes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture Notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filesystem-as-data-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filesystem as Data Source
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-watcher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Watcher
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../real-time-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Real-Time System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugins
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Plugins
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/tools-plugin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools Plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/sdd-plugin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDD Plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/sdd-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDD Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/conventions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#endpoints-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoints Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-apihealth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/health
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GET /api/health">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-apitask-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/task-lists
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GET /api/task-lists">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#response_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-apitaskslistid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/tasks/:listId
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GET /api/tasks/:listId">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#path-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Path Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-responses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Responses
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsing-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parsing Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-apiexecution-contextlistid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/execution-context/:listId
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GET /api/execution-context/:listId">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#path-parameters_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Path Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-active-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response — Active Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-no-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response — No Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artifact-sort-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Artifact Sort Order
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-responses_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Responses
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-apievents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/events
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GET /api/events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response Headers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connection-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#event-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event Types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Event Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        connected
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taskcreated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        task:created
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taskupdated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        task:updated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taskdeleted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        task:deleted
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executionupdated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        execution:updated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heartbeat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Heartbeat
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client Usage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taskmetadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TaskMetadata
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tasklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TaskList
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executioncontext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ExecutionContext
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executionartifact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ExecutionArtifact
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executionprogress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ExecutionProgress
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sse-event-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSE Event Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Notes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture Notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filesystem-as-data-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filesystem as Data Source
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-watcher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Watcher
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<!-- docs/task-manager/api-reference.md -->
+<h1 id="task-manager-api-reference">Task Manager API Reference<a class="headerlink" href="#task-manager-api-reference" title="Permanent link">&para;</a></h1>
+<p>The Task Manager exposes a read-only REST API over Next.js App Router route handlers. All endpoints serve JSON (except the SSE stream) and read task data from the filesystem at <code>~/.claude/tasks/</code>. There are no mutations — task files are created and modified externally by Claude Code plugins.</p>
+<p><strong>Base URL:</strong> <code>http://localhost:3000/api</code> (default development port)</p>
+<hr />
+<h2 id="endpoints-overview">Endpoints Overview<a class="headerlink" href="#endpoints-overview" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><a href="#get-apihealth"><code>/api/health</code></a></td>
+<td>Health check</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><a href="#get-apitask-lists"><code>/api/task-lists</code></a></td>
+<td>List all task lists</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><a href="#get-apitaskslistid"><code>/api/tasks/:listId</code></a></td>
+<td>Get tasks in a list</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><a href="#get-apiexecution-contextlistid"><code>/api/execution-context/:listId</code></a></td>
+<td>Get execution artifacts</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><a href="#get-apievents"><code>/api/events</code></a></td>
+<td>SSE stream for real-time updates</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="get-apihealth"><code>GET /api/health</code><a class="headerlink" href="#get-apihealth" title="Permanent link">&para;</a></h2>
+<p>Simple health check endpoint. Returns the server status and current timestamp.</p>
+<p><strong>Source:</strong> <code>src/app/api/health/route.ts</code></p>
+<h3 id="response">Response<a class="headerlink" href="#response" title="Permanent link">&para;</a></h3>
+<div class="highlight"><span class="filename">200 OK</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ok&quot;</span><span class="p">,</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15T09:32:17.045Z&quot;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>status</code></td>
+<td><code>string</code></td>
+<td>Always <code>"ok"</code></td>
+</tr>
+<tr>
+<td><code>timestamp</code></td>
+<td><code>string</code></td>
+<td>ISO-8601 UTC timestamp of the response</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
+<div class="highlight"><span class="filename">cURL</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>http://localhost:3000/api/health
+</span></code></pre></div>
+<hr />
+<h2 id="get-apitask-lists"><code>GET /api/task-lists</code><a class="headerlink" href="#get-apitask-lists" title="Permanent link">&para;</a></h2>
+<p>Returns all task list directories under <code>~/.claude/tasks/</code> that contain at least one <code>.json</code> file. Results are sorted alphabetically by name.</p>
+<p><strong>Source:</strong> <code>src/app/api/task-lists/route.ts</code> &rarr; <code>taskService.getTaskLists()</code></p>
+<h3 id="response_1">Response<a class="headerlink" href="#response_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><span class="filename">200 OK</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;taskLists&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;claude-alchemy&quot;</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;claude-alchemy&quot;</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">      </span><span class="nt">&quot;taskCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-project&quot;</span><span class="p">,</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-project&quot;</span><span class="p">,</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">      </span><span class="nt">&quot;taskCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">  </span><span class="p">]</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="p">}</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>taskLists</code></td>
+<td><a href="#tasklist"><code>TaskList[]</code></a></td>
+<td>Array of task list objects</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition info">
+<p class="admonition-title">Empty Response</p>
+<p>If <code>~/.claude/tasks/</code> does not exist or contains no directories with <code>.json</code> files, the response will be <code>{ "taskLists": [] }</code>.</p>
+</div>
+<h3 id="error-response">Error Response<a class="headerlink" href="#error-response" title="Permanent link">&para;</a></h3>
+<div class="highlight"><span class="filename">500 Internal Server Error</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Failed to fetch task lists&quot;</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="example_1">Example<a class="headerlink" href="#example_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><span class="filename">cURL</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>curl<span class="w"> </span>http://localhost:3000/api/task-lists
+</span></code></pre></div>
+<hr />
+<h2 id="get-apitaskslistid"><code>GET /api/tasks/:listId</code><a class="headerlink" href="#get-apitaskslistid" title="Permanent link">&para;</a></h2>
+<p>Returns all tasks in a specific task list, parsed from individual JSON files in <code>~/.claude/tasks/&lt;listId&gt;/</code>. Tasks are sorted by numeric ID when possible, falling back to alphabetical sort.</p>
+<p><strong>Source:</strong> <code>src/app/api/tasks/[listId]/route.ts</code> &rarr; <code>taskService.getTasks()</code></p>
+<h3 id="path-parameters">Path Parameters<a class="headerlink" href="#path-parameters" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>listId</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>The task list directory name</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Input Validation</p>
+<p>The <code>listId</code> parameter is validated against path traversal attacks. Requests containing <code>..</code> or <code>/</code> in the <code>listId</code> will be rejected with a <code>400</code> error. This validation occurs before any filesystem access.</p>
+</div>
+<h3 id="response_2">Response<a class="headerlink" href="#response_2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><span class="filename">200 OK</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">&quot;tasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="nt">&quot;subject&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Set up project scaffolding&quot;</span><span class="p">,</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Initialize the monorepo with pnpm workspaces&quot;</span><span class="p">,</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">      </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;completed&quot;</span><span class="p">,</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">      </span><span class="nt">&quot;blocks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;3&quot;</span><span class="p">],</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">      </span><span class="nt">&quot;blockedBy&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">      </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">        </span><span class="nt">&quot;priority&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;high&quot;</span><span class="p">,</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">        </span><span class="nt">&quot;complexity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;M&quot;</span><span class="p">,</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">        </span><span class="nt">&quot;phase&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">      </span><span class="nt">&quot;subject&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Implement authentication&quot;</span><span class="p">,</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="w">      </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Add OAuth2 login flow with JWT tokens&quot;</span><span class="p">,</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="w">      </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;in_progress&quot;</span><span class="p">,</span>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="w">      </span><span class="nt">&quot;blocks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">      </span><span class="nt">&quot;blockedBy&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">],</span>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="w">      </span><span class="nt">&quot;activeForm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Setting up OAuth provider configuration&quot;</span><span class="p">,</span>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="w">      </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="w">        </span><span class="nt">&quot;priority&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;critical&quot;</span><span class="p">,</span>
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="w">        </span><span class="nt">&quot;complexity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;L&quot;</span><span class="p">,</span>
+</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="w">        </span><span class="nt">&quot;phase&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="w">        </span><span class="nt">&quot;feature_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;auth&quot;</span>
+</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="w">  </span><span class="p">]</span>
+</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="p">}</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tasks</code></td>
+<td><a href="#task"><code>Task[]</code></a></td>
+<td>Array of task objects, sorted by ID</td>
+</tr>
+</tbody>
+</table>
+<h3 id="error-responses">Error Responses<a class="headerlink" href="#error-responses" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">400 Bad Request</label><label for="__tabbed_1_2">500 Internal Server Error</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Returned when <code>listId</code> contains path traversal characters.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Invalid task list ID&quot;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Returned on unexpected filesystem or parsing errors.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Failed to fetch tasks&quot;</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Missing Task List</p>
+<p>If the specified <code>listId</code> directory does not exist, the endpoint returns <code>200 OK</code> with an empty array: <code>{ "tasks": [] }</code>. This is not treated as an error.</p>
+</div>
+<h3 id="parsing-behavior">Parsing Behavior<a class="headerlink" href="#parsing-behavior" title="Permanent link">&para;</a></h3>
+<p>The <code>parseTask()</code> function in <code>taskService.ts</code> applies defensive normalization when reading task JSON files:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>Coerced to <code>string</code>. Falls back to the filename (without <code>.json</code>) if missing or invalid</td>
+</tr>
+<tr>
+<td><code>subject</code></td>
+<td>Required. Tasks without a string <code>subject</code> are silently skipped</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>Defaults to <code>"pending"</code> if the value is not a valid <code>TaskStatus</code></td>
+</tr>
+<tr>
+<td><code>blocks</code></td>
+<td>Defaults to <code>[]</code>. Each element is coerced to <code>string</code></td>
+</tr>
+<tr>
+<td><code>blockedBy</code></td>
+<td>Defaults to <code>[]</code>. Each element is coerced to <code>string</code></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>Defaults to <code>""</code> if missing or non-string</td>
+</tr>
+<tr>
+<td><code>activeForm</code></td>
+<td>Removed from the task object if present but not a string</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example_2">Example<a class="headerlink" href="#example_2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><span class="filename">cURL</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>curl<span class="w"> </span>http://localhost:3000/api/tasks/claude-alchemy
+</span></code></pre></div>
+<hr />
+<h2 id="get-apiexecution-contextlistid"><code>GET /api/execution-context/:listId</code><a class="headerlink" href="#get-apiexecution-contextlistid" title="Permanent link">&para;</a></h2>
+<p>Returns the execution context for a task list, including session artifacts and progress information. The execution context is resolved from an <code>execution_pointer.md</code> file located in the task list directory, which contains an absolute path to the active session's execution directory.</p>
+<p><strong>Source:</strong> <code>src/app/api/execution-context/[listId]/route.ts</code> &rarr; <code>taskService.getExecutionContext()</code></p>
+<h3 id="path-parameters_1">Path Parameters<a class="headerlink" href="#path-parameters_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>listId</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>The task list directory name</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Input Validation</p>
+<p>The <code>listId</code> parameter is validated identically to the tasks endpoint. Requests containing <code>..</code> or <code>/</code> are rejected with <code>400</code>.</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Path Traversal Guard</p>
+<p>The <code>resolveExecutionDir()</code> function applies a secondary security check: the resolved execution directory path must be under the user's home directory. Pointer files that resolve to paths outside <code>$HOME</code> are rejected and return <code>null</code>.</p>
+</div>
+<h3 id="response-active-execution">Response — Active Execution<a class="headerlink" href="#response-active-execution" title="Permanent link">&para;</a></h3>
+<div class="highlight"><span class="filename">200 OK</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">&quot;executionContext&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">&quot;executionDir&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/Users/you/.claude/sessions/__live_session__&quot;</span><span class="p">,</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="nt">&quot;artifacts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;execution_context&quot;</span><span class="p">,</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">        </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;# Execution Context\n\nProject: claude-alchemy\n...&quot;</span><span class="p">,</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">        </span><span class="nt">&quot;lastModified&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1705312337045</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">      </span><span class="p">},</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;task_log&quot;</span><span class="p">,</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">        </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;# Task Log\n\n## [1] Set up scaffolding\n- Status: completed\n...&quot;</span><span class="p">,</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">        </span><span class="nt">&quot;lastModified&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1705312400123</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="w">      </span><span class="p">},</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;execution_plan&quot;</span><span class="p">,</span>
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">        </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;# Execution Plan\n\nWave 1: Tasks 1, 4\nWave 2: Tasks 2, 3\n...&quot;</span><span class="p">,</span>
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="w">        </span><span class="nt">&quot;lastModified&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1705312337045</span>
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="w">      </span><span class="p">},</span>
+</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="w">      </span><span class="p">{</span>
+</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;progress&quot;</span><span class="p">,</span>
+</span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="w">        </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Status: executing\nWave: 2 of 3\nMax Parallel: 2\nUpdated: 2025-01-15T09:32:17Z\n...&quot;</span><span class="p">,</span>
+</span><span id="__span-9-23"><a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="w">        </span><span class="nt">&quot;lastModified&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1705312500789</span>
+</span><span id="__span-9-24"><a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-9-25"><a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a><span class="w">    </span><span class="p">],</span>
+</span><span id="__span-9-26"><a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a><span class="w">    </span><span class="nt">&quot;progress&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-27"><a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a><span class="w">      </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;executing&quot;</span><span class="p">,</span>
+</span><span id="__span-9-28"><a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a><span class="w">      </span><span class="nt">&quot;wave&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+</span><span id="__span-9-29"><a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a><span class="w">      </span><span class="nt">&quot;totalWaves&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+</span><span id="__span-9-30"><a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a><span class="w">      </span><span class="nt">&quot;maxParallel&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+</span><span id="__span-9-31"><a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a><span class="w">      </span><span class="nt">&quot;updated&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15T09:32:17Z&quot;</span><span class="p">,</span>
+</span><span id="__span-9-32"><a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a><span class="w">      </span><span class="nt">&quot;activeTasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-9-33"><a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-9-34"><a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a><span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
+</span><span id="__span-9-35"><a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a><span class="w">          </span><span class="nt">&quot;subject&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Implement authentication&quot;</span><span class="p">,</span>
+</span><span id="__span-9-36"><a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a><span class="w">          </span><span class="nt">&quot;phase&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;implementation&quot;</span>
+</span><span id="__span-9-37"><a id="__codelineno-9-37" name="__codelineno-9-37" href="#__codelineno-9-37"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-9-38"><a id="__codelineno-9-38" name="__codelineno-9-38" href="#__codelineno-9-38"></a><span class="w">      </span><span class="p">],</span>
+</span><span id="__span-9-39"><a id="__codelineno-9-39" name="__codelineno-9-39" href="#__codelineno-9-39"></a><span class="w">      </span><span class="nt">&quot;completedTasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-9-40"><a id="__codelineno-9-40" name="__codelineno-9-40" href="#__codelineno-9-40"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-9-41"><a id="__codelineno-9-41" name="__codelineno-9-41" href="#__codelineno-9-41"></a><span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+</span><span id="__span-9-42"><a id="__codelineno-9-42" name="__codelineno-9-42" href="#__codelineno-9-42"></a><span class="w">          </span><span class="nt">&quot;subject&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Set up project scaffolding&quot;</span><span class="p">,</span>
+</span><span id="__span-9-43"><a id="__codelineno-9-43" name="__codelineno-9-43" href="#__codelineno-9-43"></a><span class="w">          </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;completed successfully&quot;</span>
+</span><span id="__span-9-44"><a id="__codelineno-9-44" name="__codelineno-9-44" href="#__codelineno-9-44"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-9-45"><a id="__codelineno-9-45" name="__codelineno-9-45" href="#__codelineno-9-45"></a><span class="w">      </span><span class="p">]</span>
+</span><span id="__span-9-46"><a id="__codelineno-9-46" name="__codelineno-9-46" href="#__codelineno-9-46"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-9-47"><a id="__codelineno-9-47" name="__codelineno-9-47" href="#__codelineno-9-47"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-9-48"><a id="__codelineno-9-48" name="__codelineno-9-48" href="#__codelineno-9-48"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="response-no-execution">Response — No Execution<a class="headerlink" href="#response-no-execution" title="Permanent link">&para;</a></h3>
+<p>When there is no active execution (no pointer file, invalid pointer, or empty execution directory):</p>
+<div class="highlight"><span class="filename">200 OK</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">&quot;executionContext&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="artifact-sort-order">Artifact Sort Order<a class="headerlink" href="#artifact-sort-order" title="Permanent link">&para;</a></h3>
+<p>Artifacts are returned in a fixed priority order:</p>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Artifact Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>execution_context</code></td>
+<td>Session configuration and parameters</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>task_log</code></td>
+<td>Chronological log of task execution</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>execution_plan</code></td>
+<td>Wave-based execution plan</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>session_summary</code></td>
+<td>Post-execution summary</td>
+</tr>
+<tr>
+<td>5+</td>
+<td><em>(alphabetical)</em></td>
+<td>Any other <code>.md</code> artifacts</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Filtered Artifacts</p>
+<p>Temporary per-wave context files (those with names starting with <code>context-task-</code>) are filtered out and never returned in the response.</p>
+</div>
+<h3 id="error-responses_1">Error Responses<a class="headerlink" href="#error-responses_1" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">400 Bad Request</label><label for="__tabbed_2_2">500 Internal Server Error</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Invalid task list ID&quot;</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="p">{</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Failed to fetch execution context&quot;</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="example_3">Example<a class="headerlink" href="#example_3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><span class="filename">cURL</span><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>curl<span class="w"> </span>http://localhost:3000/api/execution-context/claude-alchemy
+</span></code></pre></div>
+<hr />
+<h2 id="get-apievents"><code>GET /api/events</code><a class="headerlink" href="#get-apievents" title="Permanent link">&para;</a></h2>
+<p>Server-Sent Events (SSE) endpoint for real-time push updates. The client opens a persistent HTTP connection and receives events whenever task files or execution artifacts change on disk.</p>
+<p><strong>Source:</strong> <code>src/app/api/events/route.ts</code></p>
+<div class="admonition info">
+<p class="admonition-title">Runtime Requirements</p>
+<p>This route is configured with <code>dynamic = 'force-dynamic'</code> and <code>runtime = 'nodejs'</code> to ensure it runs as a streaming Node.js handler, bypassing Next.js static optimization and edge runtime.</p>
+</div>
+<h3 id="query-parameters">Query Parameters<a class="headerlink" href="#query-parameters" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>taskListId</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>Filter events to a specific task list. If provided, the server also begins watching the list's execution directory for artifact changes.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="response-headers">Response Headers<a class="headerlink" href="#response-headers" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Content-Type</code></td>
+<td><code>text/event-stream</code></td>
+<td>Identifies the response as an SSE stream</td>
+</tr>
+<tr>
+<td><code>Cache-Control</code></td>
+<td><code>no-cache, no-transform</code></td>
+<td>Prevents caching by browsers and proxies</td>
+</tr>
+<tr>
+<td><code>Connection</code></td>
+<td><code>keep-alive</code></td>
+<td>Maintains the persistent connection</td>
+</tr>
+<tr>
+<td><code>X-Accel-Buffering</code></td>
+<td><code>no</code></td>
+<td>Disables nginx response buffering</td>
+</tr>
+</tbody>
+</table>
+<h3 id="connection-lifecycle">Connection Lifecycle<a class="headerlink" href="#connection-lifecycle" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Client
+    participant SSE Route
+    participant FileWatcher
+    participant Filesystem
+
+    Client-&gt;&gt;SSE Route: GET /api/events?taskListId=my-list
+    SSE Route-&gt;&gt;FileWatcher: Ensure watcher started
+    SSE Route-&gt;&gt;FileWatcher: Watch execution dir (if exists)
+    SSE Route--&gt;&gt;Client: event: connected
+
+    loop File changes
+        Filesystem-&gt;&gt;FileWatcher: File created/modified/deleted
+        FileWatcher-&gt;&gt;SSE Route: taskEvent / executionEvent
+        SSE Route--&gt;&gt;Client: event: task:updated (filtered by taskListId)
+    end
+
+    loop Every 30 seconds
+        SSE Route--&gt;&gt;Client: :heartbeat
+    end
+
+    Client-&gt;&gt;SSE Route: Connection closed (abort signal)
+    SSE Route-&gt;&gt;FileWatcher: Unsubscribe listeners</code></pre>
+<h3 id="event-types">Event Types<a class="headerlink" href="#event-types" title="Permanent link">&para;</a></h3>
+<h4 id="connected"><code>connected</code><a class="headerlink" href="#connected" title="Permanent link">&para;</a></h4>
+<p>Sent immediately after the connection is established. Contains no meaningful data.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>event: connected
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>data: {}
+</span></code></pre></div>
+<h4 id="taskcreated"><code>task:created</code><a class="headerlink" href="#taskcreated" title="Permanent link">&para;</a></h4>
+<p>Emitted when a new <code>.json</code> task file is added to the watched directory.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>event: task:created
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>data: {&quot;type&quot;:&quot;task:created&quot;,&quot;taskListId&quot;:&quot;claude-alchemy&quot;,&quot;taskId&quot;:&quot;5&quot;,&quot;task&quot;:{&quot;id&quot;:&quot;5&quot;,&quot;subject&quot;:&quot;New task&quot;,&quot;description&quot;:&quot;&quot;,&quot;status&quot;:&quot;pending&quot;,&quot;blocks&quot;:[],&quot;blockedBy&quot;:[]}}
+</span></code></pre></div>
+<h4 id="taskupdated"><code>task:updated</code><a class="headerlink" href="#taskupdated" title="Permanent link">&para;</a></h4>
+<p>Emitted when an existing <code>.json</code> task file is modified.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>event: task:updated
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>data: {&quot;type&quot;:&quot;task:updated&quot;,&quot;taskListId&quot;:&quot;claude-alchemy&quot;,&quot;taskId&quot;:&quot;2&quot;,&quot;task&quot;:{&quot;id&quot;:&quot;2&quot;,&quot;subject&quot;:&quot;Implement auth&quot;,&quot;description&quot;:&quot;...&quot;,&quot;status&quot;:&quot;completed&quot;,&quot;blocks&quot;:[],&quot;blockedBy&quot;:[&quot;1&quot;]}}
+</span></code></pre></div>
+<h4 id="taskdeleted"><code>task:deleted</code><a class="headerlink" href="#taskdeleted" title="Permanent link">&para;</a></h4>
+<p>Emitted when a <code>.json</code> task file is removed. The <code>task</code> field is absent for delete events.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>event: task:deleted
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>data: {&quot;type&quot;:&quot;task:deleted&quot;,&quot;taskListId&quot;:&quot;claude-alchemy&quot;,&quot;taskId&quot;:&quot;5&quot;}
+</span></code></pre></div>
+<h4 id="executionupdated"><code>execution:updated</code><a class="headerlink" href="#executionupdated" title="Permanent link">&para;</a></h4>
+<p>Emitted when any <code>.md</code> or <code>.txt</code> file changes in the watched execution directory.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>event: execution:updated
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>data: {&quot;type&quot;:&quot;execution:updated&quot;,&quot;taskListId&quot;:&quot;claude-alchemy&quot;}
+</span></code></pre></div>
+<h4 id="heartbeat">Heartbeat<a class="headerlink" href="#heartbeat" title="Permanent link">&para;</a></h4>
+<p>A comment-only keepalive sent every 30 seconds to prevent connection timeouts. This is not a named event and will not trigger <code>EventSource</code> event listeners.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>:heartbeat
+</span></code></pre></div>
+<h3 id="client-usage">Client Usage<a class="headerlink" href="#client-usage" title="Permanent link">&para;</a></h3>
+<p>The Task Manager connects to this endpoint via the <code>useSSE</code> hook, which manages the <code>EventSource</code> lifecycle and triggers TanStack Query cache invalidation on each event.</p>
+<div class="highlight"><span class="filename">Connecting from a browser client</span><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">eventSource</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">EventSource</span><span class="p">(</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="sb">`/api/events?taskListId=</span><span class="si">${</span><span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">listId</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="p">);</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="nx">eventSource</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;connected&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;SSE connection established&#39;</span><span class="p">);</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="p">});</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="nx">eventSource</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;task:updated&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Task </span><span class="si">${</span><span class="nx">data</span><span class="p">.</span><span class="nx">taskId</span><span class="si">}</span><span class="sb"> updated in </span><span class="si">${</span><span class="nx">data</span><span class="p">.</span><span class="nx">taskListId</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="w">  </span><span class="c1">// Invalidate relevant queries to refresh the UI</span>
+</span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="p">});</span>
+</span><span id="__span-20-14"><a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a>
+</span><span id="__span-20-15"><a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="nx">eventSource</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;execution:updated&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-16"><a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+</span><span id="__span-20-17"><a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a><span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Execution context updated for </span><span class="si">${</span><span class="nx">data</span><span class="p">.</span><span class="nx">taskListId</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span><span id="__span-20-18"><a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a><span class="p">});</span>
+</span><span id="__span-20-19"><a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a>
+</span><span id="__span-20-20"><a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a><span class="nx">eventSource</span><span class="p">.</span><span class="nx">onerror</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-21"><a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a><span class="w">  </span><span class="nx">eventSource</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+</span><span id="__span-20-22"><a id="__codelineno-20-22" name="__codelineno-20-22" href="#__codelineno-20-22"></a><span class="w">  </span><span class="c1">// Reconnect after delay</span>
+</span><span id="__span-20-23"><a id="__codelineno-20-23" name="__codelineno-20-23" href="#__codelineno-20-23"></a><span class="w">  </span><span class="nx">setTimeout</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* re-create EventSource */</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="mf">3000</span><span class="p">);</span>
+</span><span id="__span-20-24"><a id="__codelineno-20-24" name="__codelineno-20-24" href="#__codelineno-20-24"></a><span class="p">};</span>
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Automatic Reconnection</p>
+<p>The built-in <code>useSSE</code> hook automatically reconnects after a 3-second delay when the connection drops. If you implement a custom client, you should handle reconnection similarly.</p>
+</div>
+<h3 id="example_4">Example<a class="headerlink" href="#example_4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><span class="filename">cURL (streaming)</span><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>curl<span class="w"> </span>-N<span class="w"> </span>http://localhost:3000/api/events?taskListId<span class="o">=</span>claude-alchemy
+</span></code></pre></div>
+<hr />
+<h2 id="data-models">Data Models<a class="headerlink" href="#data-models" title="Permanent link">&para;</a></h2>
+<h3 id="task">Task<a class="headerlink" href="#task" title="Permanent link">&para;</a></h3>
+<p>Represents a single task parsed from a JSON file in <code>~/.claude/tasks/&lt;listId&gt;/&lt;id&gt;.json</code>.</p>
+<div class="highlight"><span class="filename">src/types/task.ts</span><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">Task</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="nx">subject</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">  </span><span class="nx">description</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">  </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="kt">TaskStatus</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">  </span><span class="nx">blocks</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">[]</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="w">  </span><span class="nx">blockedBy</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">[]</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="w">  </span><span class="nx">activeForm?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="w">  </span><span class="nx">metadata?</span><span class="o">:</span><span class="w"> </span><span class="kt">TaskMetadata</span>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="p">}</span>
+</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>
+</span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="kr">type</span><span class="w"> </span><span class="nx">TaskStatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;pending&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;in_progress&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;completed&#39;</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>Unique identifier, typically a numeric string. Derived from the filename if not present in the JSON.</td>
+</tr>
+<tr>
+<td><code>subject</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>Short title of the task. Tasks without a subject are skipped during parsing.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>Detailed task description. Defaults to <code>""</code>.</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>TaskStatus</code></td>
+<td>Yes</td>
+<td>One of <code>"pending"</code>, <code>"in_progress"</code>, or <code>"completed"</code>. Defaults to <code>"pending"</code>.</td>
+</tr>
+<tr>
+<td><code>blocks</code></td>
+<td><code>string[]</code></td>
+<td>Yes</td>
+<td>IDs of tasks that this task blocks. Defaults to <code>[]</code>.</td>
+</tr>
+<tr>
+<td><code>blockedBy</code></td>
+<td><code>string[]</code></td>
+<td>Yes</td>
+<td>IDs of tasks that block this task. Defaults to <code>[]</code>.</td>
+</tr>
+<tr>
+<td><code>activeForm</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>Free-text description of current work being done on this task.</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td><a href="#taskmetadata"><code>TaskMetadata</code></a></td>
+<td>No</td>
+<td>Extensible metadata bag for priority, complexity, and other attributes.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="taskmetadata">TaskMetadata<a class="headerlink" href="#taskmetadata" title="Permanent link">&para;</a></h3>
+<div class="highlight"><span class="filename">src/types/task.ts</span><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">TaskMetadata</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="nx">priority</span><span class="o">?:</span><span class="w"> </span><span class="s1">&#39;critical&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;high&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;medium&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;low&#39;</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">  </span><span class="nx">complexity</span><span class="o">?:</span><span class="w"> </span><span class="s1">&#39;XS&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;S&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;M&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;L&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;XL&#39;</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">  </span><span class="nx">source_section?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">  </span><span class="nx">prd_path?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="w">  </span><span class="nx">feature_name?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="w">  </span><span class="nx">task_uid?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">  </span><span class="nx">phase?</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span>
+</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">  </span><span class="p">[</span><span class="nx">key</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="nx">unknown</span>
+</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="p">}</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>priority</code></td>
+<td><code>string</code></td>
+<td>Task priority: <code>"critical"</code>, <code>"high"</code>, <code>"medium"</code>, or <code>"low"</code></td>
+</tr>
+<tr>
+<td><code>complexity</code></td>
+<td><code>string</code></td>
+<td>T-shirt size estimate: <code>"XS"</code>, <code>"S"</code>, <code>"M"</code>, <code>"L"</code>, or <code>"XL"</code></td>
+</tr>
+<tr>
+<td><code>source_section</code></td>
+<td><code>string</code></td>
+<td>Reference to the PRD section that generated this task</td>
+</tr>
+<tr>
+<td><code>prd_path</code></td>
+<td><code>string</code></td>
+<td>Filesystem path to the source PRD document</td>
+</tr>
+<tr>
+<td><code>feature_name</code></td>
+<td><code>string</code></td>
+<td>Name of the feature this task belongs to</td>
+</tr>
+<tr>
+<td><code>task_uid</code></td>
+<td><code>string</code></td>
+<td>External unique identifier for cross-referencing</td>
+</tr>
+<tr>
+<td><code>phase</code></td>
+<td><code>number</code></td>
+<td>Execution phase number</td>
+</tr>
+<tr>
+<td><code>[key: string]</code></td>
+<td><code>unknown</code></td>
+<td>Arbitrary additional metadata (extensible index signature)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tasklist">TaskList<a class="headerlink" href="#tasklist" title="Permanent link">&para;</a></h3>
+<div class="highlight"><span class="filename">src/types/task.ts</span><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">TaskList</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">  </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">  </span><span class="nx">taskCount</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>string</code></td>
+<td>Directory name under <code>~/.claude/tasks/</code></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>string</code></td>
+<td>Display name (currently identical to <code>id</code>)</td>
+</tr>
+<tr>
+<td><code>taskCount</code></td>
+<td><code>number</code></td>
+<td>Number of <code>.json</code> files in the directory</td>
+</tr>
+</tbody>
+</table>
+<h3 id="executioncontext">ExecutionContext<a class="headerlink" href="#executioncontext" title="Permanent link">&para;</a></h3>
+<div class="highlight"><span class="filename">src/types/execution.ts</span><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">ExecutionContext</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">  </span><span class="nx">executionDir</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">  </span><span class="nx">artifacts</span><span class="o">:</span><span class="w"> </span><span class="kt">ExecutionArtifact</span><span class="p">[]</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="w">  </span><span class="nx">progress?</span><span class="o">:</span><span class="w"> </span><span class="kt">ExecutionProgress</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>executionDir</code></td>
+<td><code>string</code></td>
+<td>Absolute path to the resolved execution session directory</td>
+</tr>
+<tr>
+<td><code>artifacts</code></td>
+<td><a href="#executionartifact"><code>ExecutionArtifact[]</code></a></td>
+<td>Markdown files from the execution directory, sorted by priority</td>
+</tr>
+<tr>
+<td><code>progress</code></td>
+<td><a href="#executionprogress"><code>ExecutionProgress</code></a></td>
+<td>Parsed progress data from <code>progress.md</code>, or <code>null</code> if unavailable</td>
+</tr>
+</tbody>
+</table>
+<h3 id="executionartifact">ExecutionArtifact<a class="headerlink" href="#executionartifact" title="Permanent link">&para;</a></h3>
+<div class="highlight"><span class="filename">src/types/execution.ts</span><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">ExecutionArtifact</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">  </span><span class="nx">content</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">  </span><span class="nx">lastModified</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>string</code></td>
+<td>Artifact name (filename without <code>.md</code> extension)</td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td><code>string</code></td>
+<td>Full text content of the markdown file</td>
+</tr>
+<tr>
+<td><code>lastModified</code></td>
+<td><code>number</code></td>
+<td>Last modified time in milliseconds since epoch (<code>Date.now()</code> format)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="executionprogress">ExecutionProgress<a class="headerlink" href="#executionprogress" title="Permanent link">&para;</a></h3>
+<p>Parsed from the <code>progress.md</code> artifact using structured markdown conventions.</p>
+<div class="highlight"><span class="filename">src/types/execution.ts</span><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">ExecutionProgress</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">  </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="w">  </span><span class="nx">wave</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span>
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="w">  </span><span class="nx">totalWaves</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span>
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="w">  </span><span class="nx">maxParallel?</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span>
+</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="w">  </span><span class="nx">updated</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-27-7"><a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="w">  </span><span class="nx">activeTasks</span><span class="o">:</span><span class="w"> </span><span class="kt">ActiveTask</span><span class="p">[]</span>
+</span><span id="__span-27-8"><a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a><span class="w">  </span><span class="nx">completedTasks</span><span class="o">:</span><span class="w"> </span><span class="kt">CompletedTask</span><span class="p">[]</span>
+</span><span id="__span-27-9"><a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a><span class="p">}</span>
+</span><span id="__span-27-10"><a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a>
+</span><span id="__span-27-11"><a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">ActiveTask</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-27-12"><a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a><span class="w">  </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-27-13"><a id="__codelineno-27-13" name="__codelineno-27-13" href="#__codelineno-27-13"></a><span class="w">  </span><span class="nx">subject</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-27-14"><a id="__codelineno-27-14" name="__codelineno-27-14" href="#__codelineno-27-14"></a><span class="w">  </span><span class="nx">phase</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-27-15"><a id="__codelineno-27-15" name="__codelineno-27-15" href="#__codelineno-27-15"></a><span class="p">}</span>
+</span><span id="__span-27-16"><a id="__codelineno-27-16" name="__codelineno-27-16" href="#__codelineno-27-16"></a>
+</span><span id="__span-27-17"><a id="__codelineno-27-17" name="__codelineno-27-17" href="#__codelineno-27-17"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">CompletedTask</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-27-18"><a id="__codelineno-27-18" name="__codelineno-27-18" href="#__codelineno-27-18"></a><span class="w">  </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-27-19"><a id="__codelineno-27-19" name="__codelineno-27-19" href="#__codelineno-27-19"></a><span class="w">  </span><span class="nx">subject</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-27-20"><a id="__codelineno-27-20" name="__codelineno-27-20" href="#__codelineno-27-20"></a><span class="w">  </span><span class="nx">result</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-27-21"><a id="__codelineno-27-21" name="__codelineno-27-21" href="#__codelineno-27-21"></a><span class="p">}</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>status</code></td>
+<td><code>string</code></td>
+<td>Current execution status (e.g., <code>"executing"</code>, <code>"completed"</code>)</td>
+</tr>
+<tr>
+<td><code>wave</code></td>
+<td><code>number</code></td>
+<td>Current execution wave number</td>
+</tr>
+<tr>
+<td><code>totalWaves</code></td>
+<td><code>number</code></td>
+<td>Total number of planned waves</td>
+</tr>
+<tr>
+<td><code>maxParallel</code></td>
+<td><code>number</code></td>
+<td>Maximum parallel tasks per wave (optional)</td>
+</tr>
+<tr>
+<td><code>updated</code></td>
+<td><code>string</code></td>
+<td>Timestamp of the last progress update</td>
+</tr>
+<tr>
+<td><code>activeTasks</code></td>
+<td><code>ActiveTask[]</code></td>
+<td>Tasks currently being executed</td>
+</tr>
+<tr>
+<td><code>completedTasks</code></td>
+<td><code>CompletedTask[]</code></td>
+<td>Tasks completed in the current session</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sse-event-types">SSE Event Types<a class="headerlink" href="#sse-event-types" title="Permanent link">&para;</a></h3>
+<div class="highlight"><span class="filename">src/types/task.ts</span><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1">// Task file events</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">SSEEvent</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">  </span><span class="kr">type</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;task:created&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;task:updated&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">&#39;task:deleted&#39;</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="w">  </span><span class="nx">taskListId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="w">  </span><span class="nx">taskId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="w">  </span><span class="nx">task?</span><span class="o">:</span><span class="w"> </span><span class="kt">Task</span><span class="w">  </span><span class="c1">// Present for created/updated, absent for deleted</span>
+</span><span id="__span-28-7"><a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="p">}</span>
+</span><span id="__span-28-8"><a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>
+</span><span id="__span-28-9"><a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a><span class="c1">// Execution artifact events</span>
+</span><span id="__span-28-10"><a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">ExecutionSSEEvent</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-28-11"><a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a><span class="w">  </span><span class="kr">type</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;execution:updated&#39;</span>
+</span><span id="__span-28-12"><a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a><span class="w">  </span><span class="nx">taskListId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-28-13"><a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a><span class="p">}</span>
+</span></code></pre></div>
+<hr />
+<h2 id="architecture-notes">Architecture Notes<a class="headerlink" href="#architecture-notes" title="Permanent link">&para;</a></h2>
+<h3 id="filesystem-as-data-source">Filesystem as Data Source<a class="headerlink" href="#filesystem-as-data-source" title="Permanent link">&para;</a></h3>
+<p>The API is entirely read-only. Task files are created and modified by Claude Code plugins (specifically the <code>execute-tasks</code> skill), and the Task Manager simply reads and serves them. There is no database, no write endpoints, and no shared runtime between the plugins and the web app.</p>
+<pre class="mermaid"><code>graph LR
+    A[Claude Code Plugin] --&gt;|writes JSON| B["~/.claude/tasks/"]
+    B --&gt;|reads| C[Task Manager API]
+    C --&gt;|JSON responses| D[Browser Client]
+    B --&gt;|Chokidar watches| E[FileWatcher]
+    E --&gt;|emits events| C
+    C --&gt;|SSE stream| D</code></pre>
+<h3 id="file-watcher">File Watcher<a class="headerlink" href="#file-watcher" title="Permanent link">&para;</a></h3>
+<p>The <code>FileWatcher</code> class (<code>src/lib/fileWatcher.ts</code>) is a Chokidar-based singleton that watches <code>~/.claude/tasks/</code> for changes. It uses a <code>globalThis</code> pattern to survive Next.js hot module replacement during development, preventing duplicate watchers.</p>
+<p>Key configuration:</p>
+<ul>
+<li><strong>Polling interval:</strong> 300ms (<code>usePolling: true</code>)</li>
+<li><strong>Watch depth:</strong> 2 directories deep</li>
+<li><strong>Initial scan:</strong> Ignored (<code>ignoreInitial: true</code>)</li>
+<li><strong>Persistence:</strong> Runs as long as the Next.js server is alive</li>
+</ul>
+<h3 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h3>
+<p>All endpoints that accept a <code>listId</code> parameter apply two layers of protection:</p>
+<ol>
+<li><strong>Route-level validation</strong> — The <code>listId</code> is checked for <code>..</code> and <code>/</code> characters before any filesystem access.</li>
+<li><strong>Execution pointer validation</strong> — The <code>resolveExecutionDir()</code> function uses <code>path.relative()</code> to verify that resolved execution paths remain under the user's home directory.</li>
+</ol>
+<div class="admonition danger">
+<p class="admonition-title">Security Boundary</p>
+<p>These validations assume the Task Manager runs as a local development tool. The API has no authentication and binds to <code>localhost</code> by default. Do not expose it to untrusted networks.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

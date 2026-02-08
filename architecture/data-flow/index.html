@@ -1,0 +1,2688 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A monorepo combining Claude Code plugins and a real-time Task Manager application">
+      
+      
+      
+      
+        <link rel="prev" href="../filesystem-message-bus/">
+      
+      
+        <link rel="next" href="../../task-manager/overview/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Data Flow - Claude Alchemy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#data-flow" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Claude Alchemy" class="md-header__button md-logo" aria-label="Claude Alchemy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Claude Alchemy
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Data Flow
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sequenzia/claude-alchemy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sequenzia/claude-alchemy
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../task-manager/overview/" class="md-tabs__link">
+          
+  
+  
+  Task Manager
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../plugins/overview/" class="md-tabs__link">
+          
+  
+  
+  Plugins
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/setup/" class="md-tabs__link">
+          
+  
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Claude Alchemy" class="md-nav__button md-logo" aria-label="Claude Alchemy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Claude Alchemy
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sequenzia/claude-alchemy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sequenzia/claude-alchemy
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../filesystem-message-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Filesystem Message Bus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-time-data-flow-task-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-Time Data Flow (Task Manager)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Real-Time Data Flow (Task Manager)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#full-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sequence-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequence Diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#component-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Component Breakdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dual-invalidation-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dual Invalidation Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sdd-pipeline-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SDD Pipeline Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SDD Pipeline Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#full-pipeline_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Sequence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage Details
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-executor-4-phase-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task-Executor 4-Phase Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wave-based-concurrency-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wave-Based Concurrency Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#context-sharing-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context Sharing Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tools-plugin-agent-orchestration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tools Plugin Agent Orchestration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tools Plugin Agent Orchestration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#standard-deep-analysis-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standard Deep Analysis Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#team-based-deep-analysis-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Team-Based Deep Analysis Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-system-integration-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-System Integration Points
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cross-System Integration Points">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#execution-pointer-bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Pointer Bridge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-json-as-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task JSON as Contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#progressmd-real-time-bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Progress.md Real-Time Bridge
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-flow-summary-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Flow Summary Table
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task Manager
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Task Manager
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/real-time-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Real-Time System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../task-manager/security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plugins
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Plugins
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/tools-plugin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools Plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/sdd-plugin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDD Plugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/sdd-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SDD Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/conventions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-time-data-flow-task-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-Time Data Flow (Task Manager)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Real-Time Data Flow (Task Manager)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#full-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sequence-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequence Diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#component-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Component Breakdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dual-invalidation-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dual Invalidation Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sdd-pipeline-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SDD Pipeline Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SDD Pipeline Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#full-pipeline_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Sequence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage Details
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-executor-4-phase-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task-Executor 4-Phase Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wave-based-concurrency-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wave-Based Concurrency Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#context-sharing-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context Sharing Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tools-plugin-agent-orchestration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tools Plugin Agent Orchestration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tools Plugin Agent Orchestration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#standard-deep-analysis-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standard Deep Analysis Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#team-based-deep-analysis-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Team-Based Deep Analysis Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-system-integration-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-System Integration Points
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cross-System Integration Points">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#execution-pointer-bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Pointer Bridge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-json-as-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task JSON as Contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#progressmd-real-time-bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Progress.md Real-Time Bridge
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-flow-summary-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Flow Summary Table
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<!-- docs/architecture/data-flow.md -->
+<h1 id="data-flow">Data Flow<a class="headerlink" href="#data-flow" title="Permanent link">&para;</a></h1>
+<p>Claude Alchemy operates through three distinct data flow paths that converge on a shared filesystem-as-message-bus integration pattern. Each subsystem -- the SDD plugin pipeline, the Tools plugin agent orchestration, and the Task Manager real-time UI -- reads and writes to <code>~/.claude/tasks/</code> as its primary communication channel. No shared runtime code, no database, and no IPC connects these systems; the filesystem is the sole integration boundary.</p>
+<p>This page documents every major data flow path, the components involved, and the precise mechanism by which data moves from producer to consumer.</p>
+<p>For the underlying integration pattern details, see <a href="../filesystem-message-bus/">Filesystem Message Bus</a>.</p>
+<hr />
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>graph TB
+    subgraph "SDD Plugin"
+        CS[create-spec] --&gt; AS[analyze-spec]
+        CS --&gt; CT[create-tasks]
+        CT --&gt; ET[execute-tasks]
+    end
+
+    subgraph "Tools Plugin"
+        FD[feature-dev] --&gt; DA[deep-analysis]
+        DA --&gt; CA[code-architect]
+        CA --&gt; CR[code-reviewer]
+    end
+
+    subgraph "Filesystem"
+        SPECS["specs/SPEC-*.md"]
+        TASKS["~/.claude/tasks/*.json"]
+        SESSION[".claude/sessions/__live_session__/"]
+        POINTER["execution_pointer.md"]
+    end
+
+    subgraph "Task Manager"
+        FW[FileWatcher] --&gt; SSE[SSE Route]
+        SSE --&gt; HOOK[useSSE Hook]
+        HOOK --&gt; TQ[TanStack Query]
+        TQ --&gt; UI[Kanban Board]
+    end
+
+    CS --&gt; SPECS
+    CT --&gt; TASKS
+    ET --&gt; SESSION
+    ET --&gt; POINTER
+    TASKS --&gt; FW
+    SESSION --&gt; FW
+    POINTER --&gt; FW</code></pre>
+<hr />
+<h2 id="real-time-data-flow-task-manager">Real-Time Data Flow (Task Manager)<a class="headerlink" href="#real-time-data-flow-task-manager" title="Permanent link">&para;</a></h2>
+<p>The Task Manager is a Next.js application that renders a Kanban board reflecting the live state of <code>~/.claude/tasks/</code>. It uses a Server Component + Client Component hydration pattern where the server reads files for the initial render, then the client subscribes to a Server-Sent Events stream for real-time updates.</p>
+<h3 id="full-pipeline">Full Pipeline<a class="headerlink" href="#full-pipeline" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>~/.claude/tasks/*.json
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    → Chokidar FileWatcher (polling 300ms)
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    → EventEmitter (taskEvent / executionEvent)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    → SSE Route Handler (/api/events)
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    → EventSource in browser (useSSE hook)
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    → Dual invalidation: TanStack Query cache + router.refresh()
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    → UI re-render
+</span></code></pre></div>
+<h3 id="sequence-diagram">Sequence Diagram<a class="headerlink" href="#sequence-diagram" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant FS as Filesystem&lt;br/&gt;~/.claude/tasks/
+    participant CK as Chokidar&lt;br/&gt;FileWatcher
+    participant EE as EventEmitter
+    participant SSE as SSE Route&lt;br/&gt;/api/events
+    participant ES as EventSource&lt;br/&gt;(Browser)
+    participant TQ as TanStack Query
+    participant SC as Server Components
+    participant UI as Kanban Board
+
+    Note over FS,UI: Initial Page Load
+    SC-&gt;&gt;FS: readdir + readFile (taskService.ts)
+    SC-&gt;&gt;UI: Pass initialTasks + initialExecutionContext as props
+
+    Note over FS,UI: Real-Time Update Path
+    FS-&gt;&gt;CK: File change detected (add/change/unlink)
+    CK-&gt;&gt;EE: emit('taskEvent', {type, taskListId, taskId, task})
+    EE-&gt;&gt;SSE: Handler receives event
+    SSE-&gt;&gt;ES: Stream: event: task:updated\ndata: {...}
+    ES-&gt;&gt;TQ: invalidateQueries({queryKey: taskKeys.list(listId)})
+    ES-&gt;&gt;SC: router.refresh() — refetch Server Component data
+    TQ-&gt;&gt;UI: Re-render with fresh data</code></pre>
+<h3 id="component-breakdown">Component Breakdown<a class="headerlink" href="#component-breakdown" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">FileWatcher (Server)</label><label for="__tabbed_1_2">SSE Route Handler (Server)</label><label for="__tabbed_1_3">useSSE Hook (Client)</label><label for="__tabbed_1_4">Task Service (Server)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>The <code>FileWatcher</code> class in <code>src/lib/fileWatcher.ts</code> is a Chokidar-based singleton that watches the <code>~/.claude/tasks/</code> directory tree. It survives Next.js Hot Module Replacement by attaching to <code>globalThis</code>.</p>
+<div class="highlight"><span class="filename">apps/task-manager/src/lib/fileWatcher.ts</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Singleton pattern for HMR survival</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">globalForWatcher</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">globalThis</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">unknown</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nx">fileWatcher</span><span class="o">:</span><span class="w"> </span><span class="kt">FileWatcher</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">undefined</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">}</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">fileWatcher</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">globalForWatcher</span><span class="p">.</span><span class="nx">fileWatcher</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">FileWatcher</span><span class="p">()</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">&#39;production&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="nx">globalForWatcher</span><span class="p">.</span><span class="nx">fileWatcher</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">fileWatcher</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Configuration:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>usePolling</code></td>
+<td><code>true</code></td>
+<td>Required for cross-platform reliability</td>
+</tr>
+<tr>
+<td><code>interval</code></td>
+<td><code>300</code> ms</td>
+<td>Balance between responsiveness and CPU usage</td>
+</tr>
+<tr>
+<td><code>depth</code></td>
+<td><code>2</code></td>
+<td>Watch <code>tasks/{listId}/*.json</code> without excessive recursion</td>
+</tr>
+<tr>
+<td><code>ignoreInitial</code></td>
+<td><code>true</code></td>
+<td>Skip events for files that exist at startup</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Event Types Emitted:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Trigger</th>
+<th>Payload</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>taskEvent</code></td>
+<td><code>.json</code> file added, changed, or deleted</td>
+<td><code>{ type: SSEEventType, taskListId, taskId, task? }</code></td>
+</tr>
+<tr>
+<td><code>executionEvent</code></td>
+<td><code>.md</code> or <code>.txt</code> file changed in a watched execution directory</td>
+<td><code>{ type: 'execution:updated', taskListId }</code></td>
+</tr>
+</tbody>
+</table>
+<p>The <code>watchExecutionDir()</code> method dynamically adds execution session directories to the watcher when an SSE client connects with a <code>taskListId</code> that has an <code>execution_pointer.md</code>.</p>
+</div>
+<div class="tabbed-block">
+<p>The <code>/api/events</code> route in <code>src/app/api/events/route.ts</code> creates a <code>ReadableStream</code> and subscribes to <code>FileWatcher</code> events. It filters events by the <code>taskListId</code> query parameter.</p>
+<div class="highlight"><span class="filename">apps/task-manager/src/app/api/events/route.ts</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">export</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">GET</span><span class="p">(</span><span class="nx">request</span><span class="o">:</span><span class="w"> </span><span class="kt">Request</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">searchParams</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">URL</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">)</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">taskListId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">searchParams</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;taskListId&#39;</span><span class="p">)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="c1">// Ensure file watcher is started</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">fileWatcher</span><span class="p">.</span><span class="nx">isStarted</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="nx">fileWatcher</span><span class="p">.</span><span class="nx">start</span><span class="p">()</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="c1">// Watch execution directory for this task list</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">taskListId</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">execDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">getExecutionDir</span><span class="p">(</span><span class="nx">taskListId</span><span class="p">)</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">execDir</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">      </span><span class="nx">fileWatcher</span><span class="p">.</span><span class="nx">watchExecutionDir</span><span class="p">(</span><span class="nx">taskListId</span><span class="p">,</span><span class="w"> </span><span class="nx">execDir</span><span class="p">)</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">  </span><span class="c1">// ... ReadableStream with event handlers</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>SSE Event Format:</strong></p>
+<div class="highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>event: task:updated
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>data: {&quot;type&quot;:&quot;task:updated&quot;,&quot;taskListId&quot;:&quot;claude-alchemy&quot;,&quot;taskId&quot;:&quot;5&quot;,&quot;task&quot;:{...}}
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>event: execution:updated
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>data: {&quot;type&quot;:&quot;execution:updated&quot;,&quot;taskListId&quot;:&quot;claude-alchemy&quot;}
+</span></code></pre></div>
+<p>A heartbeat comment (<code>:heartbeat</code>) is sent every 30 seconds to keep the connection alive. Cleanup removes event listeners on client abort.</p>
+</div>
+<div class="tabbed-block">
+<p>The <code>useSSE</code> hook in <code>src/hooks/useSSE.ts</code> opens an <code>EventSource</code> connection to <code>/api/events</code> and triggers dual invalidation on every event.</p>
+<div class="highlight"><span class="filename">apps/task-manager/src/hooks/useSSE.ts</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">handleTaskEvent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="c1">// Invalidate client-side cache</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nx">queryClient</span><span class="p">.</span><span class="nx">invalidateQueries</span><span class="p">({</span><span class="w"> </span><span class="nx">queryKey</span><span class="o">:</span><span class="w"> </span><span class="kt">taskKeys.list</span><span class="p">(</span><span class="nx">taskListId</span><span class="p">)</span><span class="w"> </span><span class="p">})</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nx">queryClient</span><span class="p">.</span><span class="nx">invalidateQueries</span><span class="p">({</span><span class="w"> </span><span class="nx">queryKey</span><span class="o">:</span><span class="w"> </span><span class="kt">taskListKeys.all</span><span class="w"> </span><span class="p">})</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="c1">// Refresh Server Component data</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nx">router</span><span class="p">.</span><span class="nx">refresh</span><span class="p">()</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">}</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="kd">const</span><span class="w"> </span><span class="nx">handleExecutionEvent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">  </span><span class="nx">queryClient</span><span class="p">.</span><span class="nx">invalidateQueries</span><span class="p">({</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="nx">queryKey</span><span class="o">:</span><span class="w"> </span><span class="kt">executionContextKeys.list</span><span class="p">(</span><span class="nx">taskListId</span><span class="p">),</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">  </span><span class="p">})</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">  </span><span class="nx">router</span><span class="p">.</span><span class="nx">refresh</span><span class="p">()</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Listened Events:</strong> <code>task:created</code>, <code>task:updated</code>, <code>task:deleted</code>, <code>execution:updated</code></p>
+<p><strong>Reconnection:</strong> On error, the EventSource closes and a new connection is attempted after a 3-second delay via a <code>reconnectKey</code> state increment.</p>
+</div>
+<div class="tabbed-block">
+<p>The <code>taskService.ts</code> module provides the read layer for Server Components. It reads JSON files from <code>~/.claude/tasks/</code> and parses them with defensive normalization.</p>
+<div class="highlight"><span class="filename">apps/task-manager/src/lib/taskService.ts</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// Defensive parsing: normalize IDs, default status, coerce arrays</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kd">function</span><span class="w"> </span><span class="nx">parseTask</span><span class="p">(</span><span class="nx">content</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">filename</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nx">Task</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">content</span><span class="p">)</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nx">data</span><span class="p">.</span><span class="nx">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">String</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">id</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="nx">basename</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;.json&#39;</span><span class="p">))</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">isValidTaskStatus</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">status</span><span class="p">))</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;pending&#39;</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="nx">data</span><span class="p">.</span><span class="nx">blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">blocks</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">blocks</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nb">String</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[]</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="nx">data</span><span class="p">.</span><span class="nx">blockedBy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">blockedBy</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">blockedBy</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nb">String</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[]</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">Task</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Security:</strong> <code>resolveExecutionDir()</code> guards against path traversal by ensuring the resolved execution pointer path stays under <code>$HOME</code> using <code>path.relative()</code>.</p>
+</div>
+</div>
+</div>
+<h3 id="dual-invalidation-strategy">Dual Invalidation Strategy<a class="headerlink" href="#dual-invalidation-strategy" title="Permanent link">&para;</a></h3>
+<p>The Task Manager uses two complementary invalidation mechanisms to ensure both Server Component and Client Component data stay synchronized:</p>
+<table>
+<thead>
+<tr>
+<th>Mechanism</th>
+<th>Target</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>queryClient.invalidateQueries()</code></td>
+<td>TanStack Query cache</td>
+<td>Forces client-side data refetch on next access</td>
+</tr>
+<tr>
+<td><code>router.refresh()</code></td>
+<td>Next.js Server Components</td>
+<td>Re-runs server-side data fetching functions</td>
+</tr>
+</tbody>
+</table>
+<p>This dual approach is necessary because:</p>
+<ol>
+<li><strong>Server Components</strong> fetch initial data from the filesystem in <code>page.tsx</code> and pass it as props</li>
+<li><strong>Client Components</strong> use TanStack Query with <code>initialData</code> for hydration, then manage their own cache</li>
+<li>Without <code>router.refresh()</code>, Server Component data would go stale after the initial render</li>
+<li>Without query invalidation, the TanStack Query cache would serve stale data between refetches</li>
+</ol>
+<hr />
+<h2 id="sdd-pipeline-flow">SDD Pipeline Flow<a class="headerlink" href="#sdd-pipeline-flow" title="Permanent link">&para;</a></h2>
+<p>The Spec-Driven Development plugin implements a linear pipeline that transforms a user's idea into executed, verified code changes. Each stage produces filesystem artifacts consumed by the next stage.</p>
+<h3 id="full-pipeline_1">Full Pipeline<a class="headerlink" href="#full-pipeline_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>User request
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    → create-spec (interview → SPEC file)
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    → analyze-spec (optional QA → analysis report)
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    → create-tasks (decompose → ~/.claude/tasks/*.json)
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    → execute-tasks (10-step orchestrator)
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>        → spawns task-executor agents (4-phase workflow)
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>        → shared execution_context.md
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>        → execution_pointer.md
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    → Task Manager (real-time visibility)
+</span></code></pre></div>
+<h3 id="pipeline-sequence">Pipeline Sequence<a class="headerlink" href="#pipeline-sequence" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant U as User
+    participant CS as create-spec
+    participant AS as analyze-spec
+    participant CT as create-tasks
+    participant ET as execute-tasks
+    participant TE as task-executor&lt;br/&gt;(per task)
+    participant FS as Filesystem
+    participant TM as Task Manager
+
+    Note over U,TM: Stage 1: Specification
+    U-&gt;&gt;CS: /sdd:create-spec
+    CS-&gt;&gt;U: Adaptive interview (2-5 rounds)
+    CS-&gt;&gt;FS: Write specs/SPEC-{name}.md
+
+    Note over U,TM: Stage 2: Quality Analysis (Optional)
+    U-&gt;&gt;AS: /sdd:analyze-spec specs/SPEC-{name}.md
+    AS-&gt;&gt;FS: Read spec, generate analysis report
+    AS-&gt;&gt;FS: Write specs/SPEC-{name}.analysis.md
+    AS-&gt;&gt;U: Interactive issue resolution
+
+    Note over U,TM: Stage 3: Task Generation
+    U-&gt;&gt;CT: /sdd:create-tasks specs/SPEC-{name}.md
+    CT-&gt;&gt;FS: Read spec, decompose features
+    CT-&gt;&gt;FS: TaskCreate → ~/.claude/tasks/{listId}/*.json
+    FS--&gt;&gt;TM: FileWatcher detects new .json files
+
+    Note over U,TM: Stage 4: Execution
+    U-&gt;&gt;ET: /sdd:execute-tasks
+    ET-&gt;&gt;FS: Build execution plan, init session
+    ET-&gt;&gt;FS: Write .claude/sessions/__live_session__/*
+    ET-&gt;&gt;FS: Write execution_pointer.md
+    FS--&gt;&gt;TM: FileWatcher detects pointer + session files
+
+    loop For each wave
+        ET-&gt;&gt;TE: Launch parallel task-executor agents
+        TE-&gt;&gt;FS: Read execution_context.md (snapshot)
+        TE-&gt;&gt;FS: Implement, verify, update task status
+        TE-&gt;&gt;FS: Write context-task-{id}.md (learnings)
+        FS--&gt;&gt;TM: FileWatcher → SSE → UI updates
+        TE-&gt;&gt;ET: Return verification report
+        ET-&gt;&gt;FS: Merge per-task contexts → execution_context.md
+        ET-&gt;&gt;FS: Update progress.md, task_log.md
+    end
+
+    ET-&gt;&gt;FS: Archive session, write summary
+    ET-&gt;&gt;U: Display execution summary</code></pre>
+<h3 id="stage-details">Stage Details<a class="headerlink" href="#stage-details" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">create-spec</label><label for="__tabbed_2_2">analyze-spec</label><label for="__tabbed_2_3">create-tasks</label><label for="__tabbed_2_4">execute-tasks</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><strong>Input:</strong> User's feature idea (via interactive interview)
+<strong>Output:</strong> <code>specs/SPEC-{name}.md</code></p>
+<p>The skill conducts a 2-5 round adaptive interview, adjusting depth based on the user's chosen level (high-level, detailed, or full-tech). It detects recommendation triggers in user responses and offers proactive suggestions. An optional research agent can be dispatched for external information.</p>
+<p><strong>Key artifacts produced:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Path</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Specification</td>
+<td><code>specs/SPEC-{name}.md</code></td>
+<td>Requirements with acceptance criteria, phases, dependencies</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<p><strong>Input:</strong> Path to a spec file
+<strong>Output:</strong> Analysis report + optional spec updates</p>
+<p>The skill launches a <code>spec-analyzer</code> agent that evaluates the spec across four categories: inconsistencies, missing information, ambiguities, and structure issues. Severity levels (Critical, Warning, Suggestion) help prioritize fixes.</p>
+<p><strong>Key artifacts produced:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Path</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Analysis report</td>
+<td><code>specs/SPEC-{name}.analysis.md</code></td>
+<td>Findings with severity and recommendations</td>
+</tr>
+<tr>
+<td>HTML review</td>
+<td><code>specs/SPEC-{name}.analysis.html</code></td>
+<td>Interactive browser-based review</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tabbed-block">
+<p><strong>Input:</strong> Path to a spec file
+<strong>Output:</strong> Claude Code native Tasks (JSON files)</p>
+<p>The skill reads the spec, decomposes features into atomic tasks using a layered pattern (Data Model, API/Service, Business Logic, UI, Tests), infers dependency chains via topological analysis, and creates tasks with structured acceptance criteria.</p>
+<p><strong>Key data transformations:</strong></p>
+<div class="highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Spec Section 5.x (Functional Requirements)
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    → Features with priorities (P0-P3)
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    → Atomic tasks with categorized acceptance criteria
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        - Functional, Edge Cases, Error Handling, Performance
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    → Dependency graph (blockedBy/blocks relationships)
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    → TaskCreate API → ~/.claude/tasks/{listId}/{taskId}.json
+</span></code></pre></div>
+<p><strong>Task JSON structure written to disk:</strong></p>
+<div class="highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">&quot;subject&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Create User data model&quot;</span><span class="p">,</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] ...&quot;</span><span class="p">,</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pending&quot;</span><span class="p">,</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">  </span><span class="nt">&quot;blocks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;3&quot;</span><span class="p">],</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span><span class="nt">&quot;blockedBy&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">  </span><span class="nt">&quot;activeForm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Creating User data model&quot;</span><span class="p">,</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">    </span><span class="nt">&quot;priority&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;critical&quot;</span><span class="p">,</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="nt">&quot;complexity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;S&quot;</span><span class="p">,</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">    </span><span class="nt">&quot;source_section&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;7.3 Data Models&quot;</span><span class="p">,</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">    </span><span class="nt">&quot;spec_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;specs/SPEC-Auth.md&quot;</span><span class="p">,</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">    </span><span class="nt">&quot;feature_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;User Authentication&quot;</span><span class="p">,</span>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">    </span><span class="nt">&quot;task_uid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;specs/SPEC-Auth.md:user-auth:model:001&quot;</span><span class="p">,</span>
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">    </span><span class="nt">&quot;task_group&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user-authentication&quot;</span>
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<p><strong>Input:</strong> Task list (all pending/unblocked tasks)
+<strong>Output:</strong> Completed tasks, session artifacts, CLAUDE.md updates</p>
+<p>The 10-step orchestrator builds a dependency-aware execution plan, sorts tasks into waves, and launches up to <code>max_parallel</code> (default: 5) task-executor agents simultaneously per wave.</p>
+<p><strong>Session directory layout (<code>.claude/sessions/__live_session__/</code>):</strong></p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+<th>Updated by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>execution_plan.md</code></td>
+<td>Dependency-sorted plan with wave assignments</td>
+<td>Orchestrator (once)</td>
+</tr>
+<tr>
+<td><code>execution_context.md</code></td>
+<td>Shared learnings across tasks</td>
+<td>Orchestrator (merged after each wave)</td>
+</tr>
+<tr>
+<td><code>task_log.md</code></td>
+<td>Table of results: Task ID, Subject, Status, Attempts, Duration, Token Usage</td>
+<td>Orchestrator (after each agent returns)</td>
+</tr>
+<tr>
+<td><code>progress.md</code></td>
+<td>Real-time status: current wave, active tasks, completed tasks</td>
+<td>Orchestrator (between agent launches)</td>
+</tr>
+<tr>
+<td><code>context-task-{id}.md</code></td>
+<td>Per-task learnings during concurrent execution</td>
+<td>Individual task-executor agents</td>
+</tr>
+<tr>
+<td><code>.lock</code></td>
+<td>Concurrency guard (prevents parallel sessions)</td>
+<td>Orchestrator (create on start, archive on end)</td>
+</tr>
+<tr>
+<td><code>tasks/</code></td>
+<td>Archive of completed task JSONs</td>
+<td>Orchestrator (after each wave)</td>
+</tr>
+<tr>
+<td><code>session_summary.md</code></td>
+<td>Final execution results</td>
+<td>Orchestrator (at session end)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Execution pointer bridge:</strong></p>
+<div class="highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>~/.claude/tasks/{listId}/execution_pointer.md
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    → Contains: absolute path to .claude/sessions/__live_session__/
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    → Read by: Task Manager&#39;s taskService.ts → getExecutionDir()
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    → Enables: Task Manager to display execution artifacts
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="task-executor-4-phase-workflow">Task-Executor 4-Phase Workflow<a class="headerlink" href="#task-executor-4-phase-workflow" title="Permanent link">&para;</a></h3>
+<p>Each task-executor agent follows a strict 4-phase workflow:</p>
+<pre class="mermaid"><code>flowchart LR
+    P1["Phase 1&lt;br/&gt;Understand"] --&gt; P2["Phase 2&lt;br/&gt;Implement"]
+    P2 --&gt; P3["Phase 3&lt;br/&gt;Verify"]
+    P3 --&gt; P4["Phase 4&lt;br/&gt;Complete"]
+
+    P1 --- U1["Read execution_context.md&lt;br/&gt;Load task via TaskGet&lt;br/&gt;Classify task type&lt;br/&gt;Parse requirements&lt;br/&gt;Explore codebase"]
+    P2 --- U2["Read target files&lt;br/&gt;Follow layer order&lt;br/&gt;Match conventions&lt;br/&gt;Run mid-implementation checks"]
+    P3 --- U3["Walk acceptance criteria&lt;br/&gt;Run tests + linter&lt;br/&gt;Determine PASS/PARTIAL/FAIL"]
+    P4 --- U4["Update task status&lt;br/&gt;Write learnings to&lt;br/&gt;context-task-{id}.md&lt;br/&gt;Return structured report"]</code></pre>
+<p><strong>Verification results determine task status:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Result</th>
+<th>Condition</th>
+<th>Task Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PASS</td>
+<td>All Functional criteria pass, tests pass</td>
+<td><code>completed</code></td>
+</tr>
+<tr>
+<td>PARTIAL</td>
+<td>Functional passes but Edge/Error/Performance issues</td>
+<td><code>in_progress</code> (orchestrator retries)</td>
+</tr>
+<tr>
+<td>FAIL</td>
+<td>Any Functional criterion fails or tests fail</td>
+<td><code>in_progress</code> (orchestrator retries)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="wave-based-concurrency-model">Wave-Based Concurrency Model<a class="headerlink" href="#wave-based-concurrency-model" title="Permanent link">&para;</a></h3>
+<p>The orchestrator executes tasks in dependency-ordered waves with configurable parallelism:</p>
+<pre class="mermaid"><code>flowchart TB
+    subgraph "Wave 1 (no dependencies)"
+        T1["Task 1&lt;br/&gt;Data Model"] &amp; T2["Task 2&lt;br/&gt;Config Setup"] &amp; T3["Task 3&lt;br/&gt;Auth Types"]
+    end
+
+    subgraph "Wave 2 (depends on Wave 1)"
+        T4["Task 4&lt;br/&gt;API Endpoints"] &amp; T5["Task 5&lt;br/&gt;Service Layer"]
+    end
+
+    subgraph "Wave 3 (depends on Wave 2)"
+        T6["Task 6&lt;br/&gt;UI Components"] &amp; T7["Task 7&lt;br/&gt;Integration Tests"]
+    end
+
+    T1 &amp; T2 --&gt; T4
+    T1 &amp; T3 --&gt; T5
+    T4 &amp; T5 --&gt; T6
+    T4 &amp; T5 --&gt; T7</code></pre>
+<p><strong>Concurrency rules:</strong></p>
+<ul>
+<li>Tasks within a wave run in parallel (up to <code>max_parallel</code> concurrent agents)</li>
+<li>All wave tasks must complete before the next wave starts</li>
+<li>Failed tasks with retries remaining are re-launched immediately within the wave</li>
+<li>After each wave, per-task context files are merged into <code>execution_context.md</code></li>
+<li>Dynamic unblocking: newly unblocked tasks are added to the next wave</li>
+</ul>
+<h3 id="context-sharing-pattern">Context Sharing Pattern<a class="headerlink" href="#context-sharing-pattern" title="Permanent link">&para;</a></h3>
+<p>During concurrent execution, write contention on <code>execution_context.md</code> is avoided through a snapshot-and-merge pattern:</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant O as Orchestrator
+    participant EC as execution_context.md
+    participant A1 as Agent 1
+    participant A2 as Agent 2
+    participant CT1 as context-task-1.md
+    participant CT2 as context-task-2.md
+
+    O-&gt;&gt;EC: Snapshot before wave
+    O-&gt;&gt;A1: Launch with snapshot reference
+    O-&gt;&gt;A2: Launch with snapshot reference
+    A1-&gt;&gt;EC: Read (shared snapshot)
+    A2-&gt;&gt;EC: Read (shared snapshot)
+    A1-&gt;&gt;CT1: Write learnings
+    A2-&gt;&gt;CT2: Write learnings
+    A1-&gt;&gt;O: Return verification report
+    A2-&gt;&gt;O: Return verification report
+    O-&gt;&gt;CT1: Read per-task context
+    O-&gt;&gt;CT2: Read per-task context
+    O-&gt;&gt;EC: Merge all per-task contexts
+    O-&gt;&gt;CT1: Delete
+    O-&gt;&gt;CT2: Delete</code></pre>
+<div class="admonition info">
+<p class="admonition-title">Sequential Mode</p>
+<p>When <code>max_parallel</code> is set to 1, agents write directly to <code>execution_context.md</code> instead of per-task files. The snapshot-and-merge pattern is skipped.</p>
+</div>
+<hr />
+<h2 id="tools-plugin-agent-orchestration">Tools Plugin Agent Orchestration<a class="headerlink" href="#tools-plugin-agent-orchestration" title="Permanent link">&para;</a></h2>
+<p>The Tools plugin provides two variants of its deep analysis workflow: a standard Task-based approach and a team-based collaborative approach using Agent Teams.</p>
+<h3 id="standard-deep-analysis-flow">Standard Deep Analysis Flow<a class="headerlink" href="#standard-deep-analysis-flow" title="Permanent link">&para;</a></h3>
+<p>The <code>feature-dev</code> skill orchestrates a 7-phase workflow. Phase 2 (Codebase Exploration) delegates to the <code>deep-analysis</code> skill, which uses the standard Task tool for agent coordination.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant U as User
+    participant FD as feature-dev
+    participant DA as deep-analysis
+    participant E1 as code-explorer 1&lt;br/&gt;(Sonnet)
+    participant E2 as code-explorer 2&lt;br/&gt;(Sonnet)
+    participant E3 as code-explorer 3&lt;br/&gt;(Sonnet)
+    participant SY as codebase-synthesizer&lt;br/&gt;(Opus)
+    participant CA as code-architect&lt;br/&gt;(Opus)
+    participant CR as code-reviewer&lt;br/&gt;(Opus)
+
+    Note over U,CR: Phase 1: Discovery
+    U-&gt;&gt;FD: /tools:feature-dev "add OAuth login"
+    FD-&gt;&gt;U: Confirm understanding
+
+    Note over U,CR: Phase 2: Codebase Exploration (deep-analysis)
+    FD-&gt;&gt;DA: Load deep-analysis skill
+    par Parallel Exploration
+        DA-&gt;&gt;E1: Focus: entry points + user-facing code
+        DA-&gt;&gt;E2: Focus: data models + storage
+        DA-&gt;&gt;E3: Focus: utilities + shared infrastructure
+    end
+    E1--&gt;&gt;DA: Findings report
+    E2--&gt;&gt;DA: Findings report
+    E3--&gt;&gt;DA: Findings report
+    DA-&gt;&gt;SY: Synthesize all findings
+    SY--&gt;&gt;DA: Unified analysis
+    DA--&gt;&gt;FD: Synthesis complete
+
+    Note over U,CR: Phase 3: Clarifying Questions
+    FD-&gt;&gt;U: Resolve ambiguities
+
+    Note over U,CR: Phase 4: Architecture Design
+    par Parallel Architecture Design
+        FD-&gt;&gt;CA: Approach 1 — minimal/simple
+        FD-&gt;&gt;CA: Approach 2 — flexible/extensible
+        FD-&gt;&gt;CA: Approach 3 — match existing patterns
+    end
+    CA--&gt;&gt;FD: Implementation blueprints
+    FD-&gt;&gt;U: Compare approaches, select one
+
+    Note over U,CR: Phase 5: Implementation
+    FD-&gt;&gt;FD: Build the feature
+
+    Note over U,CR: Phase 6: Quality Review
+    par Parallel Code Review
+        FD-&gt;&gt;CR: Focus: correctness + edge cases
+        FD-&gt;&gt;CR: Focus: security + error handling
+        FD-&gt;&gt;CR: Focus: maintainability + code quality
+    end
+    CR--&gt;&gt;FD: Aggregated findings
+    FD-&gt;&gt;U: Present issues, user decides on fixes
+
+    Note over U,CR: Phase 7: Summary
+    FD-&gt;&gt;U: Document accomplishments, update CHANGELOG</code></pre>
+<p><strong>Agent model tiers:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Model</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code-explorer</code></td>
+<td>Sonnet (default)</td>
+<td>Fast, parallel codebase exploration</td>
+</tr>
+<tr>
+<td><code>codebase-synthesizer</code></td>
+<td>Opus</td>
+<td>Deep analysis and pattern recognition</td>
+</tr>
+<tr>
+<td><code>code-architect</code></td>
+<td>Opus</td>
+<td>Architecture design with trade-off analysis</td>
+</tr>
+<tr>
+<td><code>code-reviewer</code></td>
+<td>Opus</td>
+<td>Thorough code review with confidence scores</td>
+</tr>
+</tbody>
+</table>
+<h3 id="team-based-deep-analysis-flow">Team-Based Deep Analysis Flow<a class="headerlink" href="#team-based-deep-analysis-flow" title="Permanent link">&para;</a></h3>
+<p>When invoked with the <code>--teams</code> flag, <code>feature-dev</code> uses <code>teams-deep-analysis</code> instead of <code>deep-analysis</code>. This variant uses Claude's Agent Teams API (<code>TeamCreate</code>, <code>SendMessage</code>) for real-time inter-agent collaboration.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant L as Lead&lt;br/&gt;(Orchestrator)
+    participant E1 as explorer-1&lt;br/&gt;(Sonnet)
+    participant E2 as explorer-2&lt;br/&gt;(Sonnet)
+    participant E3 as explorer-3&lt;br/&gt;(Sonnet)
+    participant SY as synthesizer&lt;br/&gt;(Opus)
+    participant AN as analyst&lt;br/&gt;(Opus)
+
+    Note over L,AN: Phase 1: Team Setup
+    L-&gt;&gt;L: TeamCreate("deep-analysis-{timestamp}")
+    par Spawn 5 teammates
+        L-&gt;&gt;E1: Task(team-code-explorer)
+        L-&gt;&gt;E2: Task(team-code-explorer)
+        L-&gt;&gt;E3: Task(team-code-explorer)
+        L-&gt;&gt;SY: Task(team-codebase-synthesizer)
+        L-&gt;&gt;AN: Task(team-deep-analyst)
+    end
+    L-&gt;&gt;L: TaskCreate exploration + synthesis tasks
+    L-&gt;&gt;L: TaskUpdate assign owners
+
+    Note over L,AN: Phase 2: Collaborative Exploration
+    par Explorers work + share discoveries
+        E1-&gt;&gt;E2: SendMessage("Found auth middleware pattern")
+        E2-&gt;&gt;E3: SendMessage("DB schema uses soft deletes")
+        E3-&gt;&gt;E1: SendMessage("Shared utils in /lib/common")
+    end
+    E1--&gt;&gt;L: Task complete
+    E2--&gt;&gt;L: Task complete
+    E3--&gt;&gt;L: Task complete
+
+    Note over L,AN: Phase 3: Synthesis
+    L-&gt;&gt;SY: Assign synthesis task
+    SY-&gt;&gt;E1: SendMessage("Clarify: how does auth chain work?")
+    E1-&gt;&gt;SY: SendMessage("Auth uses middleware → JWT → role check")
+    SY-&gt;&gt;AN: SendMessage("Investigate git history for auth changes")
+    AN-&gt;&gt;SY: SendMessage("Auth refactored in commit abc123, migration guide...")
+    SY--&gt;&gt;L: Unified analysis complete
+
+    Note over L,AN: Phase 4: Cleanup
+    L-&gt;&gt;L: Collect synthesis output
+    par Shutdown all teammates
+        L-&gt;&gt;E1: SendMessage(type: shutdown_request)
+        L-&gt;&gt;E2: SendMessage(type: shutdown_request)
+        L-&gt;&gt;E3: SendMessage(type: shutdown_request)
+        L-&gt;&gt;SY: SendMessage(type: shutdown_request)
+        L-&gt;&gt;AN: SendMessage(type: shutdown_request)
+    end
+    L-&gt;&gt;L: TeamDelete</code></pre>
+<p><strong>Key difference from standard analysis:</strong> The team-based variant adds two capabilities:</p>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Standard</th>
+<th>Team-Based</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Explorer collaboration</td>
+<td>None (isolated Task calls)</td>
+<td>Real-time via <code>SendMessage</code></td>
+</tr>
+<tr>
+<td>Synthesizer follow-ups</td>
+<td>Cannot ask explorers questions</td>
+<td>Can message explorers directly</td>
+</tr>
+<tr>
+<td>On-demand deep investigation</td>
+<td>Not available</td>
+<td>Deep analyst (Opus) dispatched by synthesizer</td>
+</tr>
+<tr>
+<td>Team composition</td>
+<td>3 explorers + 1 synthesizer</td>
+<td>3 explorers + 1 synthesizer + 1 analyst</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="cross-system-integration-points">Cross-System Integration Points<a class="headerlink" href="#cross-system-integration-points" title="Permanent link">&para;</a></h2>
+<p>The three subsystems connect through well-defined filesystem interfaces. These are the critical integration points where data crosses system boundaries.</p>
+<h3 id="execution-pointer-bridge">Execution Pointer Bridge<a class="headerlink" href="#execution-pointer-bridge" title="Permanent link">&para;</a></h3>
+<p>The <code>execution_pointer.md</code> file is the primary bridge between the SDD execution pipeline and the Task Manager:</p>
+<pre class="mermaid"><code>flowchart LR
+    ET["execute-tasks&lt;br/&gt;(SDD Plugin)"] --&gt;|"Writes absolute path"| EP["~/.claude/tasks/{listId}/&lt;br/&gt;execution_pointer.md"]
+    EP --&gt;|"Read by"| TS["taskService.ts&lt;br/&gt;(Task Manager)"]
+    TS --&gt;|"resolveExecutionDir()"| SD[".claude/sessions/&lt;br/&gt;__live_session__/"]
+    SD --&gt;|"Artifacts served to"| UI["Execution Dialog&lt;br/&gt;(Browser UI)"]</code></pre>
+<p><strong>Security:</strong> The <code>resolveExecutionDir()</code> function validates that the pointer's target path stays under <code>$HOME</code>:</p>
+<div class="highlight"><span class="filename">apps/task-manager/src/lib/taskService.ts</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kd">function</span><span class="w"> </span><span class="nx">resolveExecutionDir</span><span class="p">(</span><span class="nx">pointerContent</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">resolved</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">raw</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">resolve</span><span class="p">(</span><span class="nx">raw</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nx">resolve</span><span class="p">(</span><span class="nx">home</span><span class="p">,</span><span class="w"> </span><span class="nx">raw</span><span class="p">)</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">rel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">relative</span><span class="p">(</span><span class="nx">home</span><span class="p">,</span><span class="w"> </span><span class="nx">resolved</span><span class="p">)</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">rel</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">resolve</span><span class="p">(</span><span class="nx">home</span><span class="p">,</span><span class="w"> </span><span class="nx">rel</span><span class="p">)</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="nx">resolved</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="sb">`Execution pointer path escapes home directory: </span><span class="si">${</span><span class="nx">raw</span><span class="si">}</span><span class="sb">`</span><span class="p">)</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kc">null</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">resolved</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="task-json-as-contract">Task JSON as Contract<a class="headerlink" href="#task-json-as-contract" title="Permanent link">&para;</a></h3>
+<p>The JSON files in <code>~/.claude/tasks/{listId}/</code> serve as the shared data contract between producers (SDD plugin skills) and consumers (Task Manager). Both sides agree on this schema:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Producer</th>
+<th>Consumer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>string</code></td>
+<td><code>create-tasks</code> via <code>TaskCreate</code></td>
+<td><code>taskService.ts</code> → <code>parseTask()</code></td>
+</tr>
+<tr>
+<td><code>subject</code></td>
+<td><code>string</code></td>
+<td><code>create-tasks</code></td>
+<td>Kanban card title</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>string</code></td>
+<td><code>create-tasks</code> (with acceptance criteria)</td>
+<td>Task detail dialog</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>'pending' \| 'in_progress' \| 'completed'</code></td>
+<td><code>execute-tasks</code> via <code>TaskUpdate</code></td>
+<td>Kanban column assignment</td>
+</tr>
+<tr>
+<td><code>blocks</code></td>
+<td><code>string[]</code></td>
+<td><code>create-tasks</code> via <code>TaskUpdate</code></td>
+<td>Dependency visualization</td>
+</tr>
+<tr>
+<td><code>blockedBy</code></td>
+<td><code>string[]</code></td>
+<td><code>create-tasks</code> via <code>TaskUpdate</code></td>
+<td>Dependency visualization</td>
+</tr>
+<tr>
+<td><code>activeForm</code></td>
+<td><code>string?</code></td>
+<td><code>create-tasks</code></td>
+<td>In-progress display text</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td><code>object?</code></td>
+<td><code>create-tasks</code></td>
+<td>Priority badge, complexity tag</td>
+</tr>
+</tbody>
+</table>
+<h3 id="progressmd-real-time-bridge">Progress.md Real-Time Bridge<a class="headerlink" href="#progressmd-real-time-bridge" title="Permanent link">&para;</a></h3>
+<p>The <code>progress.md</code> file provides real-time execution visibility to the Task Manager:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>execute-tasks orchestrator
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    → Updates progress.md (wave status, active tasks, completed tasks)
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    → Chokidar detects .md change in watched execution directory
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    → executionEvent emitted
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    → SSE streams execution:updated event
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    → useSSE invalidates executionContextKeys
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    → useExecutionContext refetches
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>    → parseProgressMd() extracts structured progress
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>    → ExecutionProgressBar + ExecutionDialog re-render
+</span></code></pre></div>
+<p><strong>Parsed progress structure:</strong></p>
+<div class="highlight"><span class="filename">apps/task-manager/src/types/execution.ts</span><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">ExecutionProgress</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w">           </span><span class="c1">// &quot;Executing&quot;, &quot;Complete&quot;, etc.</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span><span class="nx">wave</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="w">             </span><span class="c1">// Current wave number</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="nx">totalWaves</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="w">       </span><span class="c1">// Total planned waves</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">  </span><span class="nx">maxParallel?</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="w">     </span><span class="c1">// Concurrent agent limit</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">  </span><span class="nx">updated</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w">          </span><span class="c1">// ISO 8601 timestamp</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">  </span><span class="nx">activeTasks</span><span class="o">:</span><span class="w"> </span><span class="kt">ActiveTask</span><span class="p">[]</span><span class="w">      </span><span class="c1">// Currently executing</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">  </span><span class="nx">completedTasks</span><span class="o">:</span><span class="w"> </span><span class="kt">CompletedTask</span><span class="p">[]</span><span class="w"> </span><span class="c1">// Finished this session</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="p">}</span>
+</span></code></pre></div>
+<hr />
+<h2 id="data-flow-summary-table">Data Flow Summary Table<a class="headerlink" href="#data-flow-summary-table" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Flow</th>
+<th>Producer</th>
+<th>Artifact</th>
+<th>Consumer</th>
+<th>Mechanism</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Spec creation</td>
+<td><code>create-spec</code></td>
+<td><code>specs/SPEC-*.md</code></td>
+<td><code>analyze-spec</code>, <code>create-tasks</code></td>
+<td>File read</td>
+</tr>
+<tr>
+<td>Spec analysis</td>
+<td><code>analyze-spec</code></td>
+<td><code>.analysis.md</code>, <code>.analysis.html</code></td>
+<td>User (browser)</td>
+<td>File read</td>
+</tr>
+<tr>
+<td>Task generation</td>
+<td><code>create-tasks</code></td>
+<td><code>~/.claude/tasks/{listId}/*.json</code></td>
+<td><code>execute-tasks</code>, Task Manager</td>
+<td>TaskCreate API, Chokidar</td>
+</tr>
+<tr>
+<td>Task status updates</td>
+<td><code>execute-tasks</code></td>
+<td>Task JSON <code>status</code> field</td>
+<td>Task Manager</td>
+<td>TaskUpdate API, Chokidar</td>
+</tr>
+<tr>
+<td>Execution session</td>
+<td><code>execute-tasks</code></td>
+<td><code>.claude/sessions/__live_session__/*</code></td>
+<td>Task Manager, task-executor agents</td>
+<td>File write, Chokidar</td>
+</tr>
+<tr>
+<td>Execution pointer</td>
+<td><code>execute-tasks</code></td>
+<td><code>execution_pointer.md</code></td>
+<td>Task Manager (<code>getExecutionDir</code>)</td>
+<td>File write, file read</td>
+</tr>
+<tr>
+<td>Shared context</td>
+<td>task-executor agents</td>
+<td><code>context-task-{id}.md</code></td>
+<td>Orchestrator (merge)</td>
+<td>File write, file read</td>
+</tr>
+<tr>
+<td>Real-time progress</td>
+<td><code>execute-tasks</code></td>
+<td><code>progress.md</code></td>
+<td>Task Manager (<code>parseProgressMd</code>)</td>
+<td>File write, Chokidar, SSE</td>
+</tr>
+<tr>
+<td>Exploration findings</td>
+<td>code-explorer agents</td>
+<td>Task tool response</td>
+<td>codebase-synthesizer</td>
+<td>In-memory (Task tool)</td>
+</tr>
+<tr>
+<td>Team collaboration</td>
+<td>team-code-explorer</td>
+<td><code>SendMessage</code></td>
+<td>Other team members</td>
+<td>Agent Teams API</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
