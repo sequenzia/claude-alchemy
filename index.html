@@ -459,10 +459,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#material-view-dashboard-task-manager" class="md-nav__link">
+  <a href="#task-manager" class="md-nav__link">
     <span class="md-ellipsis">
       
-        :material-view-dashboard: Task Manager
+        Task Manager
       
     </span>
   </a>
@@ -470,10 +470,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#material-tools-tools-plugin" class="md-nav__link">
+  <a href="#tools-plugin" class="md-nav__link">
     <span class="md-ellipsis">
       
-        :material-tools: Tools Plugin
+        Tools Plugin
       
     </span>
   </a>
@@ -481,10 +481,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#material-file-document-edit-sdd-plugin" class="md-nav__link">
+  <a href="#sdd-plugin" class="md-nav__link">
     <span class="md-ellipsis">
       
-        :material-file-document-edit: SDD Plugin
+        SDD Plugin
       
     </span>
   </a>
@@ -1278,10 +1278,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#material-view-dashboard-task-manager" class="md-nav__link">
+  <a href="#task-manager" class="md-nav__link">
     <span class="md-ellipsis">
       
-        :material-view-dashboard: Task Manager
+        Task Manager
       
     </span>
   </a>
@@ -1289,10 +1289,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#material-tools-tools-plugin" class="md-nav__link">
+  <a href="#tools-plugin" class="md-nav__link">
     <span class="md-ellipsis">
       
-        :material-tools: Tools Plugin
+        Tools Plugin
       
     </span>
   </a>
@@ -1300,10 +1300,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#material-file-document-edit-sdd-plugin" class="md-nav__link">
+  <a href="#sdd-plugin" class="md-nav__link">
     <span class="md-ellipsis">
       
-        :material-file-document-edit: SDD Plugin
+        SDD Plugin
       
     </span>
   </a>
@@ -1394,28 +1394,28 @@
     SP -- "writes tasks &amp; progress" --&gt; FS
     FS -- "watches for changes" --&gt; TM
     TP -- "commits, docs, analysis" --&gt; Monorepo</code></pre>
-<h3 id="material-view-dashboard-task-manager">:material-view-dashboard: Task Manager<a class="headerlink" href="#material-view-dashboard-task-manager" title="Permanent link">&para;</a></h3>
+<h3 id="task-manager"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 3v6h8V3m-8 18h8V11h-8M3 21h8v-6H3m0-2h8V3H3z"/></svg></span> Task Manager<a class="headerlink" href="#task-manager" title="Permanent link">&para;</a></h3>
 <p>A real-time Kanban board for monitoring Claude AI task execution. Server Components fetch task data from <code>~/.claude/tasks/</code>, Chokidar watches for changes, and SSE pushes updates to the browser — all without polling.</p>
 <ul>
 <li><strong>Location:</strong> <code>apps/task-manager/</code></li>
 <li><strong>Stack:</strong> Next.js 16.1.4, React 19.2.3, TanStack Query v5, Tailwind CSS v4, shadcn/ui</li>
 <li><strong>Runs on:</strong> <code>http://localhost:3030</code></li>
 </ul>
-<p><a class="md-button" href="task-manager/overview/">Task Manager docs :material-arrow-right:</a></p>
-<h3 id="material-tools-tools-plugin">:material-tools: Tools Plugin<a class="headerlink" href="#material-tools-tools-plugin" title="Permanent link">&para;</a></h3>
+<p><a class="md-button" href="task-manager/overview/">Task Manager docs <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg></span></a></p>
+<h3 id="tools-plugin"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.71 20.29-1.42 1.42a1 1 0 0 1-1.41 0L7 9.85A3.8 3.8 0 0 1 6 10a4 4 0 0 1-3.78-5.3l2.54 2.54.53-.53 1.42-1.42.53-.53L4.7 2.22A4 4 0 0 1 10 6a3.8 3.8 0 0 1-.15 1l11.86 11.88a1 1 0 0 1 0 1.41M2.29 18.88a1 1 0 0 0 0 1.41l1.42 1.42a1 1 0 0 0 1.41 0l5.47-5.46-2.83-2.83M20 2l-4 2v2l-2.17 2.17 2 2L18 8h2l2-4Z"/></svg></span> Tools Plugin<a class="headerlink" href="#tools-plugin" title="Permanent link">&para;</a></h3>
 <p>Developer tools for feature development, codebase analysis, documentation generation, code review, and git workflows. Invoked from Claude Code with <code>/tools:{skill-name}</code>.</p>
 <ul>
 <li><strong>Location:</strong> <code>plugins/tools/</code> (v0.2.2)</li>
 <li><strong>10 agents, 13 skills</strong> — including <code>feature-dev</code>, <code>codebase-analysis</code>, <code>docs-manager</code>, <code>code-quality</code>, <code>deep-analysis</code>, and more</li>
 </ul>
-<p><a class="md-button" href="plugins/tools-plugin/">Tools Plugin docs :material-arrow-right:</a></p>
-<h3 id="material-file-document-edit-sdd-plugin">:material-file-document-edit: SDD Plugin<a class="headerlink" href="#material-file-document-edit-sdd-plugin" title="Permanent link">&para;</a></h3>
+<p><a class="md-button" href="plugins/tools-plugin/">Tools Plugin docs <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg></span></a></p>
+<h3 id="sdd-plugin"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h4v-1.91L12.09 18H6v-2h8.09l2-2H6v-2h12.09L20 10.09V8l-6-6zm7 1.5L18.5 9H13zm7.15 9.5a.55.55 0 0 0-.4.16l-1.02 1.02 2.09 2.08 1.02-1.01c.21-.22.21-.58 0-.79l-1.3-1.3a.54.54 0 0 0-.39-.16m-2.01 1.77L12 20.92V23h2.08l6.15-6.15z"/></svg></span> SDD Plugin<a class="headerlink" href="#sdd-plugin" title="Permanent link">&para;</a></h3>
 <p>Spec-Driven Development: create specifications through guided interviews, analyze them for completeness, decompose them into tasks, and execute those tasks autonomously. Invoked with <code>/sdd:{skill-name}</code>.</p>
 <ul>
 <li><strong>Location:</strong> <code>plugins/sdd/</code> (v0.2.6)</li>
 <li><strong>2 agents, 4 skills</strong> — <code>create-spec</code>, <code>analyze-spec</code>, <code>create-tasks</code>, <code>execute-tasks</code></li>
 </ul>
-<p><a class="md-button" href="plugins/overview/">SDD Plugin docs :material-arrow-right:</a></p>
+<p><a class="md-button" href="plugins/overview/">SDD Plugin docs <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg></span></a></p>
 <hr />
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Full Setup</label><label for="__tabbed_1_2">Plugins Only</label></div>
