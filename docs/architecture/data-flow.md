@@ -573,59 +573,60 @@ sequenceDiagram
     participant E1 as explorer-1<br/>(Sonnet)
     participant E2 as explorer-2<br/>(Sonnet)
     participant E3 as explorer-3<br/>(Sonnet)
-    participant SY as synthesizer<br/>(Opus)
-    participant AN as analyst<br/>(Opus)
+    participant SY as deep-synthesizer<br/>(Opus)
 
-    Note over L,AN: Phase 1: Team Setup
+    Note over L,SY: Phase 1: Planning
+    L->>L: Rapid codebase reconnaissance (Glob/Grep/Read)
+    L->>L: Generate dynamic focus areas
     L->>L: TeamCreate("deep-analysis-{timestamp}")
-    par Spawn 5 teammates
+    par Spawn 4 teammates
         L->>E1: Task(team-code-explorer)
         L->>E2: Task(team-code-explorer)
         L->>E3: Task(team-code-explorer)
-        L->>SY: Task(team-codebase-synthesizer)
-        L->>AN: Task(team-deep-analyst)
+        L->>SY: Task(team-deep-synthesizer)
     end
     L->>L: TaskCreate exploration + synthesis tasks
     L->>L: TaskUpdate assign owners
 
-    Note over L,AN: Phase 2: Collaborative Exploration
-    par Explorers work + share discoveries
-        E1->>E2: SendMessage("Found auth middleware pattern")
-        E2->>E3: SendMessage("DB schema uses soft deletes")
-        E3->>E1: SendMessage("Shared utils in /lib/common")
+    Note over L,SY: Phase 2: Focused Exploration
+    par Workers explore independently (no cross-worker messaging)
+        E1->>E1: Explore assigned focus area
+        E2->>E2: Explore assigned focus area
+        E3->>E3: Explore assigned focus area
     end
     E1-->>L: Task complete
     E2-->>L: Task complete
     E3-->>L: Task complete
 
-    Note over L,AN: Phase 3: Synthesis
-    L->>SY: Assign synthesis task
+    Note over L,SY: Phase 3: Evaluation and Synthesis
+    L->>SY: Assign synthesis task + recon findings
     SY->>E1: SendMessage("Clarify: how does auth chain work?")
     E1->>SY: SendMessage("Auth uses middleware → JWT → role check")
-    SY->>AN: SendMessage("Investigate git history for auth changes")
-    AN->>SY: SendMessage("Auth refactored in commit abc123, migration guide...")
+    SY->>SY: Bash: git log --oneline -- src/auth/
+    SY->>SY: Evaluate completeness
     SY-->>L: Unified analysis complete
 
-    Note over L,AN: Phase 4: Cleanup
+    Note over L,SY: Phase 4: Cleanup
     L->>L: Collect synthesis output
     par Shutdown all teammates
         L->>E1: SendMessage(type: shutdown_request)
         L->>E2: SendMessage(type: shutdown_request)
         L->>E3: SendMessage(type: shutdown_request)
         L->>SY: SendMessage(type: shutdown_request)
-        L->>AN: SendMessage(type: shutdown_request)
     end
     L->>L: TeamDelete
 ```
 
-**Key difference from standard analysis:** The team-based variant adds two capabilities:
+**Key difference from standard analysis:** The team-based variant adds these capabilities:
 
 | Capability | Standard | Team-Based |
 |------------|----------|------------|
-| Explorer collaboration | None (isolated Task calls) | Real-time via `SendMessage` |
+| Focus area planning | Static templates | Dynamic, based on codebase reconnaissance |
 | Synthesizer follow-ups | Cannot ask explorers questions | Can message explorers directly |
-| On-demand deep investigation | Not available | Deep analyst (Opus) dispatched by synthesizer |
-| Team composition | 3 explorers + 1 synthesizer | 3 explorers + 1 synthesizer + 1 analyst |
+| Deep investigation | Not available | Deep synthesizer has Bash (git history, deps, static analysis) |
+| Completeness evaluation | None | Deep synthesizer evaluates coverage before finalizing |
+| Team composition | 3 explorers + 1 synthesizer | 3 workers + 1 deep synthesizer |
+| Coordination topology | Isolated Task calls | Hub-and-spoke (no cross-worker messaging) |
 
 ---
 

@@ -26,8 +26,7 @@ graph TD
         CAR[code-architect]
         CR[code-reviewer]
         CS[codebase-synthesizer]
-        TCS[team-codebase-synthesizer]
-        TDNA[team-deep-analyst]
+        TDS[team-deep-synthesizer]
         CHA[changelog-agent]
         DW[docs-writer]
         RES[researcher]
@@ -42,8 +41,7 @@ graph TD
     DA --> CE
     DA --> CS
     TDA --> TCE
-    TDA --> TCS
-    TDA --> TDNA
+    TDA --> TDS
     DM --> CE
     DM --> CS
     DM --> DW
@@ -157,18 +155,18 @@ A reusable exploration and synthesis building block. Launches parallel `code-exp
 
 !!! info "Model: inherit | Invocation: `/tools:teams-deep-analysis <analysis-context>`"
 
-A team-based variant of `deep-analysis` that uses Agent Teams for inter-agent collaboration. Explorers share discoveries with each other via `SendMessage` as they work, the synthesizer can ask explorers follow-up questions, and a deep analyst agent is available on demand for complex cross-cutting investigations.
+A team-based variant of `deep-analysis` that uses Agent Teams with hub-and-spoke coordination. The lead performs rapid codebase reconnaissance to generate dynamic focus areas, workers explore independently (no cross-worker messaging), and a deep synthesizer merges findings with Bash-powered investigation and completeness evaluation.
 
 **Phases:**
 
 | # | Phase | Description |
 |---|-------|-------------|
-| 1 | Team Setup | Create team, spawn 5 teammates (3 explorers + 1 synthesizer + 1 analyst), create and assign tasks with dependencies |
-| 2 | Collaborative Exploration | Explorers work in parallel, proactively sharing discoveries with each other |
-| 3 | Lead Checkpoint + Synthesis | Verify exploration completeness, launch synthesizer with access to all explorers and the deep analyst |
+| 1 | Planning | Codebase reconnaissance, generate dynamic focus areas, create team, spawn 4 teammates, assign tasks |
+| 2 | Focused Exploration | Workers explore assigned areas independently (no cross-worker messaging) |
+| 3 | Evaluation and Synthesis | Verify completeness, launch deep synthesizer with recon findings and Bash access |
 | 4 | Completion + Cleanup | Collect results, present or return, shut down all teammates, delete team |
 
-**Agents spawned:** `team-code-explorer` (Sonnet, 3 instances), `team-codebase-synthesizer` (Opus), `team-deep-analyst` (Opus)
+**Agents spawned:** `team-code-explorer` (Sonnet, 3 instances), `team-deep-synthesizer` (Opus)
 
 **Supporting skills loaded:** `project-conventions`, `language-patterns`
 
@@ -442,42 +440,22 @@ Merges raw exploration findings from multiple `code-explorer` agents into a unif
 
 ---
 
-### team-codebase-synthesizer
+### team-deep-synthesizer
 
 | Property | Value |
 |----------|-------|
 | **Model** | inherit (Opus) |
-| **Tools** | Read, Glob, Grep, SendMessage, TaskUpdate, TaskGet, TaskList |
-
-The team-enabled variant of `codebase-synthesizer`. Same synthesis capabilities, plus the ability to ask explorers targeted follow-up questions to resolve conflicts and fill gaps, and to delegate complex investigations to the `team-deep-analyst`.
-
-**Key differentiator:** Interactive synthesis --- identifies conflicting assessments, thin coverage, and missing connections, then messages specific explorers for clarification before finalizing.
-
-**Delegation to analyst:** Cross-cutting concerns, security audits, performance investigations, architecture assessments, and conflict resolution requiring git history.
-
-**Spawned by:** `teams-deep-analysis`
-
----
-
-### team-deep-analyst
-
-| Property | Value |
-|----------|-------|
-| **Model** | Opus |
 | **Tools** | Read, Glob, Grep, Bash, SendMessage, TaskUpdate, TaskGet, TaskList |
 | **Skills** | project-conventions, language-patterns |
 
-An on-demand specialist analyst that activates when the `team-codebase-synthesizer` delegates complex investigations. Has Bash access for git history analysis, dependency trees, and static analysis --- capabilities the synthesizer lacks.
+Combines synthesis and deep investigation into a single agent. Merges exploration findings from multiple workers, asks targeted follow-up questions, and investigates gaps directly using Bash (git history, dependency trees, static analysis). Evaluates completeness before finalizing.
 
-**Analysis capabilities:**
+**Key capabilities:**
 
-- **Cross-cutting concerns** --- Trace patterns across 3+ modules
-- **Security audits** --- End-to-end auth review, vulnerability analysis, secret handling
-- **Performance analysis** --- N+1 queries, hot paths, bundle sizes
-- **Architecture assessment** --- Pattern adherence, boundary violations, dependency direction
-- **Conflict resolution** --- Use `git blame`/`git log` when explorer reports conflict
-
-**Communication:** Receives from and reports to the synthesizer only.
+- **Interactive synthesis** --- Identifies conflicting assessments, thin coverage, and missing connections, then messages specific workers for clarification
+- **Deep investigation** --- Git history analysis, dependency trees, static analysis, cross-cutting concern tracing
+- **Completeness evaluation** --- Assesses coverage gaps and resolves them before finalizing
+- **Security/performance analysis** --- End-to-end auth review, N+1 query detection, hot path tracing
 
 **Spawned by:** `teams-deep-analysis`
 
@@ -545,8 +523,7 @@ plugins/tools/
 │   ├── docs-writer.md
 │   ├── researcher.md
 │   ├── team-code-explorer.md
-│   ├── team-codebase-synthesizer.md
-│   └── team-deep-analyst.md
+│   └── team-deep-synthesizer.md
 ├── skills/
 │   ├── architecture-patterns/
 │   │   └── SKILL.md

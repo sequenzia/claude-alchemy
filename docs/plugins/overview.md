@@ -198,8 +198,7 @@ skills:
     | `researcher` | inherit | (web tools) | Research technical docs via web search and Context7 |
     | `changelog-agent` | (default) | Bash, Read, Edit, Glob, Grep | Analyze git history and update CHANGELOG.md |
     | `team-code-explorer` | sonnet | Read, Glob, Grep, Bash, SendMessage, TaskUpdate, TaskGet, TaskList | Code explorer with team communication capabilities |
-    | `team-codebase-synthesizer` | inherit | Read, Glob, Grep, SendMessage, TaskUpdate, TaskGet, TaskList | Synthesizer with interactive follow-up via Agent Teams |
-    | `team-deep-analyst` | opus | Read, Glob, Grep, Bash, SendMessage, TaskUpdate, TaskGet, TaskList | Specialist for cross-cutting concerns, security audits, git history |
+    | `team-deep-synthesizer` | inherit | Read, Glob, Grep, Bash, SendMessage, TaskUpdate, TaskGet, TaskList | Synthesizer with deep investigation (Bash, git history) and completeness evaluation |
 
 === "SDD Plugin Agents"
 
@@ -214,7 +213,7 @@ Agents are assigned to model tiers based on the cognitive demands of their work:
 
 | Model | Cost | When to Use | Examples |
 |-------|------|-------------|---------|
-| `opus` | Highest | Complex reasoning, synthesis, architecture design | `codebase-synthesizer`, `team-deep-analyst` |
+| `opus` | Highest | Complex reasoning, synthesis, architecture design | `codebase-synthesizer`, `team-deep-synthesizer` |
 | `sonnet` | Medium | Exploration, pattern detection, broad search | `code-explorer`, `team-code-explorer` |
 | `haiku` | Lowest | Mechanical, procedural tasks with clear rules | `git-commit`, `bump-plugin-version` |
 | `inherit` | Varies | Use the parent session's model | `code-architect`, `researcher`, `task-executor` |
