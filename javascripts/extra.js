@@ -1,11 +1,30 @@
 /**
  * Mermaid diagram click-to-zoom for Material for MkDocs.
  *
- * Uses MutationObserver to detect async-rendered Mermaid SVGs,
- * attaches click handlers, and works with navigation.instant.
+ * Material wraps rendered Mermaid SVGs in a closed shadow DOM,
+ * so we patch Element.prototype.attachShadow to capture shadow root
+ * references in a WeakMap, then use those to reach into the shadow
+ * DOM for click-to-zoom.
  */
 (function () {
   "use strict";
+
+  // Store closed shadow roots so we can query into them later
+  var shadowRoots = new WeakMap();
+  var origAttachShadow = Element.prototype.attachShadow;
+
+  Element.prototype.attachShadow = function (init) {
+    var shadowRoot = origAttachShadow.call(this, init);
+    shadowRoots.set(this, shadowRoot);
+    return shadowRoot;
+  };
+
+  function getShadowSvg(container) {
+    // Try shadow root first (closed mode), then fall back to direct query
+    var root = shadowRoots.get(container);
+    if (root) return root.querySelector("svg");
+    return container.querySelector("svg");
+  }
 
   function attachZoomHandlers() {
     document.querySelectorAll(".mermaid").forEach(function (container) {
@@ -13,7 +32,7 @@
       container.dataset.zoomAttached = "true";
 
       container.addEventListener("click", function () {
-        var svg = container.querySelector("svg");
+        var svg = getShadowSvg(container);
         if (!svg) return;
 
         // Create overlay
@@ -26,15 +45,49 @@
         hint.textContent = "ESC or click to close";
         overlay.appendChild(hint);
 
-        // Clone SVG and strip inline dimensions so CSS controls sizing
-        var clone = svg.cloneNode(true);
-        clone.removeAttribute("width");
-        clone.removeAttribute("height");
-        clone.style.width = "";
-        clone.style.height = "";
-        clone.style.maxWidth = "";
-        overlay.appendChild(clone);
+        // Wrapper with open shadow DOM to preserve CSS scoping
+        var wrapper = document.createElement("div");
+        wrapper.className = "zoom-diagram";
+        var wrapperShadow = wrapper.attachShadow({ mode: "open" });
 
+        // Clone entire shadow root content (styles + SVG + any other nodes)
+        var sourceRoot = shadowRoots.get(container);
+        if (sourceRoot) {
+          Array.from(sourceRoot.childNodes).forEach(function (node) {
+            wrapperShadow.appendChild(node.cloneNode(true));
+          });
+        } else {
+          // Fallback: clone SVG directly from light DOM
+          wrapperShadow.appendChild(svg.cloneNode(true));
+        }
+
+        // Ensure the cloned SVG has a viewBox so it scales proportionally
+        var clonedSvg = wrapperShadow.querySelector("svg");
+        if (clonedSvg) {
+          if (!clonedSvg.getAttribute("viewBox")) {
+            var rect = svg.getBoundingClientRect();
+            if (rect.width && rect.height) {
+              clonedSvg.setAttribute(
+                "viewBox",
+                "0 0 " + rect.width + " " + rect.height
+              );
+            }
+          }
+          clonedSvg.removeAttribute("width");
+          clonedSvg.removeAttribute("height");
+          clonedSvg.style.width = "";
+          clonedSvg.style.height = "";
+          clonedSvg.style.maxWidth = "";
+        }
+
+        // Inject sizing style inside shadow DOM (external CSS can't reach in)
+        var sizeStyle = document.createElement("style");
+        sizeStyle.textContent =
+          ":host { display: block; width: 88vw; max-height: 80vh; overflow: auto; }" +
+          "svg { width: 100%; height: auto; display: block; }";
+        wrapperShadow.appendChild(sizeStyle);
+
+        overlay.appendChild(wrapper);
         document.body.appendChild(overlay);
 
         // Trigger reflow then activate for transition
@@ -59,27 +112,33 @@
     });
   }
 
-  // Observe DOM for async Mermaid renders
+  // Debounced MutationObserver to catch async Mermaid renders
+  var debounceTimer = null;
+  var observing = false;
   var observer = new MutationObserver(function () {
-    attachZoomHandlers();
+    if (debounceTimer) clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(attachZoomHandlers, 100);
   });
 
   function init() {
-    observer.observe(document.body, { childList: true, subtree: true });
+    if (!observing) {
+      observer.observe(document.body, { childList: true, subtree: true });
+      observing = true;
+    }
     attachZoomHandlers();
   }
 
-  // Support Material's navigation.instant (SPA page transitions)
+  // Always init on load
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+
+  // Also subscribe to document$ for SPA navigation (navigation.instant)
   if (typeof document$ !== "undefined") {
     document$.subscribe(function () {
       init();
     });
-  } else {
-    // Fallback for initial load
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", init);
-    } else {
-      init();
-    }
   }
 })();
