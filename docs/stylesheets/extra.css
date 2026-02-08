@@ -1,0 +1,128 @@
+/* ============================================================
+   Claude Alchemy — Custom Overrides for Material for MkDocs
+   ============================================================ */
+
+/* ----- Typography & Readability ----- */
+
+:root {
+  --md-typeset-font-size: 1rem;          /* 16px base (up from 0.8rem) */
+}
+
+.md-typeset {
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.md-typeset p {
+  margin-bottom: 1.25em;
+}
+
+.md-typeset h1 {
+  font-size: 2em;
+  margin-bottom: 0.6em;
+}
+
+.md-typeset h2 {
+  font-size: 1.6em;
+  margin-top: 1.6em;
+  margin-bottom: 0.5em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.md-typeset h3 {
+  font-size: 1.3em;
+  margin-top: 1.4em;
+}
+
+.md-typeset h4 {
+  font-size: 1.1em;
+  margin-top: 1.2em;
+}
+
+/* ----- Content Width ----- */
+
+.md-grid {
+  max-width: 1440px;
+}
+
+/* ----- Code Blocks ----- */
+
+.md-typeset code,
+.md-typeset pre code {
+  font-size: 0.9em;
+}
+
+.md-typeset pre {
+  padding: 1em 1.2em;
+}
+
+/* ----- Tables ----- */
+
+.md-typeset table:not([class]) th,
+.md-typeset table:not([class]) td {
+  padding: 0.75em 1em;
+}
+
+/* ----- Mermaid Diagrams ----- */
+
+.mermaid {
+  margin: 1.5em 0;
+  padding: 1em;
+  cursor: zoom-in;
+  border-radius: 8px;
+  transition: box-shadow 0.2s ease;
+}
+
+.mermaid:hover {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+[data-md-color-scheme="slate"] .mermaid:hover {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ----- Zoom Overlay ----- */
+
+.mermaid-zoom-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  cursor: zoom-out;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.mermaid-zoom-overlay.active {
+  opacity: 1;
+}
+
+.mermaid-zoom-overlay .zoom-diagram {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.25));
+}
+
+.mermaid-zoom-overlay .zoom-hint {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+/* Dark mode overlay */
+[data-md-color-scheme="slate"] .mermaid-zoom-overlay {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+[data-md-color-scheme="slate"] .mermaid-zoom-overlay .zoom-diagram {
+  background: #1e293b;
+  filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.5));
+}
