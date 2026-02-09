@@ -8,6 +8,8 @@ Claude Alchemy is a collection of tools and apps designed to help developers get
 
 **See more screenshots [screenshots](#screenshots) below**
 
+> **Documentation:** [sequenzia.github.io/claude-alchemy](https://sequenzia.github.io/claude-alchemy)
+
 ## Task Manager
 
 **See your Claude Code Tasks in real-time.**
@@ -30,25 +32,33 @@ pnpm install && pnpm dev  # Starts on http://localhost:3030
 
 ## Architecture
 
-Claude Alchemy is a pnpm monorepo with two systems:
+Claude Alchemy is a pnpm monorepo with plugins, apps, and developer tooling:
 
 | Component | Location | Description |
 |-----------|----------|-------------|
-| **Tools Plugin** | `plugins/tools/` | 5 agents, 10 skills for code exploration, architecture, review, and release workflows |
-| **SDD Plugin** | `plugins/sdd/` | 2 agents, 4 skills for spec-driven development (create-spec → create-tasks → execute-tasks) |
-| **Task Manager** | `apps/task-manager/` | Next.js 16 app with real-time Kanban board for Claude Code Tasks |
+| **Tools Plugin** | `plugins/tools/` | 9 agents, 8 skills (+ 5 supporting) for code exploration, architecture, review, docs, and release workflows (v0.2.3) |
+| **SDD Plugin** | `plugins/sdd/` | 2 agents, 4 skills for spec-driven development: create-spec → create-tasks → execute-tasks (v0.2.6) |
+| **Task Manager** | `apps/task-manager/` | Next.js 16 real-time Kanban board for Claude Code Tasks |
+| **VS Code Extension** | `extensions/vscode/` | Schema validation and autocomplete for plugin.json, hooks.json, SKILL.md frontmatter (v0.2.0) |
+| **JSON Schemas** | `schemas/` | 7 JSON Schema definitions for Claude Code plugin file validation |
 
 ### Plugins
 
 The plugin system uses a "markdown-as-code" design — all workflow logic lives in declarative `SKILL.md` and agent markdown files. Skills orchestrate specialized agents in parallel using Claude Code's Task tool.
 
-**Tools Plugin (`claude-alchemy-tools`):**
-- `/codebase-analysis` — 4-phase codebase exploration with parallel agents
-- `/feature-dev` — 7-phase feature development (explore → design → implement → review)
+**Tools Plugin (`claude-alchemy-tools` v0.2.3):**
+- `/codebase-analysis` — Multi-phase codebase exploration with parallel agents
+- `/feature-dev` — Feature development (explore → design → implement → review)
+- `/deep-analysis` — Deep exploration and synthesis workflow
+- `/teams-deep-analysis` — Team-based collaborative analysis with Agent Teams
+- `/docs-manager` — Documentation management for MkDocs sites and standalone markdown
 - `/git-commit` — Conventional commit creation
+- `/release` — Python package release workflow
 - `/bump-plugin-version` — Semantic version management
 
-**SDD Plugin (`claude-alchemy-sdd`):**
+*Plus 5 supporting skills loaded internally by workflows.*
+
+**SDD Plugin (`claude-alchemy-sdd` v0.2.6):**
 - `/create-spec` — Adaptive interview to generate specifications
 - `/analyze-spec` — Spec quality analysis
 - `/create-tasks` — Decompose specs into Claude Code Tasks with dependency inference
@@ -75,6 +85,7 @@ The plugin system uses a "markdown-as-code" design — all workflow logic lives 
 
 - Node.js >= 18
 - pnpm >= 8
+- Python >= 3.14 and [uv](https://docs.astral.sh/uv/) (for documentation site only)
 
 ### Setup
 
@@ -96,6 +107,14 @@ pnpm dev:task-manager
 pnpm dev:task-manager     # Start task-manager dev server
 pnpm build:task-manager   # Build task-manager for production
 pnpm lint                 # Run linting across all workspaces
+```
+
+### Documentation Site
+
+```bash
+uv sync --all-extras      # Install Python dependencies
+uv run mkdocs serve       # Local preview at http://localhost:8000
+scripts/deploy-docs.sh    # Deploy to GitHub Pages
 ```
 
 ## License
