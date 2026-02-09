@@ -9,21 +9,21 @@
 }
 
 .md-typeset {
-  font-size: 1rem;
+  font-size: .85rem;
   line-height: 1.8;
 }
 
 .md-typeset p {
-  margin-bottom: 1.25em;
+  margin-bottom: .85em;
 }
 
 .md-typeset h1 {
-  font-size: 2em;
+  font-size: 1.6em;
   margin-bottom: 0.6em;
 }
 
 .md-typeset h2 {
-  font-size: 1.6em;
+  font-size: 1.3em;
   margin-top: 1.6em;
   margin-bottom: 0.5em;
   padding-bottom: 0.3em;
@@ -31,7 +31,7 @@
 }
 
 .md-typeset h3 {
-  font-size: 1.3em;
+  font-size: 1.2em;
   margin-top: 1.4em;
 }
 
