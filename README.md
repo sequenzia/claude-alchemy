@@ -46,7 +46,7 @@ Claude Alchemy is a pnpm monorepo with plugins, apps, and developer tooling:
 
 The plugin system uses a "markdown-as-code" design — all workflow logic lives in declarative `SKILL.md` and agent markdown files. Skills orchestrate specialized agents in parallel using Claude Code's Task tool.
 
-**Tools Plugin (`claude-alchemy-tools` v0.2.3):**
+**Tools Plugin (`claude-alchemy-tools` v0.2.4):**
 - `/codebase-analysis` — Multi-phase codebase exploration with parallel agents
 - `/feature-dev` — Feature development (explore → design → implement → review)
 - `/deep-analysis` — Deep exploration and synthesis workflow
@@ -58,7 +58,7 @@ The plugin system uses a "markdown-as-code" design — all workflow logic lives 
 
 *Plus 5 supporting skills loaded internally by workflows.*
 
-**SDD Plugin (`claude-alchemy-sdd` v0.2.6):**
+**SDD Plugin (`claude-alchemy-sdd` v0.2.7):**
 - `/create-spec` — Adaptive interview to generate specifications
 - `/analyze-spec` — Spec quality analysis
 - `/create-tasks` — Decompose specs into Claude Code Tasks with dependency inference
