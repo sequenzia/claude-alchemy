@@ -155,6 +155,23 @@
 - {Constraint 1}
 - {Constraint 2}
 
+<!-- Include this section only for "New feature" specs where codebase exploration was performed -->
+## 7.5 Codebase Context
+
+### Existing Architecture
+{Summary of relevant architecture from exploration findings}
+
+### Integration Points
+| File/Module | Purpose | How This Feature Connects |
+|------------|---------|---------------------------|
+| {file path} | {what it does} | {how the new feature integrates} |
+
+### Patterns to Follow
+- **{Pattern name}**: {Description} — used in {existing files}
+
+### Related Features
+- **{Feature name}**: {Brief description of how it's similar and what can be reused}
+
 ## 8. Scope Definition
 
 ### 8.1 In Scope

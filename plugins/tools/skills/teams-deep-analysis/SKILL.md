@@ -25,9 +25,11 @@ This skill can be invoked standalone or loaded by other skills as a reusable bui
    - Set `PATH = current working directory`
    - Inform the user: "Exploring codebase at: `PATH`" with the analysis context
 
-2. **Load skills for this phase:**
-   - Read `${CLAUDE_PLUGIN_ROOT}/skills/project-conventions/SKILL.md` and apply its guidance
-   - Read `${CLAUDE_PLUGIN_ROOT}/skills/language-patterns/SKILL.md` and apply its guidance
+2. **Load skills for this phase** (standalone or within tools plugin only):
+   - If invoked standalone or from within the tools plugin:
+     - Read `${CLAUDE_PLUGIN_ROOT}/skills/project-conventions/SKILL.md` and apply its guidance
+     - Read `${CLAUDE_PLUGIN_ROOT}/skills/language-patterns/SKILL.md` and apply its guidance
+   - If loaded cross-plugin (`${CLAUDE_PLUGIN_ROOT}` does not contain these skills): Skip this step — the explorer agents load project-conventions and language-patterns automatically via their agent definitions
 
 3. **Rapid codebase reconnaissance:**
    Use Glob, Grep, and Read to quickly map the codebase structure. This should take 1-2 minutes, not deep investigation.

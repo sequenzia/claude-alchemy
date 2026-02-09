@@ -3,7 +3,7 @@ name: create-spec
 description: Create a new specification through an adaptive interview process with proactive recommendations and optional research. Use when user says "create spec", "new spec", "generate spec", or wants to start a specification document.
 user-invocable: true
 disable-model-invocation: false
-allowed-tools: AskUserQuestion, Task, Read, Write, Glob, Grep
+allowed-tools: AskUserQuestion, Task, Read, Write, Glob, Grep, Bash, TeamCreate, TeamDelete, TaskCreate, TaskUpdate, TaskList, TaskGet, SendMessage
 ---
 
 # Create Spec Skill
@@ -255,25 +255,73 @@ Maintain internal tracking of detected triggers and accepted recommendations:
 
 If the product type is "New feature for existing product":
 
-1. Use `AskUserQuestion` to ask about codebase exploration:
+1. Use `AskUserQuestion` to offer exploration options:
    ```yaml
    questions:
      - header: "Codebase"
-       question: "Would you like me to explore the codebase to understand existing patterns?"
+       question: "How would you like to explore the codebase before we start the interview?"
        options:
-         - label: "Yes, explore"
-           description: "Look at relevant code to inform requirements"
-         - label: "No, skip"
+         - label: "Deep team analysis (Recommended)"
+           description: "Thorough parallel exploration with synthesis — 3-5 minutes"
+         - label: "Quick exploration"
+           description: "Basic pattern scanning with Glob/Grep/Read — 1-2 minutes"
+         - label: "Skip"
            description: "Continue without code exploration"
        multiSelect: false
    ```
-2. If approved, use `Glob`, `Grep`, and `Read` to understand:
-   - Existing patterns and conventions
-   - Related features that could inform this one
-   - Integration points
-   - Data models that might be extended
-3. Share relevant findings with the user
-4. Use findings to inform follow-up questions
+
+2. **If "Deep team analysis" selected:**
+   1. Read the teams-deep-analysis skill: `${CLAUDE_PLUGIN_ROOT}/../tools/skills/teams-deep-analysis/SKILL.md`
+   2. Follow its full workflow (Phases 1-4) with analysis context set to:
+      ```
+      Feature exploration for spec: {spec_name}. Description: {user's description from Phase 2}.
+      Focus on: existing patterns, conventions, integration points, data models to extend,
+      and similar features that could serve as implementation references.
+      ```
+   3. After the analysis completes and control returns, store the synthesized findings internally as "Codebase Context" for use in subsequent interview rounds and spec compilation
+   4. Present a brief summary of key findings to the user before starting the interview
+
+   **Error handling / fallback:**
+   If the teams-deep-analysis workflow fails at any point (TeamCreate fails, agents fail, etc.):
+   1. Inform the user that deep analysis encountered an issue
+   2. Use `AskUserQuestion` to offer fallback:
+      ```yaml
+      questions:
+        - header: "Fallback"
+          question: "Deep analysis encountered an issue. How would you like to proceed?"
+          options:
+            - label: "Quick exploration"
+              description: "Fall back to basic Glob/Grep/Read exploration"
+            - label: "Skip"
+              description: "Continue without codebase analysis"
+          multiSelect: false
+      ```
+   3. If quick exploration: use basic Glob/Grep/Read (see below)
+   4. If skip: continue to Phase 3 Round 1 with whatever findings were gathered
+
+3. **If "Quick exploration" selected:**
+   - Use `Glob`, `Grep`, and `Read` to understand:
+     - Existing patterns and conventions
+     - Related features that could inform this one
+     - Integration points
+     - Data models that might be extended
+   - Share relevant findings with the user
+   - Use findings to inform follow-up questions
+
+4. **If "Skip" selected:**
+   - Continue directly to Phase 3 Round 1
+
+### Using Exploration Findings in Interview
+
+When codebase exploration was performed (deep or quick), use the findings throughout the interview:
+
+1. **Tailor technical questions** — Reference specific files, patterns, and conventions discovered during exploration
+2. **Skip answered questions** — If exploration already revealed tech stack, data models, or architecture, confirm rather than ask open-ended questions
+3. **Ask targeted integration questions** — e.g., "The codebase uses {pattern X} for similar features. Should this feature follow the same pattern?"
+4. **Surface risks early** — If exploration found challenges (tight coupling, missing tests, complex dependencies), ask about acceptable trade-offs
+5. **Inform recommendations** — Use exploration findings as evidence for recommendations in Phase 4
+
+Store findings internally as "Codebase Context" and reference throughout interview and spec compilation.
 
 ### External Research
 

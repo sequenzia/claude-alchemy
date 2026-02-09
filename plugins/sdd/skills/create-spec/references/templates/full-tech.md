@@ -381,7 +381,27 @@ Our System ──(1)─> External System
 - Circuit breaker: {configuration}
 - Fallback behavior: {description}
 
-### 7.6 Technical Constraints
+<!-- Include this section only for "New feature" specs where codebase exploration was performed -->
+### 7.6 Codebase Context
+
+#### Existing Architecture
+{Summary of relevant architecture from exploration findings}
+
+#### Integration Points
+| File/Module | Purpose | How This Feature Connects |
+|------------|---------|---------------------------|
+| {file path} | {what it does} | {how the new feature integrates} |
+
+#### Patterns to Follow
+- **{Pattern name}**: {Description} — used in {existing files}
+
+#### Related Features
+- **{Feature name}**: {Brief description of how it's similar and what can be reused}
+
+#### Key Dependencies
+{Dependencies and coupling points discovered during exploration}
+
+### 7.7 Technical Constraints
 
 | Constraint | Impact | Mitigation |
 |------------|--------|------------|

@@ -240,9 +240,14 @@ When a user expresses uncertainty, this is an opportunity to offer proactive rec
 **See also:** `recommendation-triggers.md` for trigger patterns and `recommendation-format.md` for presentation templates.
 
 ### When Building Feature for Existing Product
-- Ask about existing patterns to follow
-- Explore codebase for relevant context
-- Identify integration points early
+- Codebase exploration is offered before Round 1 (see "Codebase Exploration" in main SKILL.md)
+- If deep team analysis was performed, use the synthesized findings to:
+  - Reference specific patterns and conventions found (with file paths)
+  - Confirm integration points identified during exploration rather than asking open-ended questions
+  - Skip tech stack and architecture questions already answered by exploration
+  - Ask about trade-offs for challenges identified (e.g., coupling, performance concerns)
+- If quick exploration was performed, use findings for targeted follow-ups
+- If exploration was skipped, ask about existing patterns, integration points, and codebase conventions directly
 
 ---
 
