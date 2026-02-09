@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spec Analysis Review</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d1117;
+    --bg-surface: #161b22;
+    --bg-elevated: #1c2128;
+    --border: #30363d;
+    --border-active: #58a6ff;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-heading: #f0f6fc;
+    --amber: #d29922;
+    --amber-bg: rgba(210, 153, 34, 0.12);
+    --green: #3fb950;
+    --green-bg: rgba(63, 185, 80, 0.12);
+    --red: #f85149;
+    --red-bg: rgba(248, 81, 73, 0.12);
+    --purple: #bc8cff;
+    --purple-bg: rgba(188, 140, 255, 0.12);
+    --blue: #58a6ff;
+    --blue-bg: rgba(88, 166, 255, 0.12);
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  .header {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .header h1 { font-size: 18px; color: var(--text-heading); font-weight: 600; }
+  .header-meta { display: flex; gap: 16px; font-size: 13px; color: var(--text-muted); }
+  .header-meta span { display: flex; align-items: center; gap: 4px; }
+
+  /* Dashboard */
+  .dashboard {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .stats { display: flex; gap: 24px; }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .stat-value { font-size: 24px; font-weight: 700; }
+  .stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-bar {
+    width: 100%;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 4px;
+    overflow: hidden;
+  }
+  .stat-bar-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+
+  /* Filter bar */
+  .filters { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .filter-tabs { display: flex; gap: 2px; background: var(--bg); border-radius: 6px; padding: 2px; }
+  .filter-tab {
+    padding: 6px 14px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .filter-tab:hover { color: var(--text); }
+  .filter-tab.active { background: var(--bg-elevated); color: var(--text); }
+  .filter-tab .count {
+    display: inline-block;
+    margin-left: 4px;
+    font-size: 11px;
+    background: var(--border);
+    padding: 0 6px;
+    border-radius: 10px;
+  }
+
+  select.severity-filter {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 6px 28px 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238b949e' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+  }
+
+  /* Main layout */
+  .main { display: flex; height: calc(100vh - 140px); overflow: hidden; }
+
+  /* Left panel -- spec content */
+  .spec-panel {
+    flex: 6;
+    overflow-y: auto;
+    padding: 24px;
+    border-right: 1px solid var(--border);
+  }
+  .spec-content {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .spec-content h1, .spec-content h2, .spec-content h3, .spec-content h4 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--text-heading);
+    margin: 20px 0 8px;
+    line-height: 1.3;
+  }
+  .spec-content h1 { font-size: 22px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  .spec-content h2 { font-size: 18px; }
+  .spec-content h3 { font-size: 15px; }
+  .spec-content h4 { font-size: 14px; }
+  .spec-content strong { color: var(--text-heading); }
+  .spec-content code {
+    background: var(--bg-elevated);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+  .spec-content ul, .spec-content ol { padding-left: 24px; margin: 4px 0; }
+  .spec-content li { margin: 2px 0; }
+
+  /* Annotated section */
+  .annotated-line {
+    border-left: 3px solid transparent;
+    padding-left: 8px;
+    margin-left: -11px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-radius: 0 4px 4px 0;
+  }
+  .annotated-line:hover { background: var(--bg-elevated); }
+  .annotated-line.severity-warning { border-left-color: var(--amber); }
+  .annotated-line.severity-critical { border-left-color: var(--purple); }
+  .annotated-line.severity-suggestion { border-left-color: var(--blue); }
+  .annotated-line.status-approved { border-left-color: var(--green); }
+  .annotated-line.status-rejected { border-left-color: var(--red); }
+  .annotated-line.selected { background: var(--bg-elevated); }
+
+  .annotation-marker {
+    display: inline-block;
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+  .annotation-marker.severity-warning { background: var(--amber-bg); color: var(--amber); }
+  .annotation-marker.severity-critical { background: var(--purple-bg); color: var(--purple); }
+  .annotation-marker.severity-suggestion { background: var(--blue-bg); color: var(--blue); }
+
+  /* Editable blocks */
+  [contenteditable="true"] {
+    outline: none;
+    border: 1px dashed transparent;
+    padding: 2px 4px;
+    margin: -2px -4px;
+    border-radius: 3px;
+    transition: border-color 0.15s;
+  }
+  [contenteditable="true"]:focus {
+    border-color: var(--border-active);
+    background: var(--bg-elevated);
+  }
+
+  /* Right panel -- findings */
+  .findings-panel {
+    flex: 4;
+    overflow-y: auto;
+    padding: 16px;
+    background: var(--bg-surface);
+  }
+  .findings-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .finding-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .finding-card:hover { border-color: var(--border-active); }
+  .finding-card.selected { border-color: var(--border-active); box-shadow: 0 0 0 1px var(--border-active); }
+  .finding-card.status-approved { border-left: 3px solid var(--green); }
+  .finding-card.status-rejected { border-left: 3px solid var(--red); }
+
+  .finding-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .finding-id { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+  .finding-title { font-size: 14px; font-weight: 600; color: var(--text-heading); margin-bottom: 4px; }
+
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  .badge-critical { background: var(--purple-bg); color: var(--purple); }
+  .badge-warning { background: var(--amber-bg); color: var(--amber); }
+  .badge-suggestion { background: var(--blue-bg); color: var(--blue); }
+
+  .category-badge {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .finding-issue {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  .finding-detail { margin-bottom: 10px; }
+  .finding-detail-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .finding-detail-text {
+    font-size: 13px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    background: var(--bg-elevated);
+    padding: 8px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .finding-detail-text.current { border-left: 3px solid var(--red); }
+  .finding-detail-text.proposed { border-left: 3px solid var(--green); }
+
+  .finding-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    transition: all 0.15s;
+    background: var(--bg-elevated);
+    color: var(--text);
+  }
+  .btn:hover { border-color: var(--text-muted); }
+  .btn-approve { border-color: var(--green); color: var(--green); }
+  .btn-approve:hover { background: var(--green-bg); }
+  .btn-reject { border-color: var(--red); color: var(--red); }
+  .btn-reject:hover { background: var(--red-bg); }
+  .btn-primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+  .btn-primary:hover { opacity: 0.9; }
+
+  .comment-area {
+    width: 100%;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    padding: 8px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 60px;
+    margin-top: 8px;
+  }
+  .comment-area:focus { outline: none; border-color: var(--border-active); }
+
+  .status-badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+  .status-pending { background: var(--amber-bg); color: var(--amber); }
+  .status-approved { background: var(--green-bg); color: var(--green); }
+  .status-rejected { background: var(--red-bg); color: var(--red); }
+
+  .finding-location {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  /* Prompt output panel */
+  .prompt-panel {
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border);
+    padding: 16px 24px;
+  }
+  .prompt-panel.hidden { display: none; }
+  .prompt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .prompt-header h3 { font-size: 14px; color: var(--text-heading); }
+  .prompt-actions { display: flex; gap: 8px; }
+  .prompt-content {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 13px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 200px;
+    overflow-y: auto;
+    line-height: 1.6;
+  }
+
+  /* Notification toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--green);
+    color: var(--green);
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.2s;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 60px 24px;
+    color: var(--text-muted);
+  }
+  .empty-state h3 { font-size: 16px; margin-bottom: 8px; color: var(--text); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .main { flex-direction: column; height: auto; }
+    .spec-panel { border-right: none; border-bottom: 1px solid var(--border); max-height: 50vh; }
+    .findings-panel { max-height: 50vh; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-left">
+    <h1 id="spec-name"></h1>
+  </div>
+  <div class="header-meta">
+    <span id="depth-level"></span>
+    <span id="analyzed-at"></span>
+  </div>
+</header>
+
+<!-- Dashboard -->
+<div class="dashboard">
+  <div class="stats" id="stats"></div>
+  <div class="filters">
+    <div class="filter-tabs" id="status-filters"></div>
+    <select class="severity-filter" id="severity-filter">
+      <option value="all">All Severities</option>
+      <option value="critical">Critical</option>
+      <option value="warning">Warning</option>
+      <option value="suggestion">Suggestion</option>
+    </select>
+  </div>
+</div>
+
+<!-- Main content -->
+<div class="main">
+  <div class="spec-panel">
+    <div class="spec-content" id="spec-content"></div>
+  </div>
+  <div class="findings-panel">
+    <div class="findings-list" id="findings-list"></div>
+  </div>
+</div>
+
+<!-- Prompt output -->
+<div class="prompt-panel hidden" id="prompt-panel">
+  <div class="prompt-header">
+    <h3>Prompt from Approved Changes (<span id="approved-count">0</span>)</h3>
+    <div class="prompt-actions">
+      <button class="btn btn-primary" onclick="copyPrompt()">Copy Prompt</button>
+      <button class="btn" onclick="downloadSpec()">Download Modified Spec</button>
+    </div>
+  </div>
+  <div class="prompt-content" id="prompt-content"></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// === DATA INJECTION ===
+const SPEC_CONTENT = {"path":"/Users/sequenzia/dev/repos/claude-alchemy/internal/specs/agent-teams-updates-SPEC.md","name":"Agent Teams Updates PRD","depthLevel":"Detailed","analyzedAt":"2026-02-08 12:00","content":"# Agent Teams Updates PRD\n\n**Version**: 1.0\n**Author**: Not specified\n**Date**: 2026-02-08\n**Status**: Draft\n**Spec Type**: New feature\n**Spec Depth**: Detailed specifications\n**Description**: Enhance the Claude Alchemy toolkit's execute-tasks workflow (SDD plugin) and Task Manager app to support collaborative task execution via Agent Teams with real-time monitoring of team activities.\n\n---\n\n## 1. Executive Summary\n\nThis feature introduces Agent Teams into the execute-tasks workflow, enabling multiple specialized agents to collaborate on task execution rather than relying on solo agents. The Task Manager app will be enhanced with progressive-detail real-time monitoring of team activities. Four configurable team strategies (Solo, Review, Research, Full) will be available at three configuration levels (settings file, session, per-task), with graceful degradation on failure.\n\n## 2. Problem Statement\n\n### 2.1 The Problem\n\nThe current execute-tasks workflow uses individual `task-executor` agents \u2014 each task gets a single agent that must handle exploration, implementation, and self-verification alone. This limits:\n- **Task quality**: Complex tasks benefit from specialized roles (researcher, implementer, reviewer) but solo agents must do everything\n- **Execution speed**: Work within a task cannot be parallelized across specialized agents\n- **Visibility**: Users can only see task-level progress (which task is active, what phase), not the detailed agent activity happening within\n\n### 2.2 Current State\n\nThe execute-tasks skill (SDD plugin) orchestrates task execution through a 10-step loop:\n- Builds a dependency-aware execution plan from Claude Code Tasks\n- Executes tasks in waves, up to `max_parallel` concurrent agents per wave\n- Each task is handled by a single `task-executor` agent through a 4-phase workflow: Understand \u2192 Implement \u2192 Verify \u2192 Complete\n- Session files in `.claude/sessions/__live_session__/` track progress via `progress.md`, `execution_context.md`, `task_log.md`\n- The Task Manager watches these files via Chokidar and streams changes via SSE to the browser\n\nThe tools plugin already has a working Agent Teams implementation (`teams-deep-analysis` skill) with hub-and-spoke coordination, but this is separate from the execute-tasks workflow.\n\n### 2.3 Impact Analysis\n\nWithout this feature:\n- Complex tasks require multiple retry attempts when a solo agent misses edge cases\n- Code quality depends entirely on a single agent's self-review (no independent verification)\n- Users have limited insight into what agents are actually doing during execution\n- The existing Agent Teams infrastructure in the tools plugin cannot be leveraged for task execution\n\n### 2.4 Business Value\n\n- **Foundation for multi-agent workflows**: Establishes patterns reusable across the entire toolkit\n- **Quality improvement**: Independent code review by a separate agent catches issues solo agents miss\n- **Developer confidence**: Real-time visibility into team activity builds trust in autonomous execution\n- **Differentiation**: Positions Claude Alchemy as a sophisticated multi-agent development toolkit\n\n## 3. Goals & Success Metrics\n\n### 3.1 Primary Goals\n1. Enable collaborative task execution through configurable team strategies\n2. Provide real-time visibility into Agent Teams activity in the Task Manager\n3. Maintain developer experience \u2014 simple tasks stay simple, teams add value for complex work\n4. Build an extensible foundation for future multi-agent patterns\n\n### 3.2 Success Metrics\n\n| Metric | Current Baseline | Target | Measurement Method | Timeline |\n|--------|------------------|--------|-------------------|----------|\n| Task completion quality | Solo agent pass rate | Measurably fewer PARTIAL/FAIL results with team strategies | Compare pass/fail ratios: solo vs team execution sessions | Phase 1 |\n| Agent visibility | Task-level only (which task, what phase) | Agent-level detail (each agent's role, activity, phase) | Task Manager shows real-time team member activity | Phase 1 |\n| Configuration simplicity | N/A (no teams) | 3-level cascade working (settings \u2192 session \u2192 task) | All config levels tested and documented | Phase 2 |\n| Strategy coverage | 1 (solo only) | 4 strategies available | Solo, Review, Research, Full team strategies implemented | Phase 2 |\n\n### 3.3 Non-Goals\n- Custom user-defined agent types or roles (out of scope)\n- Persistent teams that survive across execution sessions (out of scope)\n- Replacing the existing solo task-executor pattern (it remains as a strategy)\n\n## 4. User Research\n\n### 4.1 Target Users\n\n#### Primary Persona: Claude Alchemy Developer\n- **Role/Description**: Developer using Claude Alchemy's SDD workflow to generate and execute implementation tasks\n- **Goals**: Get high-quality code implemented autonomously with confidence\n- **Pain Points**: Solo agents sometimes miss edge cases; limited visibility into what's happening during execution; complex tasks need multiple retries\n- **Context**: Running `execute-tasks` sessions on medium-to-large codebases, often with 10-30+ tasks per session\n\n#### Secondary Persona: Task Manager Monitor\n- **Role/Description**: Developer watching the Task Manager dashboard during execution sessions\n- **Goals**: Understand what agents are doing in real-time, catch issues early\n- **Pain Points**: Current view shows only task-level progress, not agent-level detail\n\n### 4.2 User Journey Map\n\n```\n[Configure team strategy] --> [Run execute-tasks] --> [View execution plan with team info] --> [Confirm execution]\n    --> [Watch Task Manager: basic team status] --> [Click to expand: agent detail view]\n    --> [See agent activity: exploring/implementing/reviewing] --> [Review results with team context]\n```\n\n## 5. Functional Requirements\n\n### 5.1 Feature: Team Strategy System\n\n**Priority**: P0 (Critical)\n\n#### User Stories\n\n**US-001**: As a developer, I want to choose a team strategy for task execution so that complex tasks get the collaborative attention they need.\n\n**Acceptance Criteria**:\n- [ ] Four strategies are available: Solo, Review, Research, Full\n- [ ] Solo strategy matches current behavior exactly (single task-executor agent)\n- [ ] Review strategy spawns an implementer agent and a reviewer agent per task\n- [ ] Research strategy spawns an explorer agent and an implementer agent per task\n- [ ] Full strategy spawns an explorer, implementer, and reviewer agent per task\n- [ ] Strategy selection cascades: settings file default \u2192 `--team-strategy` CLI arg \u2192 per-task `metadata.team_strategy`\n\n**Edge Cases**:\n- No strategy specified: Default to Solo (backwards compatible behavior)\n- Invalid strategy name: Warn and fall back to Solo\n- Strategy specified for a trivial task (e.g., \"fix typo\"): Still use the strategy but agents may complete quickly\n\n---\n\n### 5.2 Feature: Three-Level Configuration Cascade\n\n**Priority**: P0 (Critical)\n\n#### User Stories\n\n**US-002**: As a developer, I want to set a default team strategy in my settings file and override it per session or per task so that I have flexible control.\n\n**Acceptance Criteria**:\n- [ ] `.claude/claude-alchemy.local.md` supports a `team_strategy` setting (default strategy for all sessions)\n- [ ] `--team-strategy <name>` CLI argument overrides the settings file for the current session\n- [ ] `metadata.team_strategy` on individual tasks overrides the session-level setting\n- [ ] Precedence order: per-task > session arg > settings file > default (solo)\n- [ ] The resolved strategy is displayed in the execution plan confirmation step\n\n**Edge Cases**:\n- Settings file missing: Use default (solo)\n- Mixed strategies in one session: Each task uses its own resolved strategy independently\n\n---\n\n### 5.3 Feature: Team Execution Orchestration\n\n**Priority**: P0 (Critical)\n\n#### User Stories\n\n**US-003**: As a developer, I want the execute-tasks orchestrator to manage team lifecycle for each task so that teams are created, coordinated, and cleaned up automatically.\n\n**Acceptance Criteria**:\n- [ ] For non-solo strategies, a team is created per task using `TeamCreate`\n- [ ] Agents are spawned with appropriate roles (explorer, implementer, reviewer) based on the strategy\n- [ ] The orchestrator coordinates the team workflow: explorer \u2192 implementer \u2192 reviewer (sequential within team)\n- [ ] Team results are collected and translated into the existing pass/partial/fail status\n- [ ] Teams are shut down and cleaned up after task completion\n- [ ] `progress.md` is updated with team summary information\n- [ ] `team_activity.md` is written per active team with detailed agent activity\n\n**Edge Cases**:\n- Agent spawn failure: Log error, attempt strategy degradation\n- Agent timeout: Set reasonable timeouts per role, degrade on timeout\n- Multiple teams active simultaneously (different tasks in same wave): Each team is independent\n\n---\n\n### 5.4 Feature: Graceful Degradation\n\n**Priority**: P0 (Critical)\n\n#### User Stories\n\n**US-004**: As a developer, I want team failures to gracefully degrade to simpler strategies rather than failing the entire task.\n\n**Acceptance Criteria**:\n- [ ] Full team failure \u2192 attempt Review strategy \u2192 attempt Solo strategy\n- [ ] Review team failure \u2192 attempt Solo strategy\n- [ ] Research team failure \u2192 attempt Solo strategy\n- [ ] Degradation is logged in `task_log.md` with the reason\n- [ ] The final successful strategy is recorded in the task result\n- [ ] Degradation does not count against the task retry limit\n\n**Edge Cases**:\n- All strategies fail: Task enters normal retry flow with solo strategy\n- Partial team failure (1 of 3 agents fails): Depends on which role failed \u2014 see strategy-specific rules\n\n---\n\n### 5.5 Feature: Cross-Task Teams\n\n**Priority**: P1 (High)\n\n#### User Stories\n\n**US-005**: As a developer, I want a single team to handle multiple related tasks so that agents can maintain context across task boundaries.\n\n**Acceptance Criteria**:\n- [ ] Tasks with the same `metadata.team_group` can be assigned to a shared team\n- [ ] The team persists across tasks within the same wave (or adjacent waves if dependencies allow)\n- [ ] Shared team context carries forward between tasks without re-reading the full codebase\n- [ ] Team cleanup only happens after all grouped tasks complete\n\n**Edge Cases**:\n- Group spans multiple waves: Team persists across wave boundaries\n- One task in group fails: Team continues with remaining tasks, failed task enters retry\n- Group members have different strategies: Use the most complex strategy for the group\n\n---\n\n### 5.6 Feature: Session File Extensions for Teams\n\n**Priority**: P0 (Critical)\n\n#### User Stories\n\n**US-006**: As a developer, I want team activity tracked in session files so that the Task Manager can monitor teams in real-time.\n\n**Acceptance Criteria**:\n- [ ] `progress.md` extended with team summary section (team name, member count, status per active task)\n- [ ] New `team_activity.md` file created per active team in `__live_session__/`\n- [ ] `team_activity.md` includes: team name, strategy, agent roles/status, current phase per agent, message log\n- [ ] `team_activity.md` is updated in real-time as agents progress\n- [ ] `team_activity.md` is archived with the session on completion\n- [ ] Format is parseable by regex (consistent with existing `progress.md` patterns)\n\n**Edge Cases**:\n- Multiple teams active: One `team_activity.md` per team (e.g., `team_activity_task-5.md`)\n- File write contention: Orchestrator is the only writer (agents report via task completion, not direct file writes)\n\n---\n\n### 5.7 Feature: Task Manager Team Monitoring UI\n\n**Priority**: P0 (Critical)\n\n#### User Stories\n\n**US-007**: As a developer, I want to see Agent Teams activity in the Task Manager with progressive detail so that I can monitor at the level I need.\n\n**Acceptance Criteria**:\n- [ ] Basic team status visible in the main Kanban view for in-progress tasks (team name, agent count, overall status)\n- [ ] Expandable detail view shows each agent in the team with role, current phase, and activity\n- [ ] Real-time updates via the existing Chokidar \u2192 SSE \u2192 TanStack Query pipeline\n- [ ] New `team_activity.md` files are watched by Chokidar and trigger SSE events\n- [ ] New TypeScript types for team data (`TeamActivity`, `TeamMember`, etc.)\n- [ ] New API endpoint or extended existing endpoint for team activity data\n\n**Edge Cases**:\n- No teams active: UI shows standard task progress (no team sections)\n- Team completes between polls: UI catches up on next SSE event\n- Multiple teams active: Each displayed independently in their respective task cards\n\n---\n\n### 5.8 Feature: Strategy Reference Document\n\n**Priority**: P1 (High)\n\n#### User Stories\n\n**US-008**: As a developer extending Claude Alchemy, I want a clear reference document that defines each team strategy so that new strategies can be added consistently.\n\n**Acceptance Criteria**:\n- [ ] New `references/team-strategies.md` in the execute-tasks skill\n- [ ] Each strategy section defines: agent roles, spawn configuration, coordination flow, lifecycle steps, session file format, degradation target\n- [ ] Orchestrator reads the appropriate strategy section based on resolved configuration\n- [ ] Format is consistent with existing reference docs (`orchestration.md`, `execution-workflow.md`)\n\n## 6. Non-Functional Requirements\n\n### 6.1 Performance\n- Team overhead should not significantly slow execution compared to solo agents for simple tasks\n- Agent spawn time should be reasonable (seconds, not minutes)\n- File watching latency for team activity files should match existing progress.md latency (~300ms polling)\n\n### 6.2 Security\n- Maintain existing path traversal guards in `taskService.ts` for new file types\n- Team activity files follow same access patterns as existing session files\n- No new external network access required\n\n### 6.3 Scalability\n- Support up to `max_parallel` concurrent teams (one per concurrent task)\n- Each team may have up to 3 agents (for Full strategy) \u2014 so up to `max_parallel * 3` total agents\n- File system load from team activity files should be manageable with existing Chokidar configuration\n\n### 6.4 Accessibility\n- Task Manager UI additions should maintain existing accessibility patterns (keyboard navigation, screen reader support via Radix primitives)\n\n## 7. Technical Considerations\n\n### 7.1 Architecture Overview\n\nThe feature extends the existing filesystem-as-message-bus architecture. The execute-tasks orchestrator gains a strategy resolution step that determines whether to use solo agents or spawn a team. Team activity is written to session files, which the Task Manager picks up via the existing Chokidar \u2192 SSE pipeline.\n\n```\nexecute-tasks orchestrator\n  \u2192 resolve strategy (settings \u2192 session \u2192 task metadata)\n  \u2192 if solo: spawn task-executor (existing behavior)\n  \u2192 if team: TeamCreate \u2192 spawn agents \u2192 coordinate \u2192 collect results \u2192 TeamDelete\n  \u2192 write team_activity.md (real-time updates)\n  \u2192 write progress.md (summary updates)\n\nTask Manager\n  \u2192 Chokidar watches __live_session__/*.md (including new team_activity*.md)\n  \u2192 SSE streams events to browser\n  \u2192 TanStack Query invalidation \u2192 UI re-renders team state\n```\n\n### 7.2 Tech Stack\n- **SDD Plugin**: Markdown skills + reference docs (no build step)\n- **Task Manager Frontend**: Next.js 16, React 19, TanStack Query v5, Tailwind v4, shadcn/ui\n- **Task Manager Backend**: Next.js Route Handlers, Chokidar 5, SSE\n- **Agent Infrastructure**: Claude Code Task tool, TeamCreate/TeamDelete/SendMessage APIs\n\n### 7.3 Integration Points\n\n| System | Integration Type | Purpose |\n|--------|-----------------|--------|\n| execute-tasks skill | Skill extension | Add team strategy resolution and team orchestration |\n| task-executor agent | Agent extension | May need role-specific variants (explorer, reviewer) |\n| Task Manager taskService.ts | Server-side parsing | Parse new team_activity.md files |\n| Task Manager fileWatcher.ts | File watching | Watch new team activity files |\n| Task Manager SSE route | Event streaming | Stream team activity events |\n| Task Manager UI components | Client rendering | New team monitoring components |\n\n### 7.4 Technical Constraints\n- Plugins are markdown-only with no build step \u2014 all \"logic\" is instruction-based\n- Filesystem-as-message-bus pattern must be preserved (no DB, no IPC)\n- Teams use Claude Code's built-in TeamCreate/SendMessage/TeamDelete APIs\n- Chokidar polling interval (300ms) sets the minimum UI update frequency\n\n### 7.5 Codebase Context\n\n#### Existing Architecture\n\nThe execute-tasks workflow is defined across these key files:\n- `plugins/sdd/skills/execute-tasks/SKILL.md` \u2014 Main skill with 10-step orchestration\n- `plugins/sdd/skills/execute-tasks/references/orchestration.md` \u2014 Detailed orchestration loop\n- `plugins/sdd/skills/execute-tasks/references/execution-workflow.md` \u2014 4-phase task workflow\n- `plugins/sdd/agents/task-executor.md` \u2014 Agent definition for solo task execution\n\nThe Task Manager monitors execution via:\n- `apps/task-manager/src/lib/taskService.ts` \u2014 `getExecutionContext()`, `parseProgressMd()`\n- `apps/task-manager/src/lib/fileWatcher.ts` \u2014 Chokidar singleton watching `~/.claude/tasks/`\n- `apps/task-manager/src/hooks/useSSE.ts` \u2014 SSE connection + TanStack Query invalidation\n- `apps/task-manager/src/hooks/useExecutionContext.ts` \u2014 Execution context hook\n- `apps/task-manager/src/components/ExecutionDialog.tsx` \u2014 Execution monitoring dialog\n- `apps/task-manager/src/components/ExecutionProgressBar.tsx` \u2014 Progress bar component\n- `apps/task-manager/src/types/execution.ts` \u2014 ExecutionProgress, ExecutionContext types\n\nThe Agent Teams infrastructure exists in the tools plugin:\n- `plugins/tools/skills/teams-deep-analysis/SKILL.md` \u2014 Reference implementation for team coordination\n- `plugins/tools/agents/team-code-explorer.md` \u2014 Team worker agent\n- `plugins/tools/agents/team-deep-synthesizer.md` \u2014 Team synthesizer agent\n\n#### Integration Points\n\n| File/Module | Purpose | How This Feature Connects |\n|------------|---------|---------------------------|\n| `plugins/sdd/skills/execute-tasks/SKILL.md` | Task orchestration | Add strategy resolution step, team lifecycle management |\n| `plugins/sdd/skills/execute-tasks/references/orchestration.md` | Orchestration loop detail | Extend Step 8 (Execute Loop) with team awareness |\n| `plugins/sdd/agents/task-executor.md` | Solo task agent | Remains as the Solo strategy agent |\n| `apps/task-manager/src/lib/taskService.ts` | Execution context parsing | Add `parseTeamActivityMd()`, extend `getExecutionContext()` |\n| `apps/task-manager/src/types/execution.ts` | Type definitions | Add TeamActivity, TeamMember types |\n| `apps/task-manager/src/lib/fileWatcher.ts` | File watching | Already watches `__live_session__/*.md` \u2014 team files picked up automatically |\n| `apps/task-manager/src/components/ExecutionDialog.tsx` | Execution UI | Extend with team monitoring section |\n\n#### Patterns to Follow\n\n- **Filesystem-as-message-bus**: All inter-system communication via markdown files in well-known paths \u2014 used across the entire project\n- **Regex parsing of markdown**: `parseProgressMd()` in `taskService.ts` extracts structured data from markdown format \u2014 new parsers should follow the same pattern\n- **Hub-and-spoke team coordination**: Team lead orchestrates, workers execute independently, synthesizer merges \u2014 established in `teams-deep-analysis`\n- **Chokidar \u2192 SSE \u2192 TanStack Query**: File change \u2192 SSE event \u2192 cache invalidation \u2192 UI update \u2014 the real-time pipeline\n- **Reference document pattern**: Strategy definitions in `references/` files that guide agent behavior \u2014 used throughout both plugins\n\n#### Related Features\n\n- **teams-deep-analysis**: Direct reference implementation for Agent Teams coordination; team lifecycle, agent spawning, SendMessage patterns can be adapted\n- **execute-tasks wave execution**: Existing parallel execution model; team execution extends this with teams per task slot\n\n## 8. Scope Definition\n\n### 8.1 In Scope\n- Four team strategies: Solo, Review, Research, Full\n- Three-level configuration cascade (settings \u2192 session \u2192 task)\n- Cross-task teams via `metadata.team_group`\n- Session file extensions (progress.md summary + team_activity.md detail)\n- Task Manager progressive-detail team monitoring UI\n- Graceful degradation fallback chain\n- Strategy reference document\n\n### 8.2 Out of Scope\n- **Custom agent types**: Users cannot define their own agent roles beyond the built-in strategies (deferred to future)\n- **Persistent teams**: Teams do not survive across execution sessions (each session creates fresh teams)\n\n### 8.3 Future Considerations\n- Custom agent role definitions (user-defined team compositions)\n- Persistent teams with session-spanning memory\n- Team performance analytics dashboard\n- AI-suggested strategy selection based on task complexity analysis\n- Inter-team communication for cross-cutting tasks\n\n## 9. Implementation Plan\n\n### 9.1 Phase 1: Foundation + Full Team End-to-End\n**Completion Criteria**: Full team strategy works end-to-end \u2014 execute-tasks spawns teams, coordinates agents, writes session files, and the Task Manager displays team activity in real-time.\n\n| Deliverable | Description | Dependencies |\n|-------------|-------------|--------------|\n| Team strategy reference doc | `references/team-strategies.md` defining all 4 strategies | None |\n| Strategy resolution logic | Orchestrator resolves strategy from 3-level cascade | Team strategy reference |\n| Team agent definitions | New agent markdown files for explorer, implementer, reviewer roles | Strategy reference |\n| Team orchestration in execute-tasks | TeamCreate/spawn/coordinate/cleanup lifecycle per task | Agent definitions |\n| Session file extensions | `progress.md` team summary + `team_activity.md` per team | Team orchestration |\n| Graceful degradation | Fallback chain: Full \u2192 Review \u2192 Solo | Team orchestration |\n| Task Manager type extensions | TeamActivity, TeamMember TypeScript types | None |\n| Task Manager parsing | `parseTeamActivityMd()` in taskService.ts | Type extensions |\n| Task Manager UI | Progressive-detail team monitoring in ExecutionDialog | Parsing + Types |\n| Configuration support | Settings file + `--team-strategy` CLI arg + per-task metadata | Strategy resolution |\n\n**Checkpoint Gate**: Full team strategy executes a real task session with team activity visible in Task Manager\n\n---\n\n### 9.2 Phase 2: Strategy Expansion + Polish\n**Completion Criteria**: All 4 strategies work, cross-task teams work, configuration is polished, documentation is complete.\n\n| Deliverable | Description | Dependencies |\n|-------------|-------------|--------------|\n| Review strategy implementation | Implementer + reviewer agent coordination | Phase 1 team infrastructure |\n| Research strategy implementation | Explorer + implementer agent coordination | Phase 1 team infrastructure |\n| Cross-task teams | `metadata.team_group` support with persistent team across tasks | Phase 1 team infrastructure |\n| Strategy-specific UI indicators | Visual differentiation of strategies in Task Manager | Phase 1 UI |\n| Configuration validation | Helpful error messages for invalid configs | Phase 1 config |\n| Documentation updates | CLAUDE.md, plugin READMEs, skill descriptions | All Phase 2 features |\n| CHANGELOG entries | Both plugins and Task Manager | All Phase 2 features |\n\n**Checkpoint Gate**: All strategies tested, cross-task teams working, documentation complete\n\n---\n\n### 9.3 Phase 3: Enhancement\n**Completion Criteria**: Edge cases handled, performance validated, user experience refined.\n\n| Deliverable | Description | Dependencies |\n|-------------|-------------|--------------|\n| Performance optimization | Profile team overhead, optimize file writing frequency | Phase 2 |\n| Enhanced team activity view | Message timeline, phase indicators in expanded detail view | Phase 2 UI |\n| Error reporting improvements | Better diagnostics for team failures in session summary | Phase 2 |\n| create-tasks integration | `create-tasks` skill can suggest team strategies based on task complexity | Phase 2 strategies |\n\n## 10. Dependencies\n\n### 10.1 Technical Dependencies\n\n| Dependency | Owner | Status | Risk if Delayed |\n|------------|-------|--------|------------------|\n| Claude Code TeamCreate/TeamDelete/SendMessage APIs | Anthropic | Available | Blocking \u2014 core feature depends on these |\n| Claude Code Task tool with team_name param | Anthropic | Available | Blocking \u2014 agent spawning into teams |\n| Chokidar file watching | Task Manager | Implemented | None \u2014 already works |\n| SSE event pipeline | Task Manager | Implemented | None \u2014 already works |\n\n### 10.2 Cross-Team Dependencies\n\n| Team | Dependency | Status |\n|------|------------|--------|\n| SDD Plugin | Team strategy definitions and orchestration updates | To be implemented |\n| Tools Plugin | Reference implementation patterns (teams-deep-analysis) | Available |\n| Task Manager | UI extensions and new parsing logic | To be implemented |\n\n## 11. Risks & Mitigations\n\n| Risk | Impact | Likelihood | Mitigation Strategy |\n|------|--------|------------|---------------------|\n| Team coordination complexity makes orchestration fragile | High | Medium | Strategy abstraction isolates team logic; graceful degradation prevents total failure |\n| Multiple concurrent teams overwhelm filesystem/polling | Medium | Low | Cap at `max_parallel` teams; Chokidar already handles many file changes |\n| Agent failures cascade within teams | High | Medium | Graceful degradation chain (Full \u2192 Review \u2192 Solo); each role failure has specific handling |\n| Token usage increases significantly with multi-agent teams | Medium | High | Document expected cost multiplier per strategy; make Solo the default |\n| Session file format changes break Task Manager parsing | Medium | Low | Additive changes to progress.md; new team_activity.md files don't affect existing parsing |\n| Team activity UI adds too much complexity to the dashboard | Medium | Low | Progressive detail: basic in main view, expanded on click; matches existing UX patterns |\n\n## 12. Open Questions\n\n| # | Question | Owner | Due Date | Resolution |\n|---|----------|-------|----------|------------|\n| 1 | What specific model tiers should be used for each agent role? (e.g., Opus for reviewer, Sonnet for implementer) | Developer | Phase 1 | \u2014 |\n| 2 | Should the `create-tasks` skill auto-suggest team strategies based on task complexity/metadata? | Developer | Phase 2 | \u2014 |\n| 3 | What are acceptable token usage multipliers per strategy? (e.g., Full team = ~3x solo) | Developer | Phase 1 | \u2014 |\n\n## 13. Appendix\n\n### 13.1 Glossary\n\n| Term | Definition |\n|------|------------|\n| Team Strategy | A configuration that defines which agent roles collaborate on a task (Solo, Review, Research, Full) |\n| Solo | Existing behavior: one task-executor agent per task |\n| Review | Two agents: implementer writes code, reviewer independently verifies |\n| Research | Two agents: explorer investigates codebase/requirements, implementer uses findings |\n| Full | Three agents: explorer + implementer + reviewer pipeline |\n| Cross-Task Team | A team that persists across multiple tasks sharing `metadata.team_group` |\n| Progressive Detail | UI pattern: summary view by default, expandable to full detail on interaction |\n| Graceful Degradation | Automatic fallback to simpler strategy when team agents fail |\n| Filesystem-as-message-bus | Project architecture: systems communicate via well-known file paths, no shared runtime |\n\n### 13.2 References\n- `plugins/sdd/skills/execute-tasks/SKILL.md` \u2014 Current execute-tasks workflow\n- `plugins/sdd/skills/execute-tasks/references/orchestration.md` \u2014 Current orchestration loop\n- `plugins/tools/skills/teams-deep-analysis/SKILL.md` \u2014 Reference Agent Teams implementation\n- `apps/task-manager/src/lib/taskService.ts` \u2014 Current execution monitoring parsing\n- `apps/task-manager/src/types/execution.ts` \u2014 Current execution types\n- `apps/task-manager/src/components/ExecutionDialog.tsx` \u2014 Current execution UI\n\n---\n\n*Document generated by SDD Tools*"};
+const FINDINGS_DATA = [{"id":"FIND-001","title":"Priority/Phase Misalignment for Configuration Cascade","category":"Inconsistencies","severity":"critical","location":"Section 3.2 \"Success Metrics\" (line 66) vs Section 9.1 \"Phase 1\" (line 419)","lineNumber":66,"currentText":"| Configuration simplicity | N/A (no teams) | 3-level cascade working (settings \u2192 session \u2192 task) | All config levels tested and documented | Phase 2 |","issue":"The \"Configuration simplicity\" success metric has a Timeline of \"Phase 2\", but Section 5.2 \"Three-Level Configuration Cascade\" is marked P0 (Critical). P0 features should be delivered in Phase 1. Additionally, the Phase 1 deliverables table includes \"Configuration support\" as a Phase 1 deliverable, contradicting the Phase 2 timeline in the success metrics table.","impact":"Developers may be confused about when the 3-level configuration cascade is actually expected to be complete. Phase 1 deliverables include it, but the metric says Phase 2.","proposedText":"| Configuration simplicity | N/A (no teams) | 3-level cascade working (settings \u2192 session \u2192 task) | All config levels tested and documented | Phase 1 |","status":"pending"},{"id":"FIND-002","title":"Partial Team Failure Rules Undefined","category":"Missing Information","severity":"critical","location":"Section 5.4 \"Graceful Degradation\" Edge Cases (line 185)","lineNumber":185,"currentText":"- Partial team failure (1 of 3 agents fails): Depends on which role failed \u2014 see strategy-specific rules","issue":"References \"strategy-specific rules\" that do not exist anywhere in this spec. These rules are critical for implementation since partial failure is the most likely failure mode.","impact":"Implementers have no guidance on how to handle the most common team failure scenario. Without defined rules, each developer would make different assumptions, leading to inconsistent behavior.","proposedText":null,"status":"pending"},{"id":"FIND-003","title":"Strategy Coverage Metric Timeline vs Phase 1 Scope","category":"Inconsistencies","severity":"warning","location":"Section 3.2 \"Success Metrics\" (line 67) vs Section 9.1 \"Phase 1\" (line 410)","lineNumber":67,"currentText":"| Strategy coverage | 1 (solo only) | 4 strategies available | Solo, Review, Research, Full team strategies implemented | Phase 2 |","issue":"The \"Strategy coverage\" metric has Timeline \"Phase 2\", but Phase 1 already includes the Full team strategy end-to-end and the strategy reference doc defining all 4. The distinction between \"defined\" vs \"implemented\" is unclear.","impact":"May cause confusion about what Phase 1 actually delivers vs what Phase 2 adds.","proposedText":null,"status":"pending"},{"id":"FIND-004","title":"Inconsistent Role Naming: researcher vs explorer","category":"Inconsistencies","severity":"warning","location":"Section 2.1 \"The Problem\" (line 22)","lineNumber":22,"currentText":"- **Task quality**: Complex tasks benefit from specialized roles (researcher, implementer, reviewer) but solo agents must do everything","issue":"In Section 2.1, the first role is called \"researcher\" but throughout the rest of the spec (Sections 5.1, 5.3, 5.5, glossary), this role is consistently called \"explorer\". This naming mismatch could confuse implementers.","impact":"Developers may create a \"researcher\" agent when the spec elsewhere calls for an \"explorer\" agent.","proposedText":"- **Task quality**: Complex tasks benefit from specialized roles (explorer, implementer, reviewer) but solo agents must do everything","status":"pending"},{"id":"FIND-005","title":"No Defined team_activity.md File Format","category":"Missing Information","severity":"warning","location":"Section 5.6 \"Session File Extensions for Teams\" (line 210)","lineNumber":224,"currentText":"- [ ] Format is parseable by regex (consistent with existing `progress.md` patterns)","issue":"The spec requires that team_activity.md be \"parseable by regex\" and lists what it should include, but does not provide a sample format or schema. The actual structure is left undefined, making it difficult to implement the parser.","impact":"Without a defined format, the plugin author and Task Manager developer may produce incompatible formats, requiring rework.","proposedText":null,"status":"pending"},{"id":"FIND-006","title":"Vague Performance Requirement: \"not significantly slow\"","category":"Ambiguities","severity":"warning","location":"Section 6.1 \"Performance\" (line 272)","lineNumber":272,"currentText":"- Team overhead should not significantly slow execution compared to solo agents for simple tasks","issue":"\"Significantly\" is not defined. Is 10% overhead acceptable? 50%? This makes the requirement untestable.","impact":"No way to verify this requirement during testing or acceptance review.","proposedText":"- Team overhead for simple tasks should add no more than 30 seconds of coordination time compared to solo agent execution","status":"pending"},{"id":"FIND-007","title":"Vague Performance Requirement: \"reasonable\" spawn time","category":"Ambiguities","severity":"warning","location":"Section 6.1 \"Performance\" (line 273)","lineNumber":273,"currentText":"- Agent spawn time should be reasonable (seconds, not minutes)","issue":"\"Reasonable\" and \"seconds\" are vague. This could mean 2 seconds or 59 seconds. A testable threshold is needed.","impact":"Acceptance criteria cannot be objectively evaluated.","proposedText":"- Agent spawn time should be under 10 seconds per agent; full team setup (create + spawn all agents) should complete within 30 seconds","status":"pending"},{"id":"FIND-008","title":"Vague Scalability Requirement: \"manageable\" file system load","category":"Ambiguities","severity":"warning","location":"Section 6.3 \"Scalability\" (line 284)","lineNumber":284,"currentText":"- File system load from team activity files should be manageable with existing Chokidar configuration","issue":"\"Manageable\" has no definition. This requirement cannot be tested or validated.","impact":"No clear threshold for when the file system load would be considered a problem.","proposedText":"- Team activity file updates should not exceed 10 write events per second per team, staying within Chokidar's 300ms polling capability","status":"pending"},{"id":"FIND-009","title":"Missing Error Handling for team_activity.md Parsing","category":"Missing Information","severity":"warning","location":"Section 5.7 \"Task Manager Team Monitoring UI\" (line 232)","lineNumber":232,"currentText":null,"issue":"The spec defines that the Task Manager should parse and display team activity data but does not specify what happens when team_activity.md files are malformed or partially written (e.g., read during a write). Given 300ms polling, partial reads are plausible.","impact":"Without defined behavior, the Task Manager may crash or display corrupted data during active execution sessions.","proposedText":null,"status":"pending"},{"id":"FIND-010","title":"Vague Quality Target: \"Measurably fewer\"","category":"Ambiguities","severity":"warning","location":"Section 3.2 \"Success Metrics\" (line 64)","lineNumber":64,"currentText":"| Task completion quality | Solo agent pass rate | Measurably fewer PARTIAL/FAIL results with team strategies | Compare pass/fail ratios: solo vs team execution sessions | Phase 1 |","issue":"\"Measurably fewer\" is vague -- any non-zero improvement technically qualifies. For a Detailed spec, metrics should have clearer targets.","impact":"Difficult to objectively determine whether this success metric has been achieved.","proposedText":null,"status":"pending"},{"id":"FIND-011","title":"Author Field Not Specified","category":"Missing Information","severity":"suggestion","location":"Header (line 4)","lineNumber":4,"currentText":"**Author**: Not specified","issue":"The Author field is set to \"Not specified\". Attribution helps with accountability and knowing who to contact for clarifications.","impact":null,"proposedText":null,"status":"pending"},{"id":"FIND-012","title":"Duplicate Integration Points Section Names","category":"Structure Issues","severity":"suggestion","location":"Section 7.3 (line 315) and Section 7.5 (line 356)","lineNumber":356,"currentText":"#### Integration Points","issue":"There are two sections named \"Integration Points\" -- one at Section 7.3 (system-level) and another within Section 7.5 (file-level). The duplicate naming could cause confusion when cross-referencing.","impact":null,"proposedText":"#### File-Level Integration Map","status":"pending"},{"id":"FIND-013","title":"User Journey Map Could Be More Detailed","category":"Structure Issues","severity":"suggestion","location":"Section 4.2 \"User Journey Map\" (line 89)","lineNumber":89,"currentText":null,"issue":"The user journey map is a single-line flow in a code block. For a Detailed spec, it would benefit from decision points, failure paths (team degrades), and the secondary persona's monitoring journey.","impact":null,"proposedText":null,"status":"pending"}];
+
+// === STATE ===
+const STATE = {
+  findings: [],
+  selectedId: null,
+  statusFilter: 'all',
+  severityFilter: 'all',
+  comments: {}
+};
+
+function init() {
+  STATE.findings = FINDINGS_DATA.map(f => ({
+    ...f,
+    status: f.status || 'pending'
+  }));
+  renderHeader();
+  renderStats();
+  renderFilters();
+  renderSpec();
+  renderFindings();
+  updatePromptPanel();
+}
+
+// === RENDERING ===
+
+function renderHeader() {
+  document.getElementById('spec-name').textContent = SPEC_CONTENT.name || 'Spec Analysis';
+  document.getElementById('depth-level').textContent = SPEC_CONTENT.depthLevel || '';
+  document.getElementById('analyzed-at').textContent = SPEC_CONTENT.analyzedAt || '';
+  document.title = `Review: ${SPEC_CONTENT.name || 'Spec Analysis'}`;
+}
+
+function renderStats() {
+  const counts = { total: STATE.findings.length, critical: 0, warning: 0, suggestion: 0, pending: 0, approved: 0, rejected: 0 };
+  STATE.findings.forEach(f => {
+    counts[f.severity]++;
+    counts[f.status]++;
+  });
+
+  const el = document.getElementById('stats');
+  el.innerHTML = [
+    statHTML('Total', counts.total, ''),
+    statHTML('Critical', counts.critical, 'var(--purple)'),
+    statHTML('Warning', counts.warning, 'var(--amber)'),
+    statHTML('Suggestion', counts.suggestion, 'var(--blue)'),
+    statHTML('Pending', counts.pending, 'var(--amber)'),
+    statHTML('Approved', counts.approved, 'var(--green)'),
+    statHTML('Rejected', counts.rejected, 'var(--red)')
+  ].join('');
+}
+
+function statHTML(label, value, color) {
+  const pct = STATE.findings.length ? (value / STATE.findings.length * 100) : 0;
+  return `<div class="stat">
+    <div class="stat-value" style="color:${color || 'var(--text)'}">${value}</div>
+    <div class="stat-label">${label}</div>
+    <div class="stat-bar"><div class="stat-bar-fill" style="width:${pct}%;background:${color || 'var(--border)'}"></div></div>
+  </div>`;
+}
+
+function renderFilters() {
+  const counts = { all: STATE.findings.length, pending: 0, approved: 0, rejected: 0 };
+  STATE.findings.forEach(f => counts[f.status]++);
+
+  const tabs = [
+    { key: 'all', label: 'All' },
+    { key: 'pending', label: 'Pending' },
+    { key: 'approved', label: 'Approved' },
+    { key: 'rejected', label: 'Rejected' }
+  ];
+
+  document.getElementById('status-filters').innerHTML = tabs.map(t =>
+    `<button class="filter-tab${STATE.statusFilter === t.key ? ' active' : ''}"
+      onclick="setStatusFilter('${t.key}')">${t.label}<span class="count">${counts[t.key]}</span></button>`
+  ).join('');
+}
+
+function renderSpec() {
+  const content = SPEC_CONTENT.content || '';
+  const el = document.getElementById('spec-content');
+  const lines = content.split('\n');
+  const findingsByLine = {};
+  STATE.findings.forEach(f => {
+    if (f.lineNumber) {
+      if (!findingsByLine[f.lineNumber]) findingsByLine[f.lineNumber] = [];
+      findingsByLine[f.lineNumber].push(f);
+    }
+  });
+
+  let html = '';
+  lines.forEach((line, i) => {
+    const lineNum = i + 1;
+    const findings = findingsByLine[lineNum];
+    if (findings) {
+      const f = findings[0];
+      const statusClass = f.status !== 'pending' ? ` status-${f.status}` : '';
+      const selectedClass = f.id === STATE.selectedId ? ' selected' : '';
+      const markers = findings.map(ff =>
+        `<span class="annotation-marker severity-${ff.severity}" onclick="selectFinding('${ff.id}')" title="${escapeAttr(ff.title)}">${ff.id}</span>`
+      ).join('');
+      html += `<div class="annotated-line severity-${f.severity}${statusClass}${selectedClass}" data-finding-id="${f.id}" onclick="selectFinding('${f.id}')">${renderMarkdownLine(line)}${markers}</div>`;
+    } else {
+      html += `<div>${renderMarkdownLine(line)}</div>`;
+    }
+  });
+
+  el.innerHTML = html;
+}
+
+function renderFindings() {
+  const filtered = STATE.findings.filter(f => {
+    if (STATE.statusFilter !== 'all' && f.status !== STATE.statusFilter) return false;
+    if (STATE.severityFilter !== 'all' && f.severity !== STATE.severityFilter) return false;
+    return true;
+  });
+
+  const el = document.getElementById('findings-list');
+
+  if (filtered.length === 0) {
+    el.innerHTML = `<div class="empty-state"><h3>No findings match filters</h3><p>Try changing the status or severity filter.</p></div>`;
+    return;
+  }
+
+  el.innerHTML = filtered.map(f => {
+    const isSelected = f.id === STATE.selectedId;
+    const comment = STATE.comments[f.id] || '';
+    return `
+    <div class="finding-card${isSelected ? ' selected' : ''} status-${f.status}" onclick="selectFinding('${f.id}')">
+      <div class="finding-header">
+        <div>
+          <span class="finding-id">${esc(f.id)}</span>
+          <span class="badge badge-${f.severity}">${esc(f.severity)}</span>
+          <span class="status-badge status-${f.status}">${esc(f.status)}</span>
+        </div>
+      </div>
+      <div class="finding-title">${esc(f.title)}</div>
+      <div class="category-badge">${esc(f.category)}</div>
+      <div class="finding-location">${esc(f.location)}</div>
+      <div class="finding-issue">${esc(f.issue)}</div>
+      ${f.impact ? `<div class="finding-issue" style="font-style:italic">${esc(f.impact)}</div>` : ''}
+      ${isSelected ? `
+        ${f.currentText ? `
+          <div class="finding-detail" onclick="event.stopPropagation()">
+            <div class="finding-detail-label">Current</div>
+            <div class="finding-detail-text current">${esc(f.currentText)}</div>
+          </div>` : ''}
+        ${f.proposedText ? `
+          <div class="finding-detail" onclick="event.stopPropagation()">
+            <div class="finding-detail-label">Proposed</div>
+            <div class="finding-detail-text proposed">${esc(f.proposedText)}</div>
+          </div>` : ''}
+        <textarea class="comment-area" placeholder="Add a comment (optional)..." oninput="setComment('${f.id}', this.value)" onclick="event.stopPropagation()" onmousedown="event.stopPropagation()">${esc(comment)}</textarea>
+        <div class="finding-actions">
+          ${f.status === 'pending' ? `
+            <button class="btn btn-approve" onclick="event.stopPropagation(); setStatus('${f.id}', 'approved')">Approve</button>
+            <button class="btn btn-reject" onclick="event.stopPropagation(); setStatus('${f.id}', 'rejected')">Reject</button>
+          ` : `
+            <button class="btn" onclick="event.stopPropagation(); setStatus('${f.id}', 'pending')">Reset to Pending</button>
+          `}
+        </div>
+      ` : ''}
+    </div>`;
+  }).join('');
+}
+
+// === MINIMAL MARKDOWN RENDERER ===
+
+function renderMarkdownLine(line) {
+  if (/^#### (.+)/.test(line)) return `<h4>${esc(RegExp.$1)}</h4>`;
+  if (/^### (.+)/.test(line)) return `<h3>${esc(RegExp.$1)}</h3>`;
+  if (/^## (.+)/.test(line)) return `<h2>${esc(RegExp.$1)}</h2>`;
+  if (/^# (.+)/.test(line)) return `<h1>${esc(RegExp.$1)}</h1>`;
+  if (/^[-*] (.+)/.test(line)) return `<li>${inlineMarkdown(RegExp.$1)}</li>`;
+  if (/^\d+\. (.+)/.test(line)) return `<li>${inlineMarkdown(RegExp.$1)}</li>`;
+  if (line.trim() === '') return '<br>';
+  return inlineMarkdown(line);
+}
+
+function inlineMarkdown(text) {
+  let s = esc(text);
+  s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/`(.+?)`/g, '<code>$1</code>');
+  return s;
+}
+
+// === STATE MUTATIONS ===
+
+function selectFinding(id) {
+  STATE.selectedId = STATE.selectedId === id ? null : id;
+  updateAll();
+}
+
+function setStatusFilter(filter) {
+  STATE.statusFilter = filter;
+  STATE.selectedId = null;
+  updateAll();
+}
+
+function setStatus(id, status) {
+  const f = STATE.findings.find(x => x.id === id);
+  if (f) f.status = status;
+  updateAll();
+  showToast(`${id} ${status}`);
+}
+
+function setComment(id, text) {
+  STATE.comments[id] = text;
+}
+
+function updateAll() {
+  renderStats();
+  renderFilters();
+  renderSpec();
+  renderFindings();
+  updatePromptPanel();
+}
+
+// === PROMPT GENERATION ===
+
+function updatePromptPanel() {
+  const approved = STATE.findings.filter(f => f.status === 'approved');
+  const panel = document.getElementById('prompt-panel');
+  const countEl = document.getElementById('approved-count');
+
+  countEl.textContent = approved.length;
+
+  if (approved.length === 0) {
+    panel.classList.add('hidden');
+    return;
+  }
+
+  panel.classList.remove('hidden');
+
+  const prompt = generatePrompt(approved);
+  document.getElementById('prompt-content').textContent = prompt;
+}
+
+function generatePrompt(approved) {
+  const lines = [`Apply these changes to the spec at: ${SPEC_CONTENT.path}\n`];
+
+  approved.forEach((f, i) => {
+    lines.push(`${i + 1}. ${f.title}`);
+    lines.push(`   Location: ${f.location}`);
+    if (f.currentText && f.proposedText) {
+      lines.push(`   Change: "${f.currentText}" \u2192 "${f.proposedText}"`);
+    } else if (f.proposedText) {
+      lines.push(`   Add: "${f.proposedText}"`);
+    } else {
+      lines.push(`   Issue: ${f.issue}`);
+    }
+    const comment = STATE.comments[f.id];
+    if (comment) {
+      lines.push(`   Note: ${comment}`);
+    }
+    lines.push('');
+  });
+
+  return lines.join('\n');
+}
+
+function copyPrompt() {
+  const approved = STATE.findings.filter(f => f.status === 'approved');
+  const prompt = generatePrompt(approved);
+  navigator.clipboard.writeText(prompt).then(() => {
+    showToast('Prompt copied to clipboard');
+  }).catch(() => {
+    const el = document.getElementById('prompt-content');
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    showToast('Select All applied \u2014 press Cmd/Ctrl+C');
+  });
+}
+
+function downloadSpec() {
+  const content = SPEC_CONTENT.content || '';
+  let modified = content;
+
+  const approved = STATE.findings.filter(f => f.status === 'approved' && f.currentText && f.proposedText);
+  approved.forEach(f => {
+    modified = modified.replace(f.currentText, f.proposedText);
+  });
+
+  const blob = new Blob([modified], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const baseName = (SPEC_CONTENT.path || 'spec').split('/').pop().replace(/\.md$/, '');
+  a.download = `${baseName}.modified.md`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Modified spec downloaded');
+}
+
+// === HELPERS ===
+
+function esc(str) {
+  if (!str) return '';
+  const d = document.createElement('div');
+  d.textContent = String(str);
+  return d.innerHTML;
+}
+
+function escapeAttr(str) {
+  return esc(str).replace(/"/g, '&quot;');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// === SEVERITY FILTER ===
+document.getElementById('severity-filter').addEventListener('change', function() {
+  STATE.severityFilter = this.value;
+  STATE.selectedId = null;
+  updateAll();
+});
+
+// === INIT ===
+init();
+</script>
+</body>
+</html>
