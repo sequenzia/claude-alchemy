@@ -1,0 +1,22 @@
+{
+  "id": "139",
+  "subject": "Define team_activity.md file format in session file extensions",
+  "description": "Ensure the `team_activity_task-{id}.md` file format is fully specified and documented, either as part of the team strategies reference (`references/team-strategies.md`) or in the orchestration reference.\n\nThis task ensures the file format is detailed enough for both the orchestrator to write and the Task Manager to parse.\n\n**File Location:** `.claude/sessions/__live_session__/team_activity_task-{id}.md`\n\n**File Format Requirements:**\n- Must be regex-parseable (consistent with `progress.md` parsing patterns in `taskService.ts`)\n- Updated in real-time as agents progress\n- One file per active team\n\n**Proposed Format:**\n```markdown\n# Team Activity: Task {id}\n\nTeam: task-team-{id}-{timestamp}\nStrategy: full|review|research\nStatus: active|completed|failed|degraded\nCreated: {ISO timestamp}\nUpdated: {ISO timestamp}\n\n## Team Members\n\n- [{role}] {agent-name} — {status} — {current-phase}\n- [explorer] explorer-1 — completed — Exploration complete\n- [implementer] impl-1 — active — Phase 2: Implement\n- [reviewer] reviewer-1 — waiting — Pending implementation\n\n## Activity Log\n\n{timestamp} | {role} | {event}\n2026-02-08T10:00:00Z | explorer | Started codebase exploration\n2026-02-08T10:02:00Z | explorer | Completed exploration, 15 files mapped\n2026-02-08T10:02:01Z | implementer | Started implementation with explorer findings\n```\n\n**Integration Points:**\n- Orchestrator writes this file (agents don't write directly)\n- Task Manager `parseTeamActivityMd()` parses this format\n- Chokidar watches `__live_session__/*.md` — picks up automatically\n- `progress.md` gets a team summary section referencing these files\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] File format fully specified with all fields\n- [ ] Format is regex-parseable (provide example regex patterns)\n- [ ] Team member status values defined (active, completed, failed, waiting)\n- [ ] Activity log format defined with timestamp, role, event columns\n\n_Edge Cases:_\n- [ ] Multiple teams active simultaneously (separate files, no naming collision)\n- [ ] Team degrades mid-execution (status changes, log reflects degradation)\n\n_Error Handling:_\n- [ ] File creation failure handling documented\n- [ ] Concurrent write prevention (orchestrator-only writes)\n\n**Testing Requirements:**\n- Manual: Verify format is unambiguous and parseable\n- Manual: Test regex patterns against sample content\n\nSource: internal/specs/agent-teams-updates-SPEC.md Section 5.6",
+  "activeForm": "Defining team_activity.md file format",
+  "status": "completed",
+  "blocks": [
+    "140"
+  ],
+  "blockedBy": [
+    "137"
+  ],
+  "metadata": {
+    "priority": "high",
+    "complexity": "M",
+    "source_section": "5.6",
+    "spec_path": "internal/specs/agent-teams-updates-SPEC.md",
+    "feature_name": "Session File Extensions",
+    "task_uid": "internal/specs/agent-teams-updates-SPEC.md:session-files:format:001",
+    "task_group": "agent-teams-updates"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "133",
+  "subject": "Create team-reviewer agent definition",
+  "description": "Create a new agent definition at `plugins/sdd/agents/team-reviewer.md` for the independent code reviewer role in team strategies (Review and Full).\n\nThis agent provides independent verification of implementer's code changes. It intentionally does NOT have Write/Edit tools — it reviews, does not modify code.\n\n**Agent Definition:**\n- Name: `team-reviewer`\n- Model: Opus (high-quality review requires stronger reasoning)\n- Tools: Read, Glob, Grep, Bash, SendMessage, TaskUpdate, TaskGet, TaskList (NO Write/Edit)\n- Skills to load: code-quality, project-conventions\n\n**Responsibilities:**\n- Receive implementer's code changes and implementation summary\n- Independently review code for correctness, edge cases, security\n- Verify acceptance criteria from task description\n- Run tests and linter to validate implementation\n- Report review results via SendMessage to team lead\n- Categorize findings: PASS, issues found (with details), FAIL\n\n**Review Workflow:**\n1. Read task requirements and acceptance criteria\n2. Read implementer's changed files\n3. Verify each acceptance criterion\n4. Run test suite\n5. Check for common issues (security, performance, code quality)\n6. Send structured review report to team lead\n\n**Follow patterns from:**\n- `plugins/tools/agents/team-deep-synthesizer.md` (analysis + reporting patterns)\n- `plugins/sdd/skills/execute-tasks/references/verification-patterns.md` (verification approach)\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] Agent file follows standard YAML frontmatter + markdown format\n- [ ] Tools list excludes Write/Edit (reviewer is read-only for code)\n- [ ] Review workflow covers criterion-by-criterion verification\n- [ ] Structured report format defined for review results\n\n_Edge Cases:_\n- [ ] Agent handles case where implementation is incomplete/partial\n- [ ] Agent handles case where tests don't exist yet\n\n_Error Handling:_\n- [ ] Agent reports tool failures via SendMessage\n- [ ] Agent provides partial review results even if some checks fail\n\n**Testing Requirements:**\n- Manual: Verify agent definition is valid and follows existing patterns\n- Manual: Verify tools list intentionally excludes Write/Edit\n\nSource: internal/specs/agent-teams-updates-SPEC.md Sections 5.1, 5.3",
+  "activeForm": "Creating team-reviewer agent definition",
+  "status": "completed",
+  "blocks": [
+    "137"
+  ],
+  "blockedBy": [
+    "131"
+  ],
+  "metadata": {
+    "priority": "critical",
+    "complexity": "M",
+    "source_section": "5.1, 5.3",
+    "spec_path": "internal/specs/agent-teams-updates-SPEC.md",
+    "feature_name": "Team Strategy System",
+    "task_uid": "internal/specs/agent-teams-updates-SPEC.md:team-strategies:agent-reviewer:001",
+    "task_group": "agent-teams-updates"
+  }
+}

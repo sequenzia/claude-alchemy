@@ -1,0 +1,25 @@
+{
+  "id": "144",
+  "subject": "Add team monitoring section to ExecutionDialog",
+  "description": "Modify `apps/task-manager/src/components/ExecutionDialog.tsx` to add progressive-detail team monitoring.\n\n**Current State:**\nExecutionDialog (lines 1-190) shows:\n- Tabbed interface with execution artifacts\n- ProgressView with status badge, active tasks list, completed tasks list\n- Markdown rendering for artifact content\n\n**Changes Needed:**\n\n1. **Team Summary in ProgressView**: When teams are active, show team info alongside existing active tasks:\n   ```\n   Active Tasks:\n   - [5] Implement auth middleware — Phase 2: Implement\n     Team: task-team-5 (full) — 3 agents\n       [explorer] — completed\n       [implementer] — active — Implementing\n       [reviewer] — waiting\n   ```\n\n2. **Expandable Team Detail**: Each active task with a team gets an expandable section:\n   - Collapsed: team name, agent count, overall status\n   - Expanded: each agent with role, status, current phase, recent activity\n\n3. **Team Activity Tab**: Add `team_activity_task-{id}` files as navigable tabs in the artifact viewer (already handled by artifact list, but ensure proper tab naming)\n\n4. **Styling**:\n   - Use existing Radix primitives (Collapsible or Accordion for expand/collapse)\n   - Team member role badges with color coding\n   - Status indicators matching existing pulsing dot pattern\n   - Maintain accessibility (keyboard navigation, screen reader support)\n\n**Data Flow:**\n- `useExecutionContext` hook provides `ExecutionContext` with team data\n- Team data comes from parsed `team_activity_task-{id}.md` files\n- Real-time updates via existing SSE → TanStack Query invalidation pipeline\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] Team summary visible in ProgressView for active tasks using teams\n- [ ] Each team member shows role, status, and current phase\n- [ ] Expandable/collapsible detail for each team\n- [ ] Real-time updates as agents progress through phases\n\n_Edge Cases:_\n- [ ] No teams active: UI shows standard task progress (no team sections)\n- [ ] Multiple concurrent teams: each displayed independently\n- [ ] Team completes between polls: UI catches up on next SSE event\n- [ ] Solo strategy tasks: no team section shown\n\n_Error Handling:_\n- [ ] Missing team data handled gracefully (show task without team detail)\n\n**Testing Requirements:**\n- Component: Renders team summary when team data present\n- Component: Renders without team section when no team data\n- Component: Expand/collapse toggles correctly\n- Manual: Verify accessibility with keyboard navigation\n\nSource: internal/specs/agent-teams-updates-SPEC.md Section 5.7",
+  "activeForm": "Adding team monitoring section to ExecutionDialog",
+  "status": "completed",
+  "blocks": [
+    "145",
+    "149",
+    "150"
+  ],
+  "blockedBy": [
+    "141",
+    "140"
+  ],
+  "metadata": {
+    "priority": "high",
+    "complexity": "L",
+    "source_section": "5.7",
+    "spec_path": "internal/specs/agent-teams-updates-SPEC.md",
+    "feature_name": "Task Manager Team Monitoring UI",
+    "task_uid": "internal/specs/agent-teams-updates-SPEC.md:task-manager:execution-dialog:001",
+    "task_group": "agent-teams-updates"
+  }
+}

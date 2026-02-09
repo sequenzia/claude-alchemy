@@ -1,6 +1,6 @@
 'use client'
 
-import { ScrollText } from 'lucide-react'
+import { ScrollText, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { ExecutionProgress } from '@/types/execution'
 
@@ -19,6 +19,14 @@ export function ExecutionProgressBar({
     const activeCount = progress.activeTasks.length
     const doneCount = progress.completedTasks.length
 
+    // Count active teams (non-solo strategies only)
+    const activeTeams = progress.activeTeams?.filter(
+      (t) => t.strategy !== 'solo' && t.status === 'active'
+    ) ?? []
+    const teamCount = activeTeams.length
+    const totalAgents = activeTeams.reduce((sum, t) => sum + t.memberCount, 0)
+    const hasTeams = teamCount > 0
+
     return (
       <button
         onClick={onClick}
@@ -32,7 +40,20 @@ export function ExecutionProgressBar({
           Wave {progress.wave}/{progress.totalWaves}
         </span>
         <span className="text-border">|</span>
-        <span className="text-foreground font-medium">{activeCount} active</span>
+        {hasTeams ? (
+          <>
+            <span className="text-foreground font-medium">
+              {activeCount} {activeCount === 1 ? 'task' : 'tasks'}
+            </span>
+            <span className="text-border">|</span>
+            <span className="inline-flex items-center gap-1 text-foreground font-medium">
+              <Users className="h-3.5 w-3.5" />
+              {totalAgents} {totalAgents === 1 ? 'agent' : 'agents'}
+            </span>
+          </>
+        ) : (
+          <span className="text-foreground font-medium">{activeCount} active</span>
+        )}
         <span className="text-border">|</span>
         <span className="text-muted-foreground">{doneCount} done</span>
       </button>

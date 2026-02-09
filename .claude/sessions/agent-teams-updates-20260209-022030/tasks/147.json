@@ -1,0 +1,22 @@
+{
+  "id": "147",
+  "subject": "Add Research strategy coordination details to references",
+  "description": "Extend the team strategies reference document and orchestration docs with detailed Research strategy coordination.\n\n**Research Strategy: Explorer + Implementer**\n\nDetail the specific coordination flow:\n1. Explorer receives task requirements\n2. Explorer investigates codebase: finds relevant files, patterns, dependencies, potential challenges\n3. Explorer sends structured findings report to team lead\n4. Team lead forwards explorer findings to implementer as additional context\n5. Implementer receives task requirements + explorer findings\n6. Implementer executes implementation using explorer's insights\n7. Implementer self-verifies (no reviewer in Research strategy)\n8. Implementer sends completion report to team lead\n\n**Explorer Findings Format:**\n- Relevant files discovered (with purpose)\n- Existing patterns to follow\n- Dependencies and integration points\n- Potential challenges or conflicts\n- Recommended implementation approach\n\n**Handoff Details:**\n- Explorer findings passed to implementer as structured context\n- Implementer uses findings to inform implementation decisions\n- No reviewer — implementer does self-verification (similar to solo)\n\n**Result Translation:**\n- Implementer PASS → PASS\n- Implementer PARTIAL → PARTIAL\n- Implementer FAIL → FAIL\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] Research strategy coordination flow fully documented step-by-step\n- [ ] Explorer findings format specified\n- [ ] Explorer-to-implementer handoff clearly defined\n- [ ] Self-verification approach documented (since no reviewer)\n\n_Edge Cases:_\n- [ ] Explorer finds nothing relevant: implementer proceeds without extra context\n- [ ] Explorer times out: degrade to Solo\n\n**Testing Requirements:**\n- Manual: Verify coordination flow is unambiguous\n- Manual: Verify handoff format is actionable for implementer\n\nSource: internal/specs/agent-teams-updates-SPEC.md Section 5.1",
+  "activeForm": "Adding Research strategy coordination details",
+  "status": "completed",
+  "blocks": [
+    "151"
+  ],
+  "blockedBy": [
+    "137"
+  ],
+  "metadata": {
+    "priority": "high",
+    "complexity": "M",
+    "source_section": "5.1",
+    "spec_path": "internal/specs/agent-teams-updates-SPEC.md",
+    "feature_name": "Team Strategy System",
+    "task_uid": "internal/specs/agent-teams-updates-SPEC.md:strategies:research-detail:001",
+    "task_group": "agent-teams-updates"
+  }
+}

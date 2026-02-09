@@ -2,7 +2,7 @@ import { readdir, readFile, access, stat } from 'node:fs/promises'
 import { join, basename, resolve, relative } from 'node:path'
 import { homedir } from 'node:os'
 import type { Task, TaskList, TaskStatus } from '@/types/task'
-import type { ExecutionContext, ExecutionArtifact, ExecutionProgress } from '@/types/execution'
+import type { ExecutionContext, ExecutionArtifact, ExecutionProgress, TeamActivity, TeamMember, TeamActivityLogEntry } from '@/types/execution'
 
 const TASKS_DIR = join(homedir(), '.claude', 'tasks')
 
@@ -245,6 +245,63 @@ function parseProgressMd(content: string): ExecutionProgress | null {
   }
 }
 
+export function parseTeamActivityMd(content: string, taskId: string): TeamActivity | null {
+  try {
+    const teamNameMatch = content.match(/^Team:\s+(.+)$/m)
+    const strategyMatch = content.match(/^Strategy:\s+(review|research|full)$/m)
+    const statusMatch = content.match(/^Status:\s+(active|completed|failed|degraded)$/m)
+    const createdMatch = content.match(/^Created:\s+(.+)$/m)
+    const updatedMatch = content.match(/^Updated:\s+(.+)$/m)
+
+    // Require at minimum team name and strategy for a valid parse
+    if (!teamNameMatch || !strategyMatch) return null
+
+    const teamName = teamNameMatch[1].trim()
+    const strategy = strategyMatch[1].trim() as TeamActivity['strategy']
+    const status = statusMatch ? statusMatch[1].trim() as TeamActivity['status'] : 'active'
+    const created = createdMatch ? createdMatch[1].trim() : ''
+    const updated = updatedMatch ? updatedMatch[1].trim() : ''
+
+    // Parse team members: - [{role}] {name} — {status} — {phase}
+    const members: TeamMember[] = []
+    const memberPattern = /^-\s+\[(\w+)\]\s+(\S+)\s+\u2014\s+(\w+)\s+\u2014\s+(.+)$/gm
+    let memberMatch: RegExpExecArray | null
+    while ((memberMatch = memberPattern.exec(content)) !== null) {
+      members.push({
+        role: memberMatch[1].trim() as TeamMember['role'],
+        name: memberMatch[2].trim(),
+        status: memberMatch[3].trim() as TeamMember['status'],
+        currentPhase: memberMatch[4].trim(),
+      })
+    }
+
+    // Parse activity log entries: {timestamp} | {role} | {event}
+    const activityLog: TeamActivityLogEntry[] = []
+    const logPattern = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z)\s+\|\s+(\w+)\s+\|\s+(.+)$/gm
+    let logMatch: RegExpExecArray | null
+    while ((logMatch = logPattern.exec(content)) !== null) {
+      activityLog.push({
+        timestamp: logMatch[1].trim(),
+        role: logMatch[2].trim(),
+        event: logMatch[3].trim(),
+      })
+    }
+
+    return {
+      taskId,
+      teamName,
+      strategy,
+      status,
+      created,
+      updated,
+      members,
+      activityLog,
+    }
+  } catch {
+    return null
+  }
+}
+
 export async function getExecutionContext(
   taskListId: string
 ): Promise<ExecutionContext | null> {
@@ -290,7 +347,7 @@ export async function getExecutionContext(
     }
   }
 
-  // Filter out temporary per-wave context files
+  // Filter out temporary per-wave context files (but keep team activity files)
   const artifacts = allArtifacts.filter(a => !a.name.startsWith('context-task-'))
 
   if (artifacts.length === 0) return null
@@ -298,16 +355,56 @@ export async function getExecutionContext(
   const progressArtifact = artifacts.find(a => a.name === 'progress')
   const progress = progressArtifact ? parseProgressMd(progressArtifact.content) : null
 
-  // Sort: execution_context first, then task_log, execution_plan, session_summary, rest alpha
-  const order = ['execution_context', 'task_log', 'execution_plan', 'session_summary']
+  // Parse team activity files into structured data
+  const teamActivityPattern = /^team_activity_task-(.+?)(?:-degraded-\d+)?$/
+  const teamActivityGroupPattern = /^team_activity_group-(.+)$/
+  const teamActivities: TeamActivity[] = []
+
+  for (const artifact of artifacts) {
+    const taskMatch = artifact.name.match(teamActivityPattern)
+    const groupMatch = artifact.name.match(teamActivityGroupPattern)
+    if (taskMatch || groupMatch) {
+      const taskId = taskMatch ? taskMatch[1] : (groupMatch ? groupMatch[1] : artifact.name)
+      try {
+        const parsed = parseTeamActivityMd(artifact.content, taskId)
+        if (parsed) {
+          teamActivities.push(parsed)
+        }
+      } catch {
+        // Parse failure — skip gracefully, artifact remains in list as raw
+      }
+    }
+  }
+
+  // Sort: execution_context first, then task_log, execution_plan, session_summary,
+  // progress, team_activity files, rest alpha
+  const isTeamActivity = (name: string) =>
+    name.startsWith('team_activity_task-') || name.startsWith('team_activity_group-')
+
+  const order = ['execution_context', 'task_log', 'execution_plan', 'session_summary', 'progress']
   artifacts.sort((a, b) => {
     const ai = order.indexOf(a.name)
     const bi = order.indexOf(b.name)
+    const aIsTeam = isTeamActivity(a.name)
+    const bIsTeam = isTeamActivity(b.name)
+
+    // Both in explicit order list
     if (ai !== -1 && bi !== -1) return ai - bi
-    if (ai !== -1) return -1
-    if (bi !== -1) return 1
+    // One in explicit order list
+    if (ai !== -1 && !aIsTeam) return -1
+    if (bi !== -1 && !bIsTeam) return 1
+    // Team activity files sort after ordered items but before other artifacts
+    if (aIsTeam && bIsTeam) return a.name.localeCompare(b.name)
+    if (aIsTeam) return bi !== -1 ? 1 : -1
+    if (bIsTeam) return ai !== -1 ? -1 : 1
+    // Remaining artifacts sort alphabetically
     return a.name.localeCompare(b.name)
   })
 
-  return { executionDir: execDir, artifacts, progress }
+  return {
+    executionDir: execDir,
+    artifacts,
+    progress,
+    teamActivities: teamActivities.length > 0 ? teamActivities : undefined,
+  }
 }

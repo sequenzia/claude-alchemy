@@ -1,0 +1,20 @@
+{
+  "id": "148",
+  "subject": "Add cross-task team support to orchestration",
+  "description": "Modify `plugins/sdd/skills/execute-tasks/references/orchestration.md` to add support for cross-task teams via `metadata.team_group`.\n\n**Feature:**\nTasks with the same `metadata.team_group` value can share a single team, allowing agents to maintain context across task boundaries.\n\n**Orchestration Changes:**\n\n1. **Team Group Detection (Step 7a - Initialize Wave):**\n   - When forming a wave, identify tasks sharing the same `team_group`\n   - Group these tasks for shared team assignment\n\n2. **Shared Team Lifecycle:**\n   - Create ONE team for the group (not per task)\n   - Team persists across tasks within the group\n   - Tasks in group execute sequentially on the shared team (maintains context)\n   - Team cleanup only after ALL grouped tasks complete\n\n3. **Cross-Wave Groups:**\n   - If group tasks span multiple waves (due to dependencies), team persists across wave boundaries\n   - Team is not cleaned up at wave end if remaining group tasks exist\n\n4. **Strategy Resolution for Groups:**\n   - If group members have different strategies: use the most complex strategy for the group\n   - Complexity order: Full > Research > Review > Solo\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] Tasks with same `metadata.team_group` assigned to shared team\n- [ ] Shared team persists across tasks without re-reading full codebase\n- [ ] Team cleanup only after all grouped tasks complete\n- [ ] Strategy resolution for mixed-strategy groups documented\n\n_Edge Cases:_\n- [ ] Group spans multiple waves: team persists across wave boundaries\n- [ ] One task in group fails: team continues with remaining tasks, failed task enters retry\n- [ ] Group members have different strategies: most complex strategy used\n- [ ] Single task in group: behaves like non-grouped task\n\n_Error Handling:_\n- [ ] Team failure affects only the current task, not the entire group\n- [ ] Group task failure logged with group context\n\n**Testing Requirements:**\n- Manual: Verify group detection logic is unambiguous\n- Manual: Verify team lifecycle covers all group completion scenarios\n\nSource: internal/specs/agent-teams-updates-SPEC.md Section 5.5",
+  "activeForm": "Adding cross-task team support to orchestration",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": [
+    "137"
+  ],
+  "metadata": {
+    "priority": "medium",
+    "complexity": "L",
+    "source_section": "5.5",
+    "spec_path": "internal/specs/agent-teams-updates-SPEC.md",
+    "feature_name": "Cross-Task Teams",
+    "task_uid": "internal/specs/agent-teams-updates-SPEC.md:cross-task-teams:orchestration:001",
+    "task_group": "agent-teams-updates"
+  }
+}

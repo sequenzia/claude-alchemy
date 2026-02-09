@@ -1,0 +1,23 @@
+{
+  "id": "140",
+  "subject": "Add TeamActivity and TeamMember TypeScript types",
+  "description": "Modify `apps/task-manager/src/types/execution.ts` to add TypeScript types for team activity data.\n\n**Existing Types to Extend:**\n- `ExecutionProgress` — add optional team summary fields\n- `ExecutionContext` — type already handles artifacts generically, but structured team data needs types\n\n**New Types to Add:**\n\n```typescript\ninterface TeamMember {\n  role: 'explorer' | 'implementer' | 'reviewer';\n  name: string;\n  status: 'waiting' | 'active' | 'completed' | 'failed';\n  currentPhase: string;\n}\n\ninterface TeamActivityLogEntry {\n  timestamp: string;\n  role: string;\n  event: string;\n}\n\ninterface TeamActivity {\n  taskId: string;\n  teamName: string;\n  strategy: 'solo' | 'review' | 'research' | 'full';\n  status: 'active' | 'completed' | 'failed' | 'degraded';\n  created: string;\n  updated: string;\n  members: TeamMember[];\n  activityLog: TeamActivityLogEntry[];\n}\n```\n\n**Extensions to ExecutionProgress:**\n```typescript\n// Add to existing ExecutionProgress interface:\nactiveTeams?: Array<{\n  taskId: string;\n  teamName: string;\n  strategy: string;\n  memberCount: number;\n  status: string;\n}>;\n```\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] TeamMember type with role, name, status, currentPhase fields\n- [ ] TeamActivity type with all fields matching file format\n- [ ] TeamActivityLogEntry type for activity log entries\n- [ ] ExecutionProgress extended with optional activeTeams array\n- [ ] All types exported from execution.ts\n\n_Edge Cases:_\n- [ ] All team-related fields are optional (backwards compatible with non-team sessions)\n- [ ] Strategy type union includes all 4 strategy values\n\n_Error Handling:_\n- [ ] Status fields use union types for type safety\n\n**Testing Requirements:**\n- Unit: TypeScript compilation passes with new types\n- Manual: Verify types match the team_activity.md file format specification\n\nSource: internal/specs/agent-teams-updates-SPEC.md Section 5.7",
+  "activeForm": "Adding TeamActivity and TeamMember TypeScript types",
+  "status": "completed",
+  "blocks": [
+    "141",
+    "144"
+  ],
+  "blockedBy": [
+    "139"
+  ],
+  "metadata": {
+    "priority": "high",
+    "complexity": "S",
+    "source_section": "5.7",
+    "spec_path": "internal/specs/agent-teams-updates-SPEC.md",
+    "feature_name": "Task Manager Team Monitoring",
+    "task_uid": "internal/specs/agent-teams-updates-SPEC.md:task-manager:types:001",
+    "task_group": "agent-teams-updates"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "132",
+  "subject": "Create team-implementer agent definition",
+  "description": "Create a new agent definition at `plugins/sdd/agents/team-implementer.md` for the implementer role in team strategies (Review and Full).\n\nThis is a role-specific variant of the existing `task-executor` agent, focused exclusively on code implementation within a team context. Unlike the solo task-executor, this agent receives context from an explorer (in Full/Research strategies) and hands off to a reviewer.\n\n**Agent Definition:**\n- Name: `team-implementer`\n- Model: Sonnet (cost-efficient for implementation work)\n- Tools: Read, Write, Edit, Glob, Grep, Bash, SendMessage, TaskUpdate, TaskGet, TaskList\n- Skills to load: project-conventions, language-patterns\n\n**Responsibilities:**\n- Receive task requirements (and explorer findings if available)\n- Implement code changes following project conventions\n- Run linter and existing tests during implementation\n- Report completion via SendMessage to team lead\n- Write implementation summary for reviewer context\n\n**Key Differences from task-executor:**\n- Does NOT self-verify (reviewer handles that)\n- Does NOT mark task as completed (team lead handles status)\n- Communicates via SendMessage instead of direct file writes\n- Receives structured context from explorer agent (if Research/Full strategy)\n\n**Follow patterns from:**\n- `plugins/tools/agents/team-code-explorer.md` (team communication patterns)\n- `plugins/sdd/agents/task-executor.md` (implementation workflow phases)\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] Agent file follows standard YAML frontmatter + markdown format\n- [ ] Tools list is appropriate for implementation (includes Write/Edit)\n- [ ] Agent instructions cover receiving context, implementing, and reporting\n- [ ] SendMessage patterns documented for team communication\n\n_Edge Cases:_\n- [ ] Agent handles case where no explorer findings are provided (Review strategy)\n- [ ] Agent handles case where task has retry context from previous attempt\n\n_Error Handling:_\n- [ ] Agent reports failures via SendMessage rather than silently failing\n- [ ] Agent includes implementation summary even on partial completion\n\n**Testing Requirements:**\n- Manual: Verify agent definition is valid and follows existing patterns\n- Manual: Verify tools list matches agent responsibilities\n\nSource: internal/specs/agent-teams-updates-SPEC.md Sections 5.1, 5.3",
+  "activeForm": "Creating team-implementer agent definition",
+  "status": "completed",
+  "blocks": [
+    "137"
+  ],
+  "blockedBy": [
+    "131"
+  ],
+  "metadata": {
+    "priority": "critical",
+    "complexity": "M",
+    "source_section": "5.1, 5.3",
+    "spec_path": "internal/specs/agent-teams-updates-SPEC.md",
+    "feature_name": "Team Strategy System",
+    "task_uid": "internal/specs/agent-teams-updates-SPEC.md:team-strategies:agent-implementer:001",
+    "task_group": "agent-teams-updates"
+  }
+}

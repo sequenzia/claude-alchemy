@@ -1,0 +1,23 @@
+{
+  "id": "141",
+  "subject": "Implement parseTeamActivityMd() in taskService.ts",
+  "description": "Modify `apps/task-manager/src/lib/taskService.ts` to add a new `parseTeamActivityMd()` function that parses `team_activity_task-{id}.md` files into structured `TeamActivity` objects.\n\n**Function Signature:**\n```typescript\nfunction parseTeamActivityMd(content: string, taskId: string): TeamActivity | null\n```\n\n**Parsing Requirements:**\nFollow the same regex-based parsing approach used by `parseProgressMd()` (lines 181-246 in taskService.ts).\n\nParse these sections from the file:\n1. **Header fields**: Team name, Strategy, Status, Created, Updated (key-value pairs)\n2. **Team Members section**: Parse each member line: `- [{role}] {name} — {status} — {phase}`\n3. **Activity Log section**: Parse each log line: `{timestamp} | {role} | {event}`\n\n**Example Regex Patterns:**\n```typescript\nconst teamNameMatch = content.match(/^Team:\\s*(.+)$/m);\nconst strategyMatch = content.match(/^Strategy:\\s*(.+)$/m);\nconst memberPattern = /^-\\s*\\[(\\w+)\\]\\s*(.+?)\\s*—\\s*(\\w+)\\s*—\\s*(.+)$/gm;\nconst logPattern = /^(\\S+)\\s*\\|\\s*(\\w+)\\s*\\|\\s*(.+)$/gm;\n```\n\n**Return null if parsing fails** (consistent with `parseProgressMd()` pattern).\n\n**Security:**\n- Use existing `resolveExecutionDir()` guard for path validation\n- No new file access patterns — files already in `__live_session__/`\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] Function parses all header fields (team name, strategy, status, timestamps)\n- [ ] Function parses team member list with role, name, status, current phase\n- [ ] Function parses activity log entries with timestamp, role, event\n- [ ] Returns structured TeamActivity object matching type definition\n- [ ] Returns null on parse failure (consistent with parseProgressMd)\n\n_Edge Cases:_\n- [ ] Empty activity log (team just created)\n- [ ] Single team member (Review/Research strategies)\n- [ ] Missing optional fields handled gracefully\n- [ ] Malformed lines skipped without crashing\n\n_Error Handling:_\n- [ ] Invalid content returns null, not throws\n- [ ] Partial parse succeeds with available data\n\n**Testing Requirements:**\n- Unit: Parse valid team_activity.md content\n- Unit: Parse content with missing sections\n- Unit: Return null for invalid/empty content\n- Unit: Parse multiple team members correctly\n\nSource: internal/specs/agent-teams-updates-SPEC.md Section 5.7",
+  "activeForm": "Implementing parseTeamActivityMd() in taskService.ts",
+  "status": "completed",
+  "blocks": [
+    "142",
+    "144"
+  ],
+  "blockedBy": [
+    "140"
+  ],
+  "metadata": {
+    "priority": "high",
+    "complexity": "M",
+    "source_section": "5.7",
+    "spec_path": "internal/specs/agent-teams-updates-SPEC.md",
+    "feature_name": "Task Manager Team Monitoring",
+    "task_uid": "internal/specs/agent-teams-updates-SPEC.md:task-manager:parsing:001",
+    "task_group": "agent-teams-updates"
+  }
+}

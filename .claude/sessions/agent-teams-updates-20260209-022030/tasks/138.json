@@ -1,0 +1,20 @@
+{
+  "id": "138",
+  "subject": "Add graceful degradation logic to orchestration",
+  "description": "Modify `plugins/sdd/skills/execute-tasks/references/orchestration.md` to add graceful degradation when team agents fail.\n\n**Degradation Chains:**\n- Full team failure → attempt Review strategy → attempt Solo strategy\n- Review team failure → attempt Solo strategy\n- Research team failure → attempt Solo strategy\n\n**When to Trigger Degradation:**\n- Agent spawn failure (TeamCreate or agent spawn fails)\n- Agent timeout (agent doesn't complete within reasonable time)\n- Agent crash (agent sends error instead of results)\n- Team coordination failure (SendMessage fails, agents can't communicate)\n\n**Partial Team Failure Rules:**\nFor Full strategy (explorer + implementer + reviewer):\n- Explorer fails: Degrade to Review (implementer + reviewer without exploration)\n- Implementer fails: Degrade to Solo retry (critical role, start over)\n- Reviewer fails: Accept implementer's self-verification as PARTIAL result\n\nFor Review strategy (implementer + reviewer):\n- Implementer fails: Degrade to Solo retry\n- Reviewer fails: Accept implementer's self-verification as PARTIAL result\n\nFor Research strategy (explorer + implementer):\n- Explorer fails: Degrade to Solo (implementer works without exploration)\n- Implementer fails: Degrade to Solo retry\n\n**Logging:**\n- Degradation events logged in `task_log.md` with columns: timestamp, original strategy, degraded strategy, reason\n- Final successful strategy recorded in task result metadata\n\n**Retry Interaction:**\n- Degradation does NOT count against the task retry limit\n- If all strategies fail for a task, task enters normal retry flow with Solo strategy\n- Retry context includes degradation history\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] All degradation chains documented (Full→Review→Solo, Review→Solo, Research→Solo)\n- [ ] Trigger conditions clearly defined\n- [ ] Partial failure rules per strategy documented\n- [ ] Degradation logged in task_log.md\n- [ ] Final strategy recorded in task result\n\n_Edge Cases:_\n- [ ] All strategies fail: enters normal retry with solo\n- [ ] Degradation during concurrent wave execution (other tasks unaffected)\n- [ ] Degradation does not count against retry limit\n\n_Error Handling:_\n- [ ] Each degradation step handles cleanup of failed team before attempting simpler strategy\n- [ ] Degradation history preserved for debugging\n\n**Testing Requirements:**\n- Manual: Verify degradation chains cover all failure scenarios\n- Manual: Verify no orphaned resources after degradation\n\nSource: internal/specs/agent-teams-updates-SPEC.md Section 5.4",
+  "activeForm": "Adding graceful degradation logic to orchestration",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": [
+    "137"
+  ],
+  "metadata": {
+    "priority": "critical",
+    "complexity": "M",
+    "source_section": "5.4",
+    "spec_path": "internal/specs/agent-teams-updates-SPEC.md",
+    "feature_name": "Graceful Degradation",
+    "task_uid": "internal/specs/agent-teams-updates-SPEC.md:degradation:logic:001",
+    "task_group": "agent-teams-updates"
+  }
+}

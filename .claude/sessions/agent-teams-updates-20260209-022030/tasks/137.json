@@ -1,0 +1,29 @@
+{
+  "id": "137",
+  "subject": "Add team lifecycle management to execute-tasks orchestration",
+  "description": "Modify `plugins/sdd/skills/execute-tasks/references/orchestration.md` to extend Step 8 (Execute Loop) with team-aware execution. This is the core orchestration change that enables teams.\n\n**Changes to Step 8 (Execute Loop):**\n\nExtend step 7c (Launch Wave Agents) with a team-strategy-aware branching:\n\n**If strategy = solo:**\n- Existing behavior: spawn single `task-executor` agent (no changes)\n\n**If strategy = review|research|full:**\n1. **TeamCreate**: Create team named `task-team-{task-id}-{timestamp}`\n2. **Spawn agents**: Based on strategy from `references/team-strategies.md`:\n   - Review: spawn `team-implementer` + `team-reviewer`\n   - Research: spawn `team-explorer` + `team-implementer`\n   - Full: spawn `team-explorer` + `team-implementer` + `team-reviewer`\n3. **Coordinate**: Sequential workflow within team:\n   - Explorer (if present): explore → send findings to lead\n   - Implementer: implement (with explorer findings if available) → send completion to lead\n   - Reviewer (if present): review implementer's changes → send review to lead\n4. **Collect results**: Translate team results to pass/partial/fail:\n   - Reviewer approves → PASS\n   - Reviewer flags issues → PARTIAL (with details)\n   - Implementation fails → FAIL\n   - No reviewer (Research strategy) → use implementer's self-verification\n5. **Cleanup**: Send shutdown_request to all teammates, TeamDelete\n\n**Session File Updates During Team Execution:**\n- Write `team_activity_task-{id}.md` to `__live_session__/` with real-time agent status\n- Update `progress.md` team summary section after each agent phase change\n- Orchestrator is the sole writer (agents report via SendMessage, not direct file writes)\n\n**Concurrent Teams:**\n- Multiple tasks in same wave may each have their own team\n- Each team operates independently\n- File naming prevents collisions: `team_activity_task-{id}.md`\n\n**Integration with existing steps:**\n- Step 7d (Process Results): Handle team results alongside solo results\n- Step 7f (Merge Context): Include team activity context in merge\n- Step 9 (Session Summary): Include team strategy info in summary\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] Team branching logic documented for all 4 strategies\n- [ ] TeamCreate/spawn/coordinate/cleanup lifecycle fully specified\n- [ ] Sequential coordination flow within team clearly defined\n- [ ] Result translation (team results → pass/partial/fail) documented\n- [ ] `team_activity_task-{id}.md` writing documented\n- [ ] `progress.md` team summary extension documented\n\n_Edge Cases:_\n- [ ] Multiple concurrent teams (different tasks in same wave) handled\n- [ ] Team with mixed completion states (some agents done, others still working)\n- [ ] Fast solo tasks don't create unnecessary team overhead\n\n_Error Handling:_\n- [ ] Agent spawn failure: log error, trigger degradation\n- [ ] Agent timeout: reasonable timeouts per role, degrade on timeout\n- [ ] Communication failure: handle failed SendMessage gracefully\n\n**Testing Requirements:**\n- Manual: Verify orchestration changes are consistent with existing step patterns\n- Manual: Verify team lifecycle is complete (no orphaned teams on any exit path)\n- Manual: Verify no file write contention between concurrent teams\n\nSource: internal/specs/agent-teams-updates-SPEC.md Section 5.3",
+  "activeForm": "Adding team lifecycle management to orchestration",
+  "status": "completed",
+  "blocks": [
+    "138",
+    "139",
+    "146",
+    "147",
+    "148"
+  ],
+  "blockedBy": [
+    "132",
+    "133",
+    "134",
+    "136"
+  ],
+  "metadata": {
+    "priority": "critical",
+    "complexity": "XL",
+    "source_section": "5.3",
+    "spec_path": "internal/specs/agent-teams-updates-SPEC.md",
+    "feature_name": "Team Execution Orchestration",
+    "task_uid": "internal/specs/agent-teams-updates-SPEC.md:team-orchestration:lifecycle:001",
+    "task_group": "agent-teams-updates"
+  }
+}

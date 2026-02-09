@@ -1,0 +1,21 @@
+{
+  "id": "151",
+  "subject": "Add create-tasks integration for team strategy suggestions",
+  "description": "Extend the `create-tasks` skill to suggest team strategies based on task complexity analysis.\n\n**Feature:**\nWhen creating tasks from a spec, automatically suggest appropriate team strategies in `metadata.team_strategy` based on task characteristics.\n\n**Suggestion Rules:**\n- **XL complexity**: Suggest `full` (benefits from exploration + independent review)\n- **L complexity with testing requirements**: Suggest `review` (independent verification)\n- **M complexity with many integration points**: Suggest `research` (exploration valuable)\n- **S/XS complexity**: Default to `solo` (overhead not worth it)\n- **Critical priority (P0)**: Bias toward `review` or `full` (quality matters most)\n\n**Implementation:**\n- Add strategy suggestion logic to task decomposition phase\n- Include `metadata.team_strategy` in generated task metadata\n- Document suggestion rationale in task description (e.g., \"Suggested: review — critical priority with testing requirements\")\n\n**Configuration:**\n- Strategy suggestions are just defaults — user can override per task or per session\n- Setting in `.claude/claude-alchemy.local.md` can disable auto-suggestions\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] Task creation includes team strategy suggestions in metadata\n- [ ] Suggestion rules based on complexity and priority\n- [ ] Suggestions documented in task description\n- [ ] Auto-suggestion can be disabled via settings\n\n_Edge Cases:_\n- [ ] All tasks XS/S: all suggest solo (no overhead)\n- [ ] User has global strategy set: suggestions don't override\n\n**Testing Requirements:**\n- Manual: Verify suggestion rules produce reasonable strategies for sample tasks\n\nSource: internal/specs/agent-teams-updates-SPEC.md Section 9.3",
+  "activeForm": "Adding create-tasks integration for team strategy suggestions",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": [
+    "146",
+    "147"
+  ],
+  "metadata": {
+    "priority": "low",
+    "complexity": "M",
+    "source_section": "9.3",
+    "spec_path": "internal/specs/agent-teams-updates-SPEC.md",
+    "feature_name": "Enhancement",
+    "task_uid": "internal/specs/agent-teams-updates-SPEC.md:enhancement:create-tasks-integration:001",
+    "task_group": "agent-teams-updates"
+  }
+}

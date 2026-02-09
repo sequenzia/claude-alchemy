@@ -1,7 +1,7 @@
 ---
 name: execute-tasks
-description: Execute pending Claude Code Tasks in dependency order with wave-based concurrent execution and adaptive verification. Supports task group filtering and configurable parallelism. Use when user says "execute tasks", "run tasks", "start execution", "work on tasks", or wants to execute generated tasks autonomously.
-argument-hint: "[task-id] [--task-group <group>] [--retries <n>] [--max-parallel <n>]"
+description: Execute pending Claude Code Tasks in dependency order with wave-based concurrent execution and adaptive verification. Supports team strategies (solo, review, research, full), task group filtering, and configurable parallelism. Use when user says "execute tasks", "run tasks", "start execution", "work on tasks", or wants to execute generated tasks autonomously.
+argument-hint: "[task-id] [--task-group <group>] [--team-strategy <strategy>] [--retries <n>] [--max-parallel <n>]"
 user-invocable: true
 disable-model-invocation: false
 allowed-tools:
@@ -22,6 +22,9 @@ arguments:
   - name: task-group
     description: Optional task group name to filter tasks. Only tasks with matching metadata.task_group will be executed.
     required: false
+  - name: team-strategy
+    description: Team strategy for task execution. Valid values are solo, review, research, full. Default is solo (or settings file default). See references/team-strategies.md for strategy definitions.
+    required: false
   - name: retries
     description: Number of retry attempts for failed/partial tasks before moving on. Default is 3.
     required: false
@@ -32,7 +35,7 @@ arguments:
 
 # Execute Tasks Skill
 
-This skill orchestrates autonomous task execution for Claude Code Tasks. It builds a dependency-aware execution plan, launches a dedicated agent for each task through a 4-phase workflow (Understand, Implement, Verify, Complete), handles retries with failure context, and shares learnings across tasks through a shared execution context file.
+This skill orchestrates autonomous task execution for Claude Code Tasks. It builds a dependency-aware execution plan, resolves team strategies for each task (solo, review, research, or full), launches agents through a 4-phase workflow (Understand, Implement, Verify, Complete), handles retries with failure context, and shares learnings across tasks through a shared execution context file. See `references/team-strategies.md` for detailed strategy definitions.
 
 ## Core Principles
 
@@ -82,7 +85,10 @@ Handle edge cases: empty list, all completed, specific task blocked, no unblocke
 Resolve `max_parallel` setting using precedence: `--max-parallel` CLI arg > `.claude/claude-alchemy.local.md` setting > default 5. Build a dependency graph from pending tasks. Assign tasks to waves using topological levels: Wave 1 = no dependencies, Wave 2 = depends on Wave 1 tasks, etc. Sort within waves by priority (critical > high > medium > low > unprioritized), break ties by "unblocks most others." Cap each wave at `max_parallel` tasks.
 
 ### Step 4: Check Settings
-Read `.claude/claude-alchemy.local.md` if it exists for execution preferences, including `max_parallel` setting. CLI `--max-parallel` argument takes precedence over the settings file value.
+Read `.claude/claude-alchemy.local.md` if it exists for execution preferences, including `max_parallel` and `team_strategy` settings. CLI arguments take precedence over settings file values.
+
+### Step 4.5: Resolve Team Strategy
+Determine the team strategy for each task using a four-level cascade: per-task `metadata.team_strategy` > `--team-strategy` CLI arg > `team_strategy` in `.claude/claude-alchemy.local.md` > default `solo`. Valid values: `solo`, `review`, `research`, `full`. Invalid strategy names fall back to `solo` with a warning. See `references/team-strategies.md` for the full resolution procedure and `references/orchestration.md` Step 4.5 for implementation details.
 
 ### Step 5: Initialize Execution Directory
 Generate a `task_execution_id` using three-tier resolution: (1) if `--task-group` provided → `{task_group}-{YYYYMMDD}-{HHMMSS}`, (2) else if all open tasks share the same `metadata.task_group` → `{task_group}-{YYYYMMDD}-{HHMMSS}`, (3) else → `exec-session-{YYYYMMDD}-{HHMMSS}`. Clean any stale `__live_session__/` files by archiving them to `.claude/sessions/interrupted-{YYYYMMDD}-{HHMMSS}/`, resetting any `in_progress` tasks from the interrupted session back to `pending`. Check for and enforce the concurrency guard via `.lock` file. Create `.claude/sessions/__live_session__/` directory containing:
@@ -94,7 +100,7 @@ Generate a `task_execution_id` using three-tier resolution: (1) if `--task-group
 - `execution_pointer.md` at `~/.claude/tasks/{CLAUDE_CODE_TASK_LIST_ID}/` — created immediately with absolute path to `.claude/sessions/__live_session__/`
 
 ### Step 6: Present Execution Plan and Confirm
-Display the plan showing tasks to execute, blocked tasks, and completed count. Also display the details of step 5 which includes the session directory path (`.claude/sessions/__live_session__/`) and files created, including the execution pointer file location.
+Display the plan showing tasks to execute, blocked tasks, completed count, and team strategy information (session default strategy, any per-task overrides). Also display the details of step 5 which includes the session directory path (`.claude/sessions/__live_session__/`) and files created, including the execution pointer file location.
 
 Then ask the user to confirm before proceeding with execution. If the user cancels, stop without modifying any tasks.
 
@@ -197,6 +203,7 @@ This enables later tasks to benefit from earlier discoveries and retry attempts 
 - **One agent per task, multiple per wave**: Each task gets a fresh agent invocation with isolated context, but multiple agents run concurrently within a wave.
 - **Per-task context isolation**: During concurrent execution, each agent writes to `context-task-{id}.md`. The orchestrator merges these after each wave to prevent write contention.
 - **Within-wave retry**: Failed tasks with retries remaining are re-launched immediately as agent slots free up within the current wave, maximizing throughput.
+- **Configurable team strategy**: Default `solo` (single agent per task), configurable via `--team-strategy` argument, `.claude/claude-alchemy.local.md` settings, or per-task `metadata.team_strategy`. Strategies: `solo`, `review`, `research`, `full`.
 - **Configurable parallelism**: Default 5 concurrent tasks, configurable via `--max-parallel` argument or `.claude/claude-alchemy.local.md` settings. Set to 1 for sequential execution.
 - **Configurable retries**: Default 3 attempts per task, configurable via `retries` argument.
 - **Retry with context**: Each retry includes the previous attempt's failure details so the agent can try a different approach.
@@ -250,6 +257,16 @@ This enables later tasks to benefit from earlier discoveries and retry attempts 
 /claude-alchemy-sdd:execute-tasks --max-parallel 1
 ```
 
+### Execute with review team strategy
+```
+/claude-alchemy-sdd:execute-tasks --team-strategy review
+```
+
+### Execute with full team strategy and limited parallelism
+```
+/claude-alchemy-sdd:execute-tasks --team-strategy full --max-parallel 2
+```
+
 ### Execute group with custom parallelism and retries
 ```
 /claude-alchemy-sdd:execute-tasks --task-group payments --max-parallel 3 --retries 1
@@ -260,3 +277,4 @@ This enables later tasks to benefit from earlier discoveries and retry attempts 
 - `references/orchestration.md` - 10-step orchestration loop with execution plan, retry handling, and session summary
 - `references/execution-workflow.md` - Detailed phase-by-phase procedures for the 4-phase workflow
 - `references/verification-patterns.md` - Task classification, criterion verification, pass/fail rules, and failure reporting format
+- `references/team-strategies.md` - Team strategy definitions (solo, review, research, full), agent roles, coordination flows, degradation chains, and team_activity.md format

@@ -1,0 +1,22 @@
+{
+  "id": "142",
+  "subject": "Extend getExecutionContext() for team activity files",
+  "description": "Modify `apps/task-manager/src/lib/taskService.ts` to extend the `getExecutionContext()` function to include team activity data.\n\n**Current Behavior (lines 248-313):**\n- Reads `execution_pointer.md` to find session directory\n- Lists all `.md` files in execution directory\n- Filters out `context-task-*` temporary files\n- Parses `progress.md` for execution progress\n- Returns `ExecutionContext` with artifacts and progress\n\n**Changes Needed:**\n\n1. **Identify team activity files**: After listing `.md` files, identify files matching `team_activity_task-*.md` pattern\n\n2. **Parse team activity files**: For each team activity file, call `parseTeamActivityMd()` to get structured data\n\n3. **Attach team data to context**: Add parsed team activity data to the returned `ExecutionContext` (or extend `ExecutionProgress` with team data)\n\n4. **Artifact sorting**: Include team activity files in artifact sort order (after `progress` but before other artifacts)\n\n5. **DO NOT filter out team activity files** like `context-task-*` files are filtered — team activity files should remain visible as artifacts\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] Team activity files identified by `team_activity_task-*.md` pattern\n- [ ] Each team activity file parsed into structured TeamActivity\n- [ ] Parsed team data accessible in returned ExecutionContext\n- [ ] Team activity files included in artifact list (not filtered out)\n- [ ] Artifact sort order includes team activity files\n\n_Edge Cases:_\n- [ ] No team activity files present (non-team session): existing behavior unchanged\n- [ ] Multiple team activity files (concurrent teams): all parsed\n- [ ] Team activity file with parse error: skip gracefully, include as raw artifact\n\n_Error Handling:_\n- [ ] Parse failure for individual team file doesn't break overall context\n- [ ] Maintain existing path traversal guards\n\n**Testing Requirements:**\n- Unit: getExecutionContext returns team data when team files present\n- Unit: getExecutionContext unchanged when no team files present\n- Unit: Multiple team files parsed correctly\n\nSource: internal/specs/agent-teams-updates-SPEC.md Section 5.7",
+  "activeForm": "Extending getExecutionContext() for team activity files",
+  "status": "completed",
+  "blocks": [
+    "143"
+  ],
+  "blockedBy": [
+    "141"
+  ],
+  "metadata": {
+    "priority": "high",
+    "complexity": "M",
+    "source_section": "5.7",
+    "spec_path": "internal/specs/agent-teams-updates-SPEC.md",
+    "feature_name": "Task Manager Team Monitoring",
+    "task_uid": "internal/specs/agent-teams-updates-SPEC.md:task-manager:context-extension:001",
+    "task_group": "agent-teams-updates"
+  }
+}

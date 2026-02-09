@@ -1,0 +1,22 @@
+{
+  "id": "135",
+  "subject": "Add strategy resolution logic to execute-tasks orchestration",
+  "description": "Modify `plugins/sdd/skills/execute-tasks/references/orchestration.md` to add a strategy resolution step that determines which team strategy to use for each task.\n\n**Where to Add:**\nInsert a new step between the current Step 4 (Check Settings) and Step 5.5 (Initialize Execution Directory). This becomes the strategy resolution step.\n\n**Three-Level Cascade:**\nResolution order (highest precedence first):\n1. Per-task: `metadata.team_strategy` on individual tasks\n2. Session arg: `--team-strategy <name>` CLI argument\n3. Settings file: `team_strategy` field in `.claude/claude-alchemy.local.md`\n4. Default: `solo`\n\n**Resolution Logic:**\n- Read settings file for default strategy (if exists)\n- Check CLI args for `--team-strategy` override\n- For each task in execution plan, check `metadata.team_strategy` for per-task override\n- Validate strategy name is one of: `solo`, `review`, `research`, `full`\n- Invalid strategy name: warn and fall back to `solo`\n\n**Integration with Execution Plan (Step 6):**\n- Display resolved default strategy in execution plan presentation\n- Show per-task overrides if any tasks differ from default\n- Include strategy in wave display\n\n**Reference:**\n- Read `references/team-strategies.md` for strategy definitions\n- Strategy resolution happens once per session, per-task overrides resolved per task\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] Three-level cascade is documented with clear precedence order\n- [ ] Resolution logic covers all three configuration levels\n- [ ] Resolved strategy displayed in execution plan confirmation\n- [ ] Each task's resolved strategy recorded for use in execute loop\n\n_Edge Cases:_\n- [ ] Settings file missing: defaults to solo\n- [ ] Mixed strategies in one session: each task resolves independently\n- [ ] Invalid strategy name: warns and falls back to solo\n\n_Error Handling:_\n- [ ] Clear warning message for invalid strategy names\n- [ ] Graceful handling of malformed settings file\n\n**Testing Requirements:**\n- Manual: Verify cascade logic is unambiguous and covers all combinations\n- Manual: Verify integration points with existing Steps 4 and 6\n\nSource: internal/specs/agent-teams-updates-SPEC.md Section 5.2",
+  "activeForm": "Adding strategy resolution logic to orchestration",
+  "status": "completed",
+  "blocks": [
+    "136"
+  ],
+  "blockedBy": [
+    "131"
+  ],
+  "metadata": {
+    "priority": "critical",
+    "complexity": "L",
+    "source_section": "5.2",
+    "spec_path": "internal/specs/agent-teams-updates-SPEC.md",
+    "feature_name": "Three-Level Configuration Cascade",
+    "task_uid": "internal/specs/agent-teams-updates-SPEC.md:config-cascade:resolution-logic:001",
+    "task_group": "agent-teams-updates"
+  }
+}

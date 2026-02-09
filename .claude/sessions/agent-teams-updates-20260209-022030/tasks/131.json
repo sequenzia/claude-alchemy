@@ -1,0 +1,23 @@
+{
+  "id": "131",
+  "subject": "Create team strategies reference document",
+  "description": "Create a new reference document at `plugins/sdd/skills/execute-tasks/references/team-strategies.md` that defines all 4 team strategies for the execute-tasks workflow.\n\nThis is the foundational document that all other team-related changes depend on. Follow the format and conventions of existing reference docs (`orchestration.md`, `execution-workflow.md`).\n\n**Strategy Sections to Define:**\n\nFor each strategy (Solo, Review, Research, Full), document:\n- Agent roles and responsibilities\n- Spawn configuration (model tiers, tools available per role)\n- Coordination flow (sequential steps within team)\n- Lifecycle steps (create → spawn → coordinate → collect → cleanup)\n- Session file format (what gets written to `team_activity_task-{id}.md`)\n- Degradation target (what strategy to fall back to on failure)\n\n**Strategy Definitions:**\n\n1. **Solo** — Existing behavior: single task-executor agent per task (no team created)\n2. **Review** — Two agents: implementer (writes code) + reviewer (independently verifies). Sequential: implement → review\n3. **Research** — Two agents: explorer (investigates codebase/requirements) + implementer (uses findings). Sequential: explore → implement\n4. **Full** — Three agents: explorer + implementer + reviewer pipeline. Sequential: explore → implement → review\n\n**Reference Implementations:**\n- Adapt patterns from `plugins/tools/skills/teams-deep-analysis/SKILL.md` (hub-and-spoke coordination)\n- Adapt agent patterns from `plugins/tools/agents/team-code-explorer.md` and `team-deep-synthesizer.md`\n\n**Include:**\n- `team_activity.md` file format specification (regex-parseable, consistent with `progress.md` patterns)\n- Agent role matrix (which tools each role gets)\n- Team naming convention: `task-team-{task-id}-{timestamp}`\n- Model tier recommendations per role\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] All 4 strategies are fully defined with required sections\n- [ ] File format is consistent with existing reference docs\n- [ ] `team_activity.md` format is specified and regex-parseable\n- [ ] Agent role matrix clearly defines tools per role\n\n_Edge Cases:_\n- [ ] Solo strategy explicitly states \"no team created, existing behavior\"\n- [ ] Degradation targets documented for each non-solo strategy\n\n_Error Handling:_\n- [ ] Strategy-specific failure handling rules documented\n- [ ] Partial team failure scenarios addressed (e.g., reviewer fails but implementer succeeded)\n\n**Testing Requirements:**\n- Manual: Verify document is comprehensive and follows existing reference doc patterns\n- Manual: Verify `team_activity.md` format can be parsed by regex\n\nSource: internal/specs/agent-teams-updates-SPEC.md Sections 5.1, 5.8",
+  "activeForm": "Creating team strategies reference document",
+  "status": "completed",
+  "blocks": [
+    "132",
+    "133",
+    "134",
+    "135"
+  ],
+  "blockedBy": [],
+  "metadata": {
+    "priority": "critical",
+    "complexity": "L",
+    "source_section": "5.1, 5.8",
+    "spec_path": "internal/specs/agent-teams-updates-SPEC.md",
+    "feature_name": "Team Strategy System",
+    "task_uid": "internal/specs/agent-teams-updates-SPEC.md:team-strategies:reference-doc:001",
+    "task_group": "agent-teams-updates"
+  }
+}

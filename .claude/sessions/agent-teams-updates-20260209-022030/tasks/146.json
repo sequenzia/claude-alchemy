@@ -1,0 +1,22 @@
+{
+  "id": "146",
+  "subject": "Add Review strategy coordination details to references",
+  "description": "Extend the team strategies reference document and orchestration docs with detailed Review strategy coordination.\n\n**Review Strategy: Implementer + Reviewer**\n\nDetail the specific coordination flow:\n1. Implementer receives task requirements and executes implementation\n2. Implementer completes and sends implementation summary to team lead\n3. Team lead forwards implementation summary + changed files list to reviewer\n4. Reviewer independently reads implementer's code changes\n5. Reviewer verifies against acceptance criteria\n6. Reviewer runs tests and linter\n7. Reviewer sends structured review report to team lead\n\n**Review Report Format:**\n- Overall verdict: APPROVE | REQUEST_CHANGES | FAIL\n- Per-criterion verification results\n- Issues found (categorized by severity)\n- Suggestions for improvement\n\n**Result Translation:**\n- APPROVE → PASS\n- REQUEST_CHANGES (minor issues) → PARTIAL\n- FAIL (critical issues) → FAIL\n\n**Handoff Details:**\n- What context does the reviewer receive? (task description, acceptance criteria, list of changed files, implementation summary)\n- How does the reviewer access code changes? (reads files directly from filesystem)\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] Review strategy coordination flow fully documented step-by-step\n- [ ] Reviewer context/handoff clearly defined\n- [ ] Review report format specified\n- [ ] Result translation rules documented\n\n_Edge Cases:_\n- [ ] Reviewer finds no issues: fast APPROVE path\n- [ ] Implementer produces no code changes: reviewer reports early\n\n**Testing Requirements:**\n- Manual: Verify coordination flow is unambiguous\n- Manual: Verify result translation covers all review outcomes\n\nSource: internal/specs/agent-teams-updates-SPEC.md Section 5.1",
+  "activeForm": "Adding Review strategy coordination details",
+  "status": "completed",
+  "blocks": [
+    "151"
+  ],
+  "blockedBy": [
+    "137"
+  ],
+  "metadata": {
+    "priority": "high",
+    "complexity": "M",
+    "source_section": "5.1",
+    "spec_path": "internal/specs/agent-teams-updates-SPEC.md",
+    "feature_name": "Team Strategy System",
+    "task_uid": "internal/specs/agent-teams-updates-SPEC.md:strategies:review-detail:001",
+    "task_group": "agent-teams-updates"
+  }
+}

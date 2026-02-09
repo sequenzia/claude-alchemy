@@ -85,6 +85,8 @@ Read the entire spec file using the Read tool.
 Check for optional settings at `.claude/claude-alchemy.local.md`:
 - Author name (for attribution)
 - Any custom preferences
+- `team_strategy_suggestions: false` — if set, skip automatic team strategy suggestions during task decomposition (default: enabled)
+- `team_strategy` — if a global team strategy is set, note it so suggestions don't override the user's preference
 
 This is optional — proceed without settings if not found.
 
@@ -279,6 +281,8 @@ description: |
   • {Inferred test type}: {What to test}
   • {Spec-specified test}: {What to test}
 
+  Suggested team strategy: {strategy} — {rationale}
+
   Source: {spec_path} Section {number}
 activeForm: "Creating User data model"         # Present continuous
 metadata:
@@ -289,6 +293,7 @@ metadata:
   feature_name: "User Authentication"          # Parent feature
   task_uid: "{spec_path}:{feature}:{type}:{seq}" # Unique ID
   task_group: "{spec-name}"                    # REQUIRED — Group from spec title
+  team_strategy: "solo|review|research|full"   # Suggested team strategy (auto-generated)
 ```
 
 ### Acceptance Criteria Categories
@@ -356,6 +361,60 @@ Examples:
 - specs/SPEC-Auth.md:session-mgmt:test:001
 ```
 
+### Team Strategy Suggestion
+
+After estimating complexity and priority for each task, suggest an appropriate team strategy in `metadata.team_strategy`. These suggestions are defaults that the user can override per task or per session via the `--team-strategy` CLI argument.
+
+**Skip this step if**:
+- `team_strategy_suggestions: false` is set in `.claude/claude-alchemy.local.md`
+- The user has a global `team_strategy` set in settings (suggestions should not override the user's explicit preference)
+
+#### Suggestion Rules
+
+Apply these rules in priority order (first match wins):
+
+| Condition | Suggested Strategy | Rationale |
+|-----------|-------------------|-----------|
+| **XL complexity** | `full` | Benefits from exploration + independent review |
+| **Critical priority (P0) + L complexity** | `full` | High-stakes + significant scope warrants full team |
+| **Critical priority (P0)** | `review` | Quality matters most for critical tasks |
+| **L complexity + has testing requirements** | `review` | Independent verification valuable for large tasks |
+| **M complexity + many integration points** | `research` | Exploration valuable when touching multiple systems |
+| **S or XS complexity** | `solo` | Team overhead not worth it for small tasks |
+| **Default** | `solo` | Simple tasks stay simple |
+
+"Many integration points" is determined by: task touches 3+ different modules/files, has cross-feature dependencies, or involves unfamiliar/complex integration patterns.
+
+#### Adding Suggestions to Tasks
+
+For each task, include the strategy suggestion in two places:
+
+1. **Metadata**: Set `metadata.team_strategy` to the suggested strategy name
+2. **Description**: Add a rationale line before the Source reference:
+   ```
+   Suggested team strategy: review — critical priority with testing requirements
+   ```
+
+#### Examples
+
+```
+# XL task
+metadata.team_strategy: "full"
+Description line: "Suggested team strategy: full — XL complexity benefits from exploration + independent review"
+
+# P0 critical task with M complexity
+metadata.team_strategy: "review"
+Description line: "Suggested team strategy: review — critical priority warrants independent verification"
+
+# M task with many integration points
+metadata.team_strategy: "research"
+Description line: "Suggested team strategy: research — multiple integration points benefit from exploration"
+
+# S task
+metadata.team_strategy: "solo"
+Description line: "Suggested team strategy: solo — small task, team overhead not worth it"
+```
+
 ---
 
 ## Phase 5: Infer Dependencies
@@ -408,6 +467,7 @@ SUMMARY:
 • Total tasks: {count}
 • By priority: {critical} critical, {high} high, {medium} medium, {low} low
 • By complexity: {XS} XS, {S} S, {M} M, {L} L, {XL} XL
+• By team strategy: {solo} solo, {review} review, {research} research, {full} full
 
 FEATURES:
 • {Feature 1} → {n} tasks
@@ -488,6 +548,8 @@ TaskCreate:
     • Integration: Database persistence and retrieval
     • Integration: Unique constraint enforcement
 
+    Suggested team strategy: review — critical priority warrants independent verification
+
     Source: specs/SPEC-Auth.md Section 7.3
   activeForm: "Creating User data model"
   metadata:
@@ -498,6 +560,7 @@ TaskCreate:
     feature_name: "User Authentication"
     task_uid: "specs/SPEC-Auth.md:user-auth:model:001"
     task_group: "user-authentication"
+    team_strategy: "review"
 ```
 
 **Important**: Track the mapping between task_uid and returned task ID for dependency setup.

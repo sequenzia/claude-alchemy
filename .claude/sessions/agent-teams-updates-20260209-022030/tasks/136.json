@@ -1,0 +1,22 @@
+{
+  "id": "136",
+  "subject": "Add --team-strategy argument to execute-tasks skill",
+  "description": "Modify `plugins/sdd/skills/execute-tasks/SKILL.md` to add the `--team-strategy` CLI argument and update the skill description to document team strategy support.\n\n**Changes to SKILL.md:**\n\n1. **Arguments section**: Add `--team-strategy` argument:\n   - Name: `--team-strategy`\n   - Description: Team strategy for task execution (solo, review, research, full)\n   - Default: solo (or settings file default)\n   - Valid values: solo, review, research, full\n\n2. **Skill description**: Update to mention team strategy support and reference the strategies reference doc\n\n3. **Execution plan display (Step 6)**: Add team strategy info to the execution plan presentation shown to user before confirming\n\n4. **Reference loading**: Ensure `references/team-strategies.md` is listed as a reference file to load\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] `--team-strategy` argument documented in SKILL.md arguments section\n- [ ] Valid strategy values listed (solo, review, research, full)\n- [ ] Skill description updated to mention team strategy support\n- [ ] `references/team-strategies.md` listed as reference file\n\n_Edge Cases:_\n- [ ] Default behavior documented (solo if not specified)\n\n_Error Handling:_\n- [ ] Invalid strategy value handling documented\n\n**Testing Requirements:**\n- Manual: Verify SKILL.md argument format matches existing argument patterns\n- Manual: Verify reference file is properly listed\n\nSource: internal/specs/agent-teams-updates-SPEC.md Section 5.2",
+  "activeForm": "Adding --team-strategy argument to execute-tasks skill",
+  "status": "completed",
+  "blocks": [
+    "137"
+  ],
+  "blockedBy": [
+    "135"
+  ],
+  "metadata": {
+    "priority": "critical",
+    "complexity": "S",
+    "source_section": "5.2",
+    "spec_path": "internal/specs/agent-teams-updates-SPEC.md",
+    "feature_name": "Three-Level Configuration Cascade",
+    "task_uid": "internal/specs/agent-teams-updates-SPEC.md:config-cascade:cli-arg:001",
+    "task_group": "agent-teams-updates"
+  }
+}

@@ -15,7 +15,7 @@ Claude Alchemy is a pnpm monorepo with two Claude Code plugins and a Next.js Tas
 
 - `apps/task-manager/` — Next.js 16 app (React 19, TanStack Query, Tailwind v4, shadcn/ui)
 - `plugins/tools/` — Developer tools plugin (5 agents, 10 skills)
-- `plugins/sdd/` — Spec-driven development plugin (2 agents, 4 skills)
+- `plugins/sdd/` — Spec-driven development plugin (5 agents, 4 skills)
 - `internal/docs/` — Internal documentation and cheatsheets
 - `.claude-plugin/marketplace.json` — Plugin registry
 
@@ -30,8 +30,9 @@ Claude Alchemy is a pnpm monorepo with two Claude Code plugins and a Next.js Tas
 ## Critical Integration Points
 
 - **execution_pointer.md**: Written by `execute-tasks` skill to `~/.claude/tasks/{listId}/`, contains absolute path to `.claude/sessions/__live_session__/`, read by Task Manager's `taskService.ts` to display execution artifacts
-- **Session files in `__live_session__/`**: `execution_context.md`, `task_log.md`, `progress.md`, `execution_plan.md`, `.lock`, `tasks/` subdirectory. Written by `execute-tasks` skill, readable by Task Manager via `getExecutionContext()`
+- **Session files in `__live_session__/`**: `execution_context.md`, `task_log.md`, `progress.md`, `execution_plan.md`, `.lock`, `tasks/` subdirectory, and `team_activity_task-{id}.md` files for team strategies. Written by `execute-tasks` skill, readable by Task Manager via `getExecutionContext()`
 - **`progress.md`**: Real-time execution status (current task, phase, timestamp). Updated during execution — Chokidar picks up changes automatically
+- **`team_activity_task-{id}.md`**: Per-team activity files with agent roles, statuses, and activity logs. Parsed by `parseTeamActivityMd()` in `taskService.ts`. Only created for non-solo strategies (review, research, full)
 - **`.lock` file**: Prevents concurrent execution sessions. Created at session start, archived with session on completion. Stale locks (>4h) auto-expire
 - **Task storage**: `~/.claude/tasks/claude-alchemy/` (set via CLAUDE_CODE_TASK_LIST_ID in .claude/settings.json)
 
@@ -58,6 +59,8 @@ Claude Alchemy is a pnpm monorepo with two Claude Code plugins and a Next.js Tas
 ## Plugin Architecture
 
 - Skills orchestrate agents via Task tool with model tiering (Sonnet/Opus/Haiku)
+- **Team strategies**: `execute-tasks` supports 4 strategies via `--team-strategy` argument: `solo` (default, single agent), `review` (implementer + reviewer), `research` (explorer + implementer), `full` (explorer + implementer + reviewer). Strategies cascade: per-task metadata > CLI arg > settings file > default solo
+- Team agent definitions: `team-implementer.md` (Sonnet, writes code), `team-reviewer.md` (Opus, read-only review), `team-explorer.md` (Sonnet, read-only exploration)
 - Reference materials in `skills/*/references/` loaded at runtime
 - Multi-phase workflows with explicit transition directives
 - All user interactions through `AskUserQuestion` tool

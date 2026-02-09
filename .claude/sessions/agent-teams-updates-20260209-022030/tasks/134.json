@@ -1,0 +1,22 @@
+{
+  "id": "134",
+  "subject": "Create team-explorer agent definition",
+  "description": "Create a new agent definition at `plugins/sdd/agents/team-explorer.md` for the codebase explorer/researcher role in team strategies (Research and Full).\n\nThis agent investigates the codebase and requirements before the implementer begins work. Adapted from the tools plugin's `team-code-explorer.md` but tailored for the SDD task execution context.\n\n**Agent Definition:**\n- Name: `team-explorer`\n- Model: Sonnet (efficient for exploration)\n- Tools: Read, Glob, Grep, Bash, SendMessage, TaskUpdate, TaskGet, TaskList (NO Write/Edit)\n- Skills to load: project-conventions, language-patterns, codebase-analysis\n\n**Responsibilities:**\n- Read task requirements and acceptance criteria\n- Explore relevant codebase areas for the task\n- Identify existing patterns, utilities, and code to reuse\n- Map file dependencies and integration points\n- Discover potential challenges or conflicts\n- Send structured exploration findings to team lead (for handoff to implementer)\n\n**Exploration Workflow:**\n1. Read task description and identify target areas\n2. Read CLAUDE.md and project conventions\n3. Glob/Grep for relevant files and patterns\n4. Trace execution paths related to the task\n5. Identify reusable code and existing patterns\n6. Send structured findings report to team lead\n\n**Follow patterns from:**\n- `plugins/tools/agents/team-code-explorer.md` (exploration strategies, output format)\n\n**Acceptance Criteria:**\n\n_Functional:_\n- [ ] Agent file follows standard YAML frontmatter + markdown format\n- [ ] Tools list excludes Write/Edit (explorer is read-only)\n- [ ] Exploration workflow is task-context-aware (reads task description)\n- [ ] Structured findings format defined for implementer handoff\n\n_Edge Cases:_\n- [ ] Agent handles tasks with minimal codebase context (new features)\n- [ ] Agent handles large codebases efficiently (scoped exploration)\n\n_Error Handling:_\n- [ ] Agent reports exploration failures via SendMessage\n- [ ] Agent provides partial findings even if some areas are inaccessible\n\n**Testing Requirements:**\n- Manual: Verify agent definition is valid and follows existing patterns\n- Manual: Verify tools list intentionally excludes Write/Edit\n\nSource: internal/specs/agent-teams-updates-SPEC.md Sections 5.1, 5.3",
+  "activeForm": "Creating team-explorer agent definition",
+  "status": "completed",
+  "blocks": [
+    "137"
+  ],
+  "blockedBy": [
+    "131"
+  ],
+  "metadata": {
+    "priority": "critical",
+    "complexity": "M",
+    "source_section": "5.1, 5.3",
+    "spec_path": "internal/specs/agent-teams-updates-SPEC.md",
+    "feature_name": "Team Strategy System",
+    "task_uid": "internal/specs/agent-teams-updates-SPEC.md:team-strategies:agent-explorer:001",
+    "task_group": "agent-teams-updates"
+  }
+}
