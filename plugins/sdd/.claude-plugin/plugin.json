@@ -1,6 +1,6 @@
 {
   "name": "claude-alchemy-sdd",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "SDD (Spec Driven Development) for Claude Alchemy",
   "author": {
     "name": "Stephen Sequenzia",

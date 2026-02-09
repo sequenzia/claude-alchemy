@@ -21,7 +21,7 @@
     {
       "name": "claude-alchemy-sdd",
       "description": "SDD (Spec Driven Development) Skills & Agents for Claude Alchemy",
-      "version": "0.2.6",
+      "version": "0.2.7",
       "author": {
         "name": "Stephen Sequenzia",
         "email": "sequenzia@gmail.com"
