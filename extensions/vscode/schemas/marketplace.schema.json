@@ -187,6 +187,13 @@
             { "type": "array", "items": { "type": "string" } }
           ]
         },
+        "skills": {
+          "description": "Path(s) to skills definition directories",
+          "oneOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } }
+          ]
+        },
         "agents": {
           "description": "Path(s) to agent definition directories",
           "oneOf": [

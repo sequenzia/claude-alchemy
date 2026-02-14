@@ -2,7 +2,7 @@
   "name": "claude-code-schemas",
   "displayName": "Claude Code Plugin Schemas",
   "description": "Schema validation, autocomplete, and hover documentation for Claude Code plugin files",
-  "version": "0.2.0",
+  "version": "0.1.1",
   "publisher": "claude-alchemy",
   "license": "MIT",
   "engines": {

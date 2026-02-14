@@ -25,7 +25,7 @@ cd extensions/vscode
 npm install
 npm run build
 npm run package
-code --install-extension claude-code-schemas-0.1.0.vsix
+code --install-extension claude-code-schemas-0.1.1.vsix
 ```
 
 ## Development
