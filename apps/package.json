@@ -1,6 +1,6 @@
 {
-  "name": "@claude-alchemy/apps",
+  "name": "@agent-alchemy/apps",
   "version": "0.1.0",
   "private": true,
-  "description": "Claude Code applications"
+  "description": "Agent Alchemy Apps"
 }

@@ -186,7 +186,7 @@ After deep-analysis, additionally:
 ### For change-summary path (instead of deep-analysis)
 
 1. Run `git log --oneline [range]` and `git diff --stat [range]`
-2. Launch 1 code-explorer agent using Task tool with `subagent_type: "claude-alchemy-tools:code-explorer"` to analyze the changed files:
+2. Launch 1 code-explorer agent using Task tool with `subagent_type: "agent-alchemy-tools:code-explorer"` to analyze the changed files:
    ```
    Analysis context: Change summary for [range]
    Focus area: These files changed in the specified range:
@@ -252,7 +252,7 @@ Use `AskUserQuestion`:
 
 ### Step 3 — Launch docs-writer agents
 
-Launch agents using Task tool with `subagent_type: "claude-alchemy-tools:docs-writer"` and `model: "opus"`.
+Launch agents using Task tool with `subagent_type: "agent-alchemy-tools:docs-writer"` and `model: "opus"`.
 
 Launch independent pages/files in parallel, then sequential for dependent ones (include generated content from independent pages in the prompt context).
 

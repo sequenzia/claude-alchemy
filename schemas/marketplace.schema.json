@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/sequenzia/claude-alchemy/schemas/marketplace.schema.json",
+  "$id": "https://github.com/sequenzia/agent-alchemy/schemas/marketplace.schema.json",
   "$comment": "Source: https://code.claude.com/docs/en/plugin-marketplaces — Last validated: 2026-02-07",
   "title": "Claude Code Plugin Marketplace Registry",
   "description": "Schema for marketplace.json — a registry of available Claude Code plugins",

@@ -78,7 +78,7 @@ This workflow has six phases:
 
 ## Phase 1: Settings Check
 
-Check if there is a settings file at `.claude/claude-alchemy.local.md` to get any custom configuration like output path or author name.
+Check if there is a settings file at `.claude/agent-alchemy.local.md` to get any custom configuration like output path or author name.
 
 ---
 
@@ -362,7 +362,7 @@ Since you mentioned GDPR compliance, let me quickly research the current require
 
 #### Invoking Research
 
-Use the Task tool with subagent_type `claude-alchemy-sdd:research-agent`:
+Use the Task tool with subagent_type `agent-alchemy-sdd:research-agent`:
 
 ```
 Task prompt template:
@@ -565,7 +565,7 @@ Choose the appropriate template based on depth level:
 
 1. **Read the appropriate template** based on depth level
 
-2. **Check for settings** at `.claude/claude-alchemy.local.md` for:
+2. **Check for settings** at `.claude/agent-alchemy.local.md` for:
    - Custom output path
    - Author name
 

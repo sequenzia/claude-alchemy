@@ -79,10 +79,10 @@ Retrieve all tasks via `TaskList`. If a `--task-group` argument was provided, fi
 Handle edge cases: empty list, all completed, specific task blocked, no unblocked tasks, circular dependencies.
 
 ### Step 3: Build Execution Plan
-Resolve `max_parallel` setting using precedence: `--max-parallel` CLI arg > `.claude/claude-alchemy.local.md` setting > default 5. Build a dependency graph from pending tasks. Assign tasks to waves using topological levels: Wave 1 = no dependencies, Wave 2 = depends on Wave 1 tasks, etc. Sort within waves by priority (critical > high > medium > low > unprioritized), break ties by "unblocks most others." Cap each wave at `max_parallel` tasks.
+Resolve `max_parallel` setting using precedence: `--max-parallel` CLI arg > `.claude/agent-alchemy.local.md` setting > default 5. Build a dependency graph from pending tasks. Assign tasks to waves using topological levels: Wave 1 = no dependencies, Wave 2 = depends on Wave 1 tasks, etc. Sort within waves by priority (critical > high > medium > low > unprioritized), break ties by "unblocks most others." Cap each wave at `max_parallel` tasks.
 
 ### Step 4: Check Settings
-Read `.claude/claude-alchemy.local.md` if it exists for execution preferences, including `max_parallel` setting. CLI `--max-parallel` argument takes precedence over the settings file value.
+Read `.claude/agent-alchemy.local.md` if it exists for execution preferences, including `max_parallel` setting. CLI `--max-parallel` argument takes precedence over the settings file value.
 
 ### Step 5: Initialize Execution Directory
 Generate a `task_execution_id` using three-tier resolution: (1) if `--task-group` provided → `{task_group}-{YYYYMMDD}-{HHMMSS}`, (2) else if all open tasks share the same `metadata.task_group` → `{task_group}-{YYYYMMDD}-{HHMMSS}`, (3) else → `exec-session-{YYYYMMDD}-{HHMMSS}`. Clean any stale `__live_session__/` files by archiving them to `.claude/sessions/interrupted-{YYYYMMDD}-{HHMMSS}/`, resetting any `in_progress` tasks from the interrupted session back to `pending`. Check for and enforce the concurrency guard via `.lock` file. Create `.claude/sessions/__live_session__/` directory containing:
@@ -126,7 +126,7 @@ If none match -> **General task** (use inferred verification)
 
 ## 4-Phase Workflow
 
-Each task is executed by the `claude-alchemy-sdd:task-executor` agent through these phases:
+Each task is executed by the `agent-alchemy-sdd:task-executor` agent through these phases:
 
 ### Phase 1: Understand
 
@@ -197,7 +197,7 @@ This enables later tasks to benefit from earlier discoveries and retry attempts 
 - **One agent per task, multiple per wave**: Each task gets a fresh agent invocation with isolated context, but multiple agents run concurrently within a wave.
 - **Per-task context isolation**: During concurrent execution, each agent writes to `context-task-{id}.md`. The orchestrator merges these after each wave to prevent write contention.
 - **Within-wave retry**: Failed tasks with retries remaining are re-launched immediately as agent slots free up within the current wave, maximizing throughput.
-- **Configurable parallelism**: Default 5 concurrent tasks, configurable via `--max-parallel` argument or `.claude/claude-alchemy.local.md` settings. Set to 1 for sequential execution.
+- **Configurable parallelism**: Default 5 concurrent tasks, configurable via `--max-parallel` argument or `.claude/agent-alchemy.local.md` settings. Set to 1 for sequential execution.
 - **Configurable retries**: Default 3 attempts per task, configurable via `retries` argument.
 - **Retry with context**: Each retry includes the previous attempt's failure details so the agent can try a different approach.
 - **Dynamic unblocking**: After each wave completes, the dependency graph is refreshed and newly unblocked tasks are added to the next wave.
@@ -212,47 +212,47 @@ This enables later tasks to benefit from earlier discoveries and retry attempts 
 
 ### Execute all unblocked tasks
 ```
-/claude-alchemy-sdd:execute-tasks
+/agent-alchemy-sdd:execute-tasks
 ```
 
 ### Execute a specific task
 ```
-/claude-alchemy-sdd:execute-tasks 5
+/agent-alchemy-sdd:execute-tasks 5
 ```
 
 ### Execute with custom retry limit
 ```
-/claude-alchemy-sdd:execute-tasks --retries 1
+/agent-alchemy-sdd:execute-tasks --retries 1
 ```
 
 ### Execute specific task with retries
 ```
-/claude-alchemy-sdd:execute-tasks 5 --retries 5
+/agent-alchemy-sdd:execute-tasks 5 --retries 5
 ```
 
 ### Execute tasks for a specific group
 ```
-/claude-alchemy-sdd:execute-tasks --task-group user-authentication
+/agent-alchemy-sdd:execute-tasks --task-group user-authentication
 ```
 
 ### Execute specific group with custom retries
 ```
-/claude-alchemy-sdd:execute-tasks --task-group payments --retries 1
+/agent-alchemy-sdd:execute-tasks --task-group payments --retries 1
 ```
 
 ### Execute with limited parallelism
 ```
-/claude-alchemy-sdd:execute-tasks --max-parallel 2
+/agent-alchemy-sdd:execute-tasks --max-parallel 2
 ```
 
 ### Execute sequentially (no concurrency)
 ```
-/claude-alchemy-sdd:execute-tasks --max-parallel 1
+/agent-alchemy-sdd:execute-tasks --max-parallel 1
 ```
 
 ### Execute group with custom parallelism and retries
 ```
-/claude-alchemy-sdd:execute-tasks --task-group payments --max-parallel 3 --retries 1
+/agent-alchemy-sdd:execute-tasks --task-group payments --max-parallel 3 --retries 1
 ```
 
 ## Reference Files

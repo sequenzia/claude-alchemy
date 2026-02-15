@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/sequenzia/claude-alchemy/schemas/hooks.schema.json",
+  "$id": "https://github.com/sequenzia/agent-alchemy/schemas/hooks.schema.json",
   "$comment": "Source: https://code.claude.com/docs/en/hooks — Last validated: 2026-02-07",
   "title": "Claude Code Hooks Configuration",
   "description": "Schema for hooks/hooks.json — lifecycle hook definitions for Claude Code plugins",

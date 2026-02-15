@@ -14,7 +14,7 @@ If a specific `task-id` argument was provided, validate it exists. If it doesn't
 
 Handle edge cases before proceeding:
 
-- **Empty task list**: Report "No tasks found. Use `/claude-alchemy-sdd:create-tasks` to generate tasks from a spec, or create tasks manually with TaskCreate." and stop.
+- **Empty task list**: Report "No tasks found. Use `/agent-alchemy-sdd:create-tasks` to generate tasks from a spec, or create tasks manually with TaskCreate." and stop.
 - **All completed**: Report a summary of completed tasks and stop.
 - **Specific task-id is blocked**: Report which tasks are blocking it and stop.
 - **No unblocked tasks**: Report which tasks exist and what's blocking them. Detect circular dependencies and report if found.
@@ -25,7 +25,7 @@ Handle edge cases before proceeding:
 
 Determine the maximum number of concurrent tasks per wave using this precedence:
 1. `--max-parallel` CLI argument (highest priority)
-2. `max_parallel` setting in `.claude/claude-alchemy.local.md`
+2. `max_parallel` setting in `.claude/agent-alchemy.local.md`
 3. Default: 5
 
 ### 3b: Build Dependency Graph
@@ -63,7 +63,7 @@ Detect circular dependencies: if any tasks remain unassigned after topological s
 
 ## Step 4: Check Settings
 
-Read `.claude/claude-alchemy.local.md` if it exists, for any execution preferences.
+Read `.claude/agent-alchemy.local.md` if it exists, for any execution preferences.
 
 This is optional — proceed without settings if not found.
 
@@ -269,7 +269,7 @@ For each task in the wave, use the Task tool:
 
 ```
 Task:
-  subagent_type: claude-alchemy-sdd:task-executor
+  subagent_type: agent-alchemy-sdd:task-executor
   prompt: |
     Execute the following task.
 
@@ -459,7 +459,7 @@ Process:
 ## Notes
 
 - Tasks are executed using Claude Code's native task system (TaskGet/TaskUpdate/TaskList)
-- Each task is handled by the `claude-alchemy-sdd:task-executor` agent in isolation
+- Each task is handled by the `agent-alchemy-sdd:task-executor` agent in isolation
 - The execution context file enables knowledge sharing across task boundaries
 - Failed tasks remain as `in_progress` for manual review or re-execution
 - Run the execute-tasks skill again to pick up where you left off — it will execute any remaining unblocked tasks

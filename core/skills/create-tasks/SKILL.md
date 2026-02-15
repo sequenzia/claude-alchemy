@@ -63,7 +63,7 @@ This workflow has eight phases:
 Verify the spec file exists at the provided path.
 
 If the file is not found:
-1. Check `.claude/claude-alchemy.local.md` for a default spec directory or output path, and try resolving the spec path against it
+1. Check `.claude/agent-alchemy.local.md` for a default spec directory or output path, and try resolving the spec path against it
 2. Check if user provided a relative path
 3. Try common spec locations:
    - `specs/SPEC-{name}.md`
@@ -82,7 +82,7 @@ Read the entire spec file using the Read tool.
 
 ### Check Settings
 
-Check for optional settings at `.claude/claude-alchemy.local.md`:
+Check for optional settings at `.claude/agent-alchemy.local.md`:
 - Author name (for attribution)
 - Any custom preferences
 
@@ -621,17 +621,17 @@ If required information missing from spec:
 
 ### Basic Usage
 ```
-/claude-alchemy-sdd:create-tasks specs/SPEC-User-Authentication.md
+/agent-alchemy-sdd:create-tasks specs/SPEC-User-Authentication.md
 ```
 
 ### With Relative Path
 ```
-/claude-alchemy-sdd:create-tasks SPEC-Payments.md
+/agent-alchemy-sdd:create-tasks SPEC-Payments.md
 ```
 
 ### Re-running (Merge Mode)
 ```
-/claude-alchemy-sdd:create-tasks specs/SPEC-User-Authentication.md
+/agent-alchemy-sdd:create-tasks specs/SPEC-User-Authentication.md
 ```
 If tasks already exist for this spec, they will be intelligently merged.
 

@@ -42,7 +42,7 @@ Execute a structured exploration + synthesis workflow using parallel code-explor
 
 4. **Launch code-explorer agents:**
 
-   Launch agents in parallel using the Task tool with `subagent_type: "claude-alchemy-tools:code-explorer"`:
+   Launch agents in parallel using the Task tool with `subagent_type: "agent-alchemy-tools:code-explorer"`:
    ```
    Path to analyze: [PATH]
    Analysis context: [context from step 1]
@@ -70,7 +70,7 @@ Execute a structured exploration + synthesis workflow using parallel code-explor
 
 1. **Launch codebase-synthesizer agent:**
 
-   Use the Task tool with `subagent_type: "claude-alchemy-tools:codebase-synthesizer"` and `model: "opus"`:
+   Use the Task tool with `subagent_type: "agent-alchemy-tools:codebase-synthesizer"` and `model: "opus"`:
    ```
    Analysis context: [context from Phase 1]
    Codebase path: [PATH]

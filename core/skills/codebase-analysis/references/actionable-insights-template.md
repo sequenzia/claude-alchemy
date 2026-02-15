@@ -56,13 +56,13 @@ Present extracted items grouped by severity, highest first:
 - No architectural impact
 - Change is self-contained — no cascading modifications needed
 
-### Complex — Architectural (Use `claude-alchemy-tools:code-architect` with Opus)
+### Complex — Architectural (Use `agent-alchemy-tools:code-architect` with Opus)
 - Requires refactoring across multiple files
 - Introduces or changes a pattern (new abstraction, restructured module boundaries)
 - Affects system architecture (data flow, component relationships, API contracts)
 - Requires design decisions about approach
 
-### Complex — Investigation Needed (Use `claude-alchemy-tools:code-explorer` with Sonnet)
+### Complex — Investigation Needed (Use `agent-alchemy-tools:code-explorer` with Sonnet)
 - Root cause is unclear or needs tracing through the codebase
 - Multiple potential locations for the fix
 - Requires understanding current behavior before proposing changes

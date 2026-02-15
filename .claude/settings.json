@@ -1,19 +1,11 @@
 {
   "env": {
-    "CLAUDE_CODE_TASK_LIST_ID": "claude-alchemy",
+    "CLAUDE_CODE_TASK_LIST_ID": "agent-alchemy",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
-  },
-  "permissions": {
-    "additionalDirectories": [
-      "/Users/sequenzia/dev/repos/claude-plugins",
-      "/Users/sequenzia/dev/repos/claude-task-manager"
-    ]
   },
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "context7"
   ],
-  "enabledPlugins": {
-    "plugin-dev@claude-plugins-official": true
-  }
+  "enabledPlugins": {}
 }

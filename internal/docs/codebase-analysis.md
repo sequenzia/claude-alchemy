@@ -1,7 +1,7 @@
 # Codebase Analysis Report
 
 **Analysis Context**: General codebase understanding
-**Codebase Path**: `/Users/sequenzia/dev/repos/claude-alchemy`
+**Codebase Path**: `/Users/sequenzia/dev/repos/agent-alchemy`
 **Date**: 2026-02-02
 
 ---
@@ -16,7 +16,7 @@ Claude Alchemy is a three-subsystem monorepo where two Claude Code plugins (SDD 
 
 The monorepo contains three independently useful subsystems connected through filesystem conventions rather than shared code:
 
-**Plugin System** — Two Claude Code plugins (`claude-alchemy-tools` v0.1.1, `claude-alchemy-sdd` v0.1.3) define structured development methodologies entirely through markdown files. Skills are multi-phase workflows (up to 10 steps) that orchestrate specialized agents in parallel using Claude Code's Task tool. Agents are spawned with model tiering — Sonnet for exploratory breadth, Opus for synthesis/architecture/review depth, Haiku for simple procedural tasks. A reference material system (`references/` subdirectories) provides templates, criteria, and patterns loaded at runtime.
+**Plugin System** — Two Claude Code plugins (`agent-alchemy-tools` v0.1.1, `agent-alchemy-sdd` v0.1.3) define structured development methodologies entirely through markdown files. Skills are multi-phase workflows (up to 10 steps) that orchestrate specialized agents in parallel using Claude Code's Task tool. Agents are spawned with model tiering — Sonnet for exploratory breadth, Opus for synthesis/architecture/review depth, Haiku for simple procedural tasks. A reference material system (`references/` subdirectories) provides templates, criteria, and patterns loaded at runtime.
 
 **Task Manager App** — A Next.js 16.1.4 application (React 19, TanStack Query v5, Tailwind v4, shadcn/ui) using App Router with a clear server/client boundary. Server Components fetch initial task data from `~/.claude/tasks/`, Client Components manage state via TanStack Query, and a chokidar-based file watcher pushes real-time updates through Server-Sent Events. The cross-system bridge is an `execution_pointer.md` file written by the `execute-tasks` skill and read by the Task Manager to display execution artifacts.
 
@@ -92,7 +92,7 @@ The monorepo contains three independently useful subsystems connected through fi
 - **Markdown-as-Code**: All plugin logic in markdown files (SKILL.md, agent-name.md) with YAML frontmatter; no build step required.
 
 ### Naming Conventions
-- Plugin names: `claude-alchemy-{category}` (e.g., `claude-alchemy-tools`)
+- Plugin names: `agent-alchemy-{category}` (e.g., `agent-alchemy-tools`)
 - Skill invocation: `/tools:{name}` or `/sdd:{name}`
 - Skills: `SKILL.md` (all caps) with YAML frontmatter in `skills/{name}/`
 - Agents: `{agent-name}.md` (kebab-case) in `agents/`
@@ -101,7 +101,7 @@ The monorepo contains three independently useful subsystems connected through fi
 
 ### Project Structure
 ```
-claude-alchemy/
+agent-alchemy/
 ├── apps/task-manager/          # Next.js 16 app (pnpm workspace)
 │   └── src/
 │       ├── app/                # App Router pages and API routes

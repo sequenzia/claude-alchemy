@@ -95,11 +95,11 @@ This skill can be invoked standalone or loaded by other skills as a reusable bui
 6. **Spawn teammates:**
    Use the Task tool with the `team_name` parameter to spawn 4 teammates:
 
-   - **3 workers** — `subagent_type: "claude-alchemy-tools:team-code-explorer"`, model: sonnet
+   - **3 workers** — `subagent_type: "agent-alchemy-tools:team-code-explorer"`, model: sonnet
      - Named: `explorer-1`, `explorer-2`, `explorer-3`
      - Prompt each with: "You are part of a deep analysis team. Wait for your task assignment. The codebase is at: [PATH]. Analysis context: [context]"
 
-   - **1 deep synthesizer** — `subagent_type: "claude-alchemy-tools:team-deep-synthesizer"`, model: opus
+   - **1 deep synthesizer** — `subagent_type: "agent-alchemy-tools:team-deep-synthesizer"`, model: opus
      - Named: `synthesizer`
      - Prompt with: "You are the deep synthesizer for a deep analysis team. You have Bash access for git history, dependency analysis, and static analysis. Wait for your task assignment. The codebase is at: [PATH]. Analysis context: [context]"
 

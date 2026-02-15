@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/sequenzia/claude-alchemy/schemas/plugin.schema.json",
+  "$id": "https://github.com/sequenzia/agent-alchemy/schemas/plugin.schema.json",
   "$comment": "Source: https://code.claude.com/docs/en/plugins-reference — Last validated: 2026-02-07",
   "title": "Claude Code Plugin Manifest",
   "description": "Schema for .claude-plugin/plugin.json — the manifest file for Claude Code plugins",

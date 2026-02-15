@@ -58,7 +58,7 @@ Analyze the spec content to detect its depth level:
 
 ### Step 4: Check Settings
 
-Check for settings at `.claude/claude-alchemy.local.md` to get:
+Check for settings at `.claude/agent-alchemy.local.md` to get:
 - Author name (if configured)
 - Any custom preferences
 
@@ -74,7 +74,7 @@ Extract the spec filename and construct both output paths.
 
 ### Step 6: Launch Analyzer Agent
 
-Launch the Spec Analyzer Agent using the Task tool with subagent_type `claude-alchemy-sdd:spec-analyzer`.
+Launch the Spec Analyzer Agent using the Task tool with subagent_type `agent-alchemy-sdd:spec-analyzer`.
 
 Provide this context in the prompt:
 
@@ -114,7 +114,7 @@ Once you have launched the Analyzer Agent, your role is complete. The agent will
 ## Example Usage
 
 ```
-/claude-alchemy-sdd:analyze-spec specs/SPEC-User-Authentication.md
+/agent-alchemy-sdd:analyze-spec specs/SPEC-User-Authentication.md
 ```
 
 This will:

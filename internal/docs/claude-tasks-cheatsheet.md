@@ -58,7 +58,7 @@ export CLAUDE_CODE_TASK_LIST_ID="my-project-name"
 ```json
 {
   "env": {
-    "CLAUDE_CODE_TASK_LIST_ID": "claude-alchemy"
+    "CLAUDE_CODE_TASK_LIST_ID": "agent-alchemy"
   }
 }
 ```
@@ -213,7 +213,7 @@ Example: specs/SPEC-Auth.md:user-login:api:001
 
 ---
 
-## Integration with claude-alchemy
+## Integration with agent-alchemy
 
 ### Generate Tasks from Spec
 

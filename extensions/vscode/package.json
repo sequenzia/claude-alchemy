@@ -3,7 +3,7 @@
   "displayName": "Claude Code Plugin Schemas",
   "description": "Schema validation, autocomplete, and hover documentation for Claude Code plugin files",
   "version": "0.1.1",
-  "publisher": "claude-alchemy",
+  "publisher": "agent-alchemy",
   "license": "MIT",
   "engines": {
     "vscode": "^1.85.0"
@@ -70,7 +70,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sequenzia/claude-alchemy",
+    "url": "https://github.com/sequenzia/agent-alchemy",
     "directory": "extensions/vscode"
   }
 }

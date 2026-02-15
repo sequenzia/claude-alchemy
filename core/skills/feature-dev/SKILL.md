@@ -96,7 +96,7 @@ Execute these phases in order, completing ALL of them:
    Agent 3: Design an approach optimized for the project's existing patterns (if applicable)
    ```
 
-   Use the Task tool with `subagent_type: "claude-alchemy-tools:code-architect"`:
+   Use the Task tool with `subagent_type: "agent-alchemy-tools:code-architect"`:
    ```
    Feature: [feature description]
    Design approach: [specific approach for this agent]
@@ -178,7 +178,7 @@ Execute these phases in order, completing ALL of them:
    Agent 3: Review for maintainability and code quality
    ```
 
-   Use the Task tool with `subagent_type: "claude-alchemy-tools:code-reviewer"`:
+   Use the Task tool with `subagent_type: "agent-alchemy-tools:code-reviewer"`:
    ```
    Review focus: [specific focus for this agent]
 

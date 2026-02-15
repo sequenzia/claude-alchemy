@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/sequenzia/claude-alchemy/schemas/skill-frontmatter.schema.json",
+  "$id": "https://github.com/sequenzia/agent-alchemy/schemas/skill-frontmatter.schema.json",
   "$comment": "Source: https://code.claude.com/docs/en/skills — Last validated: 2026-02-07",
   "title": "Claude Code Skill Frontmatter",
   "description": "Schema for YAML frontmatter in SKILL.md files — defines skill metadata and behavior",

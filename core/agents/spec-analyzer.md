@@ -35,7 +35,7 @@ Text output should only be used for:
 
 ## Context
 
-You have been launched by the `/claude-alchemy-sdd:analyze-spec` skill with:
+You have been launched by the `/agent-alchemy-sdd:analyze-spec` skill with:
 - **Spec Path**: Path to the spec file to analyze
 - **Spec Content**: The full spec content
 - **Detected Depth Level**: High-level, Detailed, or Full-Tech

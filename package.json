@@ -1,5 +1,5 @@
 {
-  "name": "claude-alchemy",
+  "name": "agent-alchemy",
   "version": "0.1.0",
   "private": true,
   "description": "A monorepo combining Claude Code plugins and applications",
@@ -9,8 +9,8 @@
   },
   "license": "MIT",
   "scripts": {
-    "dev:task-manager": "pnpm --filter @claude-alchemy/task-manager dev",
-    "build:task-manager": "pnpm --filter @claude-alchemy/task-manager build",
+    "dev:task-manager": "pnpm --filter @agent-alchemy/task-manager dev",
+    "build:task-manager": "pnpm --filter @agent-alchemy/task-manager build",
     "lint": "pnpm -r lint"
   },
   "engines": {

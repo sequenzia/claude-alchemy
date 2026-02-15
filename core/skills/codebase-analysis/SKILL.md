@@ -169,8 +169,8 @@ Execute a structured 3-phase codebase analysis workflow to gather insights.
 
    2. **Plan the fix:**
       - Simple: Read the target file, propose changes directly
-      - Complex (architectural): Launch `claude-alchemy-tools:code-architect` agent with `model: "opus"` to design the fix
-      - Complex (needs investigation): Launch `claude-alchemy-tools:code-explorer` agent to investigate before proposing
+      - Complex (architectural): Launch `agent-alchemy-tools:code-architect` agent with `model: "opus"` to design the fix
+      - Complex (needs investigation): Launch `agent-alchemy-tools:code-explorer` agent to investigate before proposing
 
    3. **Present proposal:** Show files to modify, specific changes, and rationale
 

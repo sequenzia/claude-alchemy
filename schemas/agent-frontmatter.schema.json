@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/sequenzia/claude-alchemy/schemas/agent-frontmatter.schema.json",
+  "$id": "https://github.com/sequenzia/agent-alchemy/schemas/agent-frontmatter.schema.json",
   "$comment": "Source: https://code.claude.com/docs/en/sub-agents — Last validated: 2026-02-07",
   "title": "Claude Code Agent Frontmatter",
   "description": "Schema for YAML frontmatter in agent .md files — defines agent metadata and capabilities",
