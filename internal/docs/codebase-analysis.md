@@ -2,27 +2,23 @@
 
 **Analysis Context**: General codebase understanding
 **Codebase Path**: `/Users/sequenzia/dev/repos/agent-alchemy`
-**Date**: 2026-02-02
+**Date**: 2026-02-15
 
 ---
 
 ## Executive Summary
 
-Claude Alchemy is a three-subsystem monorepo where two Claude Code plugins (SDD and Tools) communicate with a Next.js 16 Task Manager through a **filesystem-as-message-bus** pattern — plugins write task JSON and session artifacts to `~/.claude/tasks/`, and the Task Manager watches those files with chokidar, streaming changes to the browser via SSE. The most significant risk is the complete absence of test infrastructure for security-critical paths like path traversal protection and permission hooks.
+Agent Alchemy is a well-architected monorepo that extends Claude Code into a structured development platform through three interconnected subsystems — a markdown-as-code plugin system (9 agents, 15 skills), a real-time Next.js 16 Kanban board, and a VS Code validation extension — all connected through Claude's filesystem-based task system (`~/.claude/tasks/`). The most significant finding is the **absence of any test framework** across the entire repository, which poses risk as the execution orchestration and real-time streaming logic grow in complexity.
 
 ---
 
 ## Architecture Overview
 
-The monorepo contains three independently useful subsystems connected through filesystem conventions rather than shared code:
+Agent Alchemy follows a **markdown-as-code** philosophy where the core plugin content (agents, skills, hooks) are plain markdown files with YAML frontmatter loaded directly by Claude Code — no build step required. The compiled artifacts (Task Manager app, VS Code extension) serve as auxiliary tooling for this plugin ecosystem.
 
-**Plugin System** — Two Claude Code plugins (`agent-alchemy-tools` v0.1.1, `agent-alchemy-sdd` v0.1.3) define structured development methodologies entirely through markdown files. Skills are multi-phase workflows (up to 10 steps) that orchestrate specialized agents in parallel using Claude Code's Task tool. Agents are spawned with model tiering — Sonnet for exploratory breadth, Opus for synthesis/architecture/review depth, Haiku for simple procedural tasks. A reference material system (`references/` subdirectories) provides templates, criteria, and patterns loaded at runtime.
+The monorepo uses pnpm workspaces, though only `apps/` is a workspace package. The three subsystems connect through a shared data contract: Claude Code's native task system writes JSON files to `~/.claude/tasks/<list>/`, consumed by both the plugin's skill workflows (via Claude's TaskCreate/TaskUpdate tools) and the Task Manager app (via filesystem watching). The schemas in `schemas/` are consumed by the VS Code extension and serve as documentation for plugin authors.
 
-**Task Manager App** — A Next.js 16.1.4 application (React 19, TanStack Query v5, Tailwind v4, shadcn/ui) using App Router with a clear server/client boundary. Server Components fetch initial task data from `~/.claude/tasks/`, Client Components manage state via TanStack Query, and a chokidar-based file watcher pushes real-time updates through Server-Sent Events. The cross-system bridge is an `execution_pointer.md` file written by the `execute-tasks` skill and read by the Task Manager to display execution artifacts.
-
-**Design Philosophy**: Pragmatic separation — no shared runtime code, the filesystem is the universal API, plugins are markdown-only with no build step. Each subsystem is independently useful. The filesystem serves as a universal integration layer that requires no shared code.
-
-**Tech Stack**: Next.js 16.1.4, React 19.2.3, TypeScript 5, TanStack Query v5.90.20, Tailwind CSS v4, shadcn/ui, Chokidar 5, pnpm workspaces.
+Key technologies: **TypeScript** throughout compiled code, **Next.js 16** (App Router, React 19, TanStack Query v5) for the task manager, **esbuild** for the VS Code extension, **Chokidar v5** for filesystem watching, **AJV** for schema validation, and **Tailwind v4 + shadcn/ui** for the UI layer.
 
 ---
 
@@ -30,74 +26,65 @@ The monorepo contains three independently useful subsystems connected through fi
 
 | File | Purpose | Relevance |
 |------|---------|-----------|
-| `apps/task-manager/src/lib/taskService.ts` | Reads task JSON, resolves execution pointers, path traversal protection | High |
-| `apps/task-manager/src/lib/fileWatcher.ts` | Chokidar singleton, emits task/execution events | High |
-| `apps/task-manager/src/app/api/events/route.ts` | SSE endpoint, bridges fileWatcher to browser | High |
-| `apps/task-manager/src/hooks/useSSE.ts` | Client-side SSE consumer, dual cache invalidation | High |
-| `apps/task-manager/src/components/TaskBoardClient.tsx` | Main client component, composes all hooks and UI | High |
-| `plugins/sdd/skills/execute-tasks/SKILL.md` | Orchestrates autonomous task execution, writes execution_pointer.md | High |
-| `plugins/sdd/skills/create-tasks/SKILL.md` | Transforms specs into Claude Code native Tasks | High |
-| `plugins/sdd/agents/task-executor.md` | 4-phase per-task execution agent (opus) | High |
-| `plugins/sdd/hooks/auto-approve-session.sh` | PreToolUse hook for autonomous file operations | Medium |
-| `plugins/tools/skills/feature-dev/SKILL.md` | 7-phase feature development workflow | Medium |
-| `plugins/tools/skills/codebase-analysis/SKILL.md` | 4-phase codebase analysis with parallel agents | Medium |
-| `apps/task-manager/src/types/task.ts` | Shared TypeScript type definitions | Medium |
-| `.claude-plugin/marketplace.json` | Plugin registry defining both plugins | Medium |
+| `core/skills/deep-analysis/SKILL.md` | Hub-and-spoke team orchestration workflow | High |
+| `core/skills/execute-tasks/SKILL.md` | Wave-based concurrent task execution | High |
+| `core/agents/task-executor.md` | 4-phase autonomous task execution agent | High |
+| `core/agents/code-explorer.md` | Codebase exploration with team communication | High |
+| `core/agents/code-synthesizer.md` | Finding merger with Bash deep investigation | High |
+| `apps/task-manager/src/lib/taskService.ts` | Server-side task file reading & parsing | High |
+| `apps/task-manager/src/lib/fileWatcher.ts` | Chokidar filesystem watcher singleton | High |
+| `apps/task-manager/src/app/api/events/route.ts` | SSE endpoint for real-time updates | High |
+| `extensions/vscode/src/frontmatter/validator.ts` | AJV-based YAML frontmatter validation | High |
+| `core/hooks/auto-approve-session.sh` | PreToolUse hook for autonomous execution | High |
 
-### Key File Details
+### File Details
+
+#### `core/skills/deep-analysis/SKILL.md`
+- **Key exports**: Reusable team coordination workflow
+- **Core logic**: Reconnaissance -> dynamic focus areas -> 3 explorers (sonnet) + 1 synthesizer (opus) -> completion check -> synthesis -> cleanup
+- **Connections**: Composed by feature-dev, codebase-analysis, docs-manager, create-spec
+
+#### `core/skills/execute-tasks/SKILL.md`
+- **Key exports**: Task execution orchestration with wave-based parallelism
+- **Core logic**: Dependency graph -> topological sort into waves -> launch up to `max_parallel` task-executors per wave -> merge context between waves -> archive
+- **Connections**: Uses task-executor agents, auto-approve hook, `~/.claude/sessions/__live_session__/` for state
 
 #### `apps/task-manager/src/lib/taskService.ts`
-- **Key exports**: `getTaskLists()`, `getTasks(listId)`, `getTask(listId, taskId)`, `getExecutionContext(listId)`, `getTasksDir()`
-- **Core logic**: Reads `~/.claude/tasks/` directory structure. `parseTask()` validates and normalizes JSON with defensive defaults (status normalization, array coercion, id-to-string). `resolveExecutionDir()` reads `execution_pointer.md`, resolves the path, and guards against path traversal using `path.relative()` to ensure the target stays under `$HOME`.
-- **Connections**: Read by all API routes and the Server Component page. All file operations use `node:fs/promises` (async). Returns empty results rather than throwing on failure.
+- **Key exports**: `getTaskLists()`, `getTasks()`, `getExecutionContext()`, `parseProgressMd()`
+- **Core logic**: Reads/parses `~/.claude/tasks/` JSON files, resolves execution pointer -> session artifacts
+- **Connections**: Used by all API routes and Server Components
 
 #### `apps/task-manager/src/lib/fileWatcher.ts`
-- **Key exports**: `FileWatcher` class extending `EventEmitter`, `fileWatcher` singleton instance
-- **Core logic**: Watches `~/.claude/tasks/` with chokidar using polling mode (300ms interval, depth 2). Emits `taskEvent` for JSON changes, `executionEvent` for markdown/txt changes. `watchExecutionDir()` dynamically adds execution directories, deduplicating by taskListId.
-- **Connections**: Global singleton on `globalThis` prevents duplicate watchers during HMR. Consumed by SSE route handler.
+- **Key exports**: `FileWatcher` singleton class
+- **Core logic**: Chokidar v5 with polling (300ms, depth 2), global singleton via `globalThis`, emits `taskEvent` and `executionEvent`
+- **Connections**: Feeds SSE route; dynamically watches execution directories
 
-#### `apps/task-manager/src/app/api/events/route.ts`
-- **Key exports**: `GET` route handler with `dynamic = 'force-dynamic'`, `runtime = 'nodejs'`
-- **Core logic**: Creates `ReadableStream` subscribing to fileWatcher events. Lazily starts watcher, resolves execution directory, streams filtered SSE data with 30s heartbeat. Uses `X-Accel-Buffering: no` for nginx compatibility. Cleans up listeners on abort.
-- **Connections**: Bridge between fileWatcher and useSSE hook.
-
-#### `apps/task-manager/src/hooks/useSSE.ts`
-- **Key exports**: `useSSE(taskListId)`
-- **Core logic**: Opens `EventSource` connection. Registers listeners for task and execution events. Dual invalidation: TanStack Query cache (`queryClient.invalidateQueries`) and Server Component data (`router.refresh()`). Reconnects after 3s on error via `reconnectKey` state.
-- **Connections**: Drives cache invalidation for useTasks and useExecutionContext.
-
-#### `plugins/sdd/skills/execute-tasks/SKILL.md`
-- **Key directives**: 10-step orchestration loop, dependency-aware execution plan, 4-phase per-task workflow, adaptive verification
-- **Core logic**: Creates `.claude/sessions/__live_session__/` with execution artifacts (execution_plan.md, execution_context.md, task_log.md). Writes `execution_pointer.md` to `~/.claude/tasks/{TASK_LIST_ID}/`. Spawns `task-executor` subagents one-per-task. Archives to timestamped directory on completion. Shared `execution_context.md` enables cross-task learning.
-- **Connections**: Produces artifacts consumed by Task Manager via filesystem.
-
-#### `plugins/sdd/hooks/auto-approve-session.sh`
-- **Core logic**: Intercepts PreToolUse events for Write, Edit, and Bash tools. Approves Write/Edit targeting `$HOME/.claude/tasks/*/execution_pointer.md` or `*/.claude/session/*`. Approves Bash `mkdir`/`mv` commands containing `.claude/session/`. Exits silently for non-matching operations.
-- **Connections**: Enables autonomous execution without user prompts.
+#### `extensions/vscode/src/frontmatter/validator.ts`
+- **Key exports**: `validateDocument()`, compiled AJV validators
+- **Core logic**: Extracts YAML frontmatter via regex, validates against agent/skill schemas, maps AJV errors to VS Code diagnostics with approximate line numbers
+- **Connections**: Consumes schemas from `schemas/`, pushes diagnostics to VS Code
 
 ---
 
 ## Patterns & Conventions
 
 ### Code Patterns
-- **Filesystem-as-message-bus**: All cross-system communication via file reads/writes. No database, no IPC, no HTTP between plugins and Task Manager.
-- **Server Components with client hydration**: Server Component fetches initial data, passes to Client Component as `initialData` for TanStack Query.
+- **Filesystem-as-message-bus**: All cross-system communication via file reads/writes to `~/.claude/tasks/` and `~/.claude/sessions/`. No database, no IPC.
+- **Model Tiering**: Sonnet for exploration/procedural (2 agents), Opus for synthesis/architecture/review (7 agents), Haiku for simple tasks. Declared in agent frontmatter `model:` field.
+- **Hub-and-Spoke Topology**: Lead creates team -> spawns workers -> workers explore independently -> synthesizer merges. No cross-worker messaging.
+- **Skill Composition**: Skills load other skills at runtime via `${CLAUDE_PLUGIN_ROOT}/skills/*/SKILL.md`. Deep-analysis is the most composed — used by 4 other skills as a building block.
+- **Agent Tool Access Tiers**: Read-only (architect, reviewer), read-write (task-executor, docs-writer), web-capable (researcher), interactive (spec-analyzer, changelog).
+- **Server Component -> Client Hydration**: RSC fetches initial data -> passes to client component -> TanStack Query takes over with `initialData` + SSE for real-time updates.
 - **SSE-driven dual invalidation**: Events invalidate both TanStack Query cache (`queryClient.invalidateQueries`) and Server Component data (`router.refresh()`).
-- **Parallel Agent Fan-Out / Synthesize**: Spawn multiple agents, collect reports, synthesize with Opus.
-- **Model Tiering**: Sonnet (exploration), Opus (synthesis/architecture/review/execution), Haiku (procedural).
-- **Multi-Phase Workflows**: 4-10 phases per skill with explicit transition directives.
-- **Reference Material System**: `references/` subdirectories with templates and criteria loaded at runtime.
-- **Defensive parsing**: `parseTask()` normalizes missing fields, returns empty results on failure rather than throwing.
+- **Reference Material System**: `references/` subdirectories with templates, criteria, and examples loaded at runtime for progressive disclosure.
 - **PreToolUse hooks for autonomy**: Auto-approve scoped file operations to enable hands-off execution.
-- **Markdown-as-Code**: All plugin logic in markdown files (SKILL.md, agent-name.md) with YAML frontmatter; no build step required.
+- **Markdown-as-Code**: All plugin logic in markdown files with YAML frontmatter; no build step required.
 
 ### Naming Conventions
-- Plugin names: `agent-alchemy-{category}` (e.g., `agent-alchemy-tools`)
-- Skill invocation: `/tools:{name}` or `/sdd:{name}`
-- Skills: `SKILL.md` (all caps) with YAML frontmatter in `skills/{name}/`
-- Agents: `{agent-name}.md` (kebab-case) in `agents/`
-- Commits: Conventional Commits (`type(scope): description`)
-- Task subjects: imperative mood; `activeForm`: present continuous
+- **Agents**: Prefixed `agent-alchemy-` (e.g., `agent-alchemy-code-explorer`), kebab-case
+- **Skills**: kebab-case directories (e.g., `deep-analysis`, `execute-tasks`) with `SKILL.md` (all caps)
+- **Commits**: Conventional format `type(scope): description`
+- **Reference Materials**: Stored in `references/` subdirectories within skills
 
 ### Project Structure
 ```
@@ -109,20 +96,18 @@ agent-alchemy/
 │       ├── hooks/              # Custom React hooks
 │       ├── lib/                # Server-side services (taskService, fileWatcher)
 │       └── types/              # TypeScript type definitions
-├── plugins/
-│   ├── tools/                  # 5 agents, 10 skills
-│   │   ├── agents/             # code-explorer, code-architect, etc.
-│   │   └── skills/             # feature-dev, codebase-analysis, etc.
-│   └── sdd/                    # 2 agents, 4 skills
-│       ├── agents/             # spec-analyzer, task-executor
-│       ├── hooks/              # auto-approve-session.sh
-│       └── skills/             # create-spec, create-tasks, etc.
-├── internal/
-│   └── docs/                   # Cheatsheets, workflow guides, analysis
-├── .claude/                    # Claude Code settings
-│   └── settings.json           # CLAUDE_CODE_TASK_LIST_ID, permissions
-└── .claude-plugin/
-    └── marketplace.json        # Plugin registry
+├── core/                       # Claude Code plugin (markdown-as-code)
+│   ├── agents/                 # 9 agent definitions (.md with YAML frontmatter)
+│   ├── skills/                 # 15 skill workflows (SKILL.md + references/)
+│   └── hooks/                  # PreToolUse hooks for autonomous execution
+├── extensions/vscode/          # VS Code extension for schema validation
+│   └── src/
+│       ├── extension.ts        # Entry point, JSON schema registration
+│       └── frontmatter/        # YAML frontmatter validation subsystem
+├── schemas/                    # 7 JSON schemas for plugin file formats
+├── scripts/                    # Utility scripts (deploy-docs.sh)
+├── internal/docs/              # Internal project documentation
+└── .claude/                    # Claude Code settings
 ```
 
 ---
@@ -131,40 +116,48 @@ agent-alchemy/
 
 ### Cross-System Integration
 ```
-SDD Plugin                          Task Manager
-  execute-tasks                       taskService.ts
-  |                                     |
-  |--writes--> ~/.claude/tasks/         |--reads---> ~/.claude/tasks/
-  |            ├── *.json (tasks)       |            ├── *.json (tasks)
-  |            └── execution_pointer.md |            └── execution_pointer.md
-  |                                     |
-  |--writes--> .claude/sessions/        |--reads---> (resolved from pointer)
-  |            __live_session__/        |
-  |            ├── execution_context.md |
-  |            ├── task_log.md         fileWatcher.ts (chokidar singleton)
-  |            └── execution_plan.md     |
-  |                                     |--emits--> events/route.ts (SSE)
-  task-executor agents (opus)                        |
-  |                                     useSSE.ts <--+
-  auto-approve-session.sh                |
-  (PreToolUse hook)                  TanStack Query invalidation
-                                         |
-                                     KanbanBoard, TaskDetail, ExecutionDialog
-```
+Plugin System (core/)
+│
+├── Skills orchestrate Agents:
+│   deep-analysis -> code-explorer (x3, sonnet) + code-synthesizer (x1, opus)
+│   feature-dev -> deep-analysis -> code-architect -> code-reviewer
+│   execute-tasks -> task-executor (xN, opus)
+│   docs-manager -> deep-analysis -> docs-writer
+│   codebase-analysis -> deep-analysis [composition]
+│   create-spec -> researcher [optional]
+│
+├── Knowledge skills preloaded by agents:
+│   code-explorer loads: project-conventions, language-patterns
+│   code-synthesizer loads: project-conventions, language-patterns
+│   task-executor loads: execute-tasks skill
+│
+├── Hook enables autonomous execution:
+│   auto-approve-session.sh -> PreToolUse for Write|Edit|Bash
+│   Approves: .claude/sessions/*, execution_pointer.md
+│
+└── Shared data: ~/.claude/tasks/<list>/*.json
+    |
+Task Manager (apps/task-manager/)
+│
+├── Server: taskService.ts reads task JSON files
+│   -> page.tsx (RSC) fetches initial data -> API routes
+│
+├── Real-time: fileWatcher.ts (Chokidar) -> SSE -> useSSE -> TanStack Query
+│
+└── UI: TaskBoardClient -> KanbanBoard + TaskDetail + ExecutionDialog
 
-### Plugin Orchestration
-```
-feature-dev → code-explorer (3x, sonnet) → codebase-synthesizer (opus) → code-architect (2-3x, opus) → code-reviewer (3x, opus)
-codebase-analysis → code-explorer (2-3x, sonnet) → codebase-synthesizer (opus)
-create-spec → researcher → writes specs/SPEC-{name}.md
-create-tasks → reads spec → calls TaskCreate/TaskUpdate APIs
-execute-tasks → task-executor (1 per task, opus) → writes session artifacts
+VS Code Extension (extensions/vscode/)
+│
+├── validator.ts -> AJV against agent/skill frontmatter schemas
+├── completions.ts -> autocomplete for frontmatter keys/values
+├── hover.ts -> documentation on hover
+└── extension.ts -> JSON validation for plugin.json, hooks.json, .mcp.json, .lsp.json
 ```
 
 ### Task Manager Data Flow
 ```
-~/.claude/tasks/*.json → Chokidar watcher → SSE route → useSSE hook → TanStack Query invalidation → KanbanBoard
-Server Component (initial) → taskService.ts → parallel fetch → TaskBoardClient props → initialData for TanStack Query
+~/.claude/tasks/*.json -> Chokidar watcher -> SSE route -> useSSE hook -> TanStack Query invalidation -> KanbanBoard
+Server Component (initial) -> taskService.ts -> parallel fetch -> TaskBoardClient props -> initialData for TanStack Query
 ```
 
 ---
@@ -173,33 +166,28 @@ Server Component (initial) → taskService.ts → parallel fetch → TaskBoardCl
 
 | Challenge | Severity | Impact |
 |-----------|----------|--------|
-| No test infrastructure | High | Security-sensitive logic (path traversal protection, permission hooks) and complex state management (SSE, cache invalidation) have zero test coverage, creating significant regression risk |
-| Auto-approve hook scope | Medium | Bash command approval matches `.claude/session/` anywhere in the command string; could be tightened to match as an argument rather than substring |
-| Filesystem polling latency | Medium | 300ms chokidar polling interval introduces latency and higher CPU overhead vs. native fsevents; rapid task transitions could feel sluggish |
-| Execution pointer staleness | Medium | After session archival, `execution_pointer.md` still points to the now-empty `__live_session__/` directory until the next execution |
-| No CI/CD pipeline | Medium | No GitHub Actions, no automated lint/type checking on push/PR; every change validated only by manual testing |
-| Context file growth | Medium | execution_context.md grows with each task; may exceed context limits for later agents |
-| SSE reconnection strategy | Low | Fixed 3-second retry with no backoff, no max retries, no user-visible disconnection state |
-| Manual version management | Low | Plugin versions in marketplace.json and plugin.json updated manually; no automated synchronization |
+| No test framework | High | Zero automated tests in the entire repo. Logic in taskService, fileWatcher, execution orchestration, and schema validation is untested. Risk of regressions during refactoring. |
+| Schema synchronization is manual | Medium | Schemas exist in both `/schemas/` and `/extensions/vscode/schemas/`. Manual sync creates drift risk — VS Code extension could validate against stale schemas. |
+| Chokidar polling performance | Medium | 300ms polling interval with depth 2 is CPU-intensive for large task lists with many concurrent executors. |
+| Execution context file contention | Medium | Multiple task-executor agents writing per-task context files during wave execution. Merge failures could lose cross-task learnings. |
+| Plugin discovery is implicit | Medium | No `plugin.json` manifest found. Relies on Claude Code's auto-discovery, making the plugin boundary unclear. |
+| Docs site content deleted | Low | Commit `6a22653` removed entire MkDocs docs/ directory (~6000 lines). `site/` still referenced in CLAUDE.md but content is gone. |
+| Recent rapid renaming | Low | Last 5 commits show agent renames and restructuring. Skills referencing agents by name would break if names change again. |
 
 ---
 
 ## Recommendations
 
-1. **Add test coverage for critical paths**: Prioritize `taskService.ts` (path traversal protection, `parseTask()` normalization), the SSE event route (event filtering, cleanup), and `auto-approve-session.sh` (verify rejection of out-of-scope operations). These are the security and reliability boundaries.
-
-2. **Tighten auto-approve hook patterns**: Make the Bash command approval more specific by requiring `.claude/session/` as an argument rather than anywhere in the command string. Anchor path patterns more precisely.
-
-3. **Add SSE connection status visibility**: Expose connection state (connected/disconnected/reconnecting) to the UI. Add exponential backoff with a maximum retry count.
-
-4. **Set up minimal CI**: A GitHub Actions workflow running `pnpm lint` and `pnpm build:task-manager` on push/PR would catch TypeScript errors and lint violations before they reach main.
-
-5. **Parallelize file reads in taskService**: Replace sequential `for...of` loop in `getTasks()` with `Promise.all()` for reading task files, improving initial page load for large task lists.
+1. **Add a test framework**: Start with Vitest for the task manager (`taskService.ts` parsing, `parseProgressMd`, SSE route). This is the highest-impact gap.
+2. **Automate schema synchronization**: Add a script or build step that copies `schemas/*.json` -> `extensions/vscode/schemas/` to prevent drift.
+3. **Add an explicit plugin manifest**: Create a `plugin.json` to make the plugin boundary explicit and enable the extension's own validation.
+4. **Consider native filesystem events**: Chokidar supports FSEvents on macOS (`usePolling: false`) for lower CPU overhead.
+5. **Document the execution system**: The execute-tasks skill is the most complex piece. An architecture doc tracing the full flow would aid maintainability.
 
 ---
 
 ## Analysis Methodology
 
-- **Exploration agents**: 2 agents — Agent 1: Application structure, entry points, core logic; Agent 2: Configuration, infrastructure, shared utilities
-- **Synthesis**: Opus-tier synthesizer agent merged findings, read critical files in depth, mapped cross-system relationships
-- **Scope**: Full monorepo including apps, plugins, internal docs, and configuration. Excluded node_modules and build artifacts.
+- **Exploration agents**: 3 agents with focus areas: Core Plugin System, Task Manager App, VS Code Extension + Schemas
+- **Synthesis**: Findings merged by Opus-tier synthesizer with git history analysis, dependency tree inspection, and cross-reference validation
+- **Scope**: All source files read in depth for critical paths (deep-analysis -> feature-dev -> execute-tasks, filesystem -> SSE -> UI, frontmatter validation pipeline). Spec-related skills read at summary level.
