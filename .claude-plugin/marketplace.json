@@ -1,0 +1,22 @@
+{
+  "name": "agnet-alchemy",
+  "description": "Custom plugins for Agnet Alchemy",
+  "owner": {
+    "name": "Stephen Sequenzia",
+    "email": "sequenzia@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "agnet-alchemy",
+      "description": "General Developer Skills & Agents for Agnet Alchemy",
+      "version": "0.1.0",
+      "author": {
+        "name": "Stephen Sequenzia",
+        "email": "sequenzia@gmail.com"
+      },
+      "source": "./core",
+      "category": "development",
+      "homepage": "https://github.com/sequenzia/agnet-alchemy"
+    }
+  ]
+}

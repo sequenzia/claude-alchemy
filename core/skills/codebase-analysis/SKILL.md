@@ -1,11 +1,11 @@
 ---
 name: codebase-analysis
 description: Execute a structured codebase exploration workflow to gather insights. Use when asked to "analyze codebase", "explore codebase", "understand this codebase", or "map the codebase".
-argument-hint: <analysis-context or feature-description> [--teams]
+argument-hint: <analysis-context or feature-description>
 model: inherit
 user-invocable: true
 disable-model-invocation: false
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion, TeamCreate, TeamDelete, TaskCreate, TaskUpdate, TaskList, TaskGet, SendMessage
 ---
 
 # Codebase Analysis Workflow
@@ -31,14 +31,9 @@ Execute a structured 3-phase codebase analysis workflow to gather insights.
    - If no arguments, set context to "general codebase understanding"
 
 2. **Run deep-analysis workflow:**
-   - Check if `$ARGUMENTS` contains `--teams` flag
-   - If `--teams` is present:
-     - Read `${CLAUDE_PLUGIN_ROOT}/skills/teams-deep-analysis/SKILL.md` and follow its workflow
-     - Remove `--teams` from the analysis context
-   - Otherwise:
-     - Read `${CLAUDE_PLUGIN_ROOT}/skills/deep-analysis/SKILL.md` and follow its workflow (default)
+   - Read `${CLAUDE_PLUGIN_ROOT}/skills/deep-analysis/SKILL.md` and follow its workflow
    - Pass the analysis context from step 1
-   - This handles exploration (parallel code-explorer agents) and synthesis (codebase-synthesizer agent)
+   - This handles team creation, parallel exploration (code-explorer agents), and synthesis (deep-synthesizer agent)
 
 3. **Verify results:**
    - Ensure the synthesis covers the analysis context adequately
@@ -204,7 +199,7 @@ If any phase fails:
 
 ## Agent Coordination
 
-Exploration and synthesis agent coordination is handled by the `deep-analysis` skill in Phase 1. See that skill for agent model tiers and failure handling details.
+Exploration and synthesis agent coordination is handled by the `deep-analysis` skill in Phase 1, which uses Agent Teams with hub-and-spoke coordination. See that skill for team setup, agent model tiers, and failure handling details.
 
 ---
 

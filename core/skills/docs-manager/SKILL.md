@@ -5,11 +5,11 @@ description: >-
   initialize, generate, update docs, and create change summaries. Use when asked to
   "create docs", "write README", "update documentation", "generate docs site",
   "write CONTRIBUTING", "manage documentation", or "docs changelog".
-argument-hint: <action-or-description> [--teams]
+argument-hint: <action-or-description>
 model: inherit
 user-invocable: true
 disable-model-invocation: false
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion, TeamCreate, TeamDelete, TaskCreate, TaskUpdate, TaskList, TaskGet, SendMessage
 ---
 
 # Documentation Manager Workflow
@@ -165,16 +165,13 @@ Construct a specific context string based on Phase 1 selections:
 | Basic markdown CONTRIBUTING | "Contribution guidelines — find dev workflow, testing setup, code style rules, commit conventions, CI process..." |
 | Multiple files | Combine relevant contexts from above |
 
-### Step 2 — Run deep-analysis (or teams-deep-analysis)
+### Step 2 — Run deep-analysis
 
-Check if `$ARGUMENTS` contains the `--teams` flag:
-
-- **If `--teams`:** Read `${CLAUDE_PLUGIN_ROOT}/skills/teams-deep-analysis/SKILL.md` and follow its workflow
-- **Otherwise:** Read `${CLAUDE_PLUGIN_ROOT}/skills/deep-analysis/SKILL.md` and follow its workflow
+Read `${CLAUDE_PLUGIN_ROOT}/skills/deep-analysis/SKILL.md` and follow its workflow.
 
 Pass the documentation-focused analysis context from Step 1.
 
-Deep-analysis handles all agent orchestration (code-explorers + codebase-synthesizer). Since docs-manager is the calling skill, deep-analysis returns control without standalone summary.
+Deep-analysis handles all agent orchestration (team creation, code-explorers + deep-synthesizer). Since docs-manager is the calling skill, deep-analysis returns control without standalone summary.
 
 ### Step 3 — Supplemental analysis for update with git-diff mode
 
@@ -390,7 +387,7 @@ If the project is not a git repository:
 
 ## Agent Coordination
 
-- **Phase 3**: Exploration and synthesis handled by the deep-analysis skill (or teams-deep-analysis with `--teams`). Deep-analysis orchestrates its own code-explorer and codebase-synthesizer agents.
+- **Phase 3**: Exploration and synthesis handled by the deep-analysis skill, which uses Agent Teams with hub-and-spoke coordination. Deep-analysis orchestrates its own code-explorer and deep-synthesizer agents.
 - **Phase 5**: docs-writer agents launched with `model: "opus"` for high-quality content generation. Parallel for independent files, sequential for dependent files.
 
 ---

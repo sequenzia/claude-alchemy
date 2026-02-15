@@ -1,11 +1,11 @@
 ---
 name: feature-dev
 description: Feature development workflow with exploration, architecture, implementation, and review phases. Use for implementing new features or significant changes.
-argument-hint: <feature-description> [--teams]
+argument-hint: <feature-description>
 model: inherit
 user-invocable: true
 disable-model-invocation: false
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion, TeamCreate, TeamDelete, TaskCreate, TaskUpdate, TaskList, TaskGet, SendMessage
 ---
 
 # Feature Development Workflow
@@ -47,14 +47,9 @@ Execute these phases in order, completing ALL of them:
 **Goal:** Understand the relevant parts of the codebase.
 
 1. **Run deep-analysis workflow:**
-   - Check if the original `$ARGUMENTS` contains `--teams` flag
-   - If `--teams` is present:
-     - Read `${CLAUDE_PLUGIN_ROOT}/skills/teams-deep-analysis/SKILL.md` and follow its workflow
-     - Remove `--teams` from the analysis context passed to the skill
-   - Otherwise:
-     - Read `${CLAUDE_PLUGIN_ROOT}/skills/deep-analysis/SKILL.md` and follow its workflow (default)
+   - Read `${CLAUDE_PLUGIN_ROOT}/skills/deep-analysis/SKILL.md` and follow its workflow
    - Pass the feature description from Phase 1 as the analysis context
-   - This handles exploration (parallel code-explorer agents) and synthesis (codebase-synthesizer agent)
+   - This handles team creation, parallel exploration (code-explorer agents), and synthesis (deep-synthesizer agent)
 
 2. Present the synthesized analysis to the user.
 
@@ -260,7 +255,7 @@ If any phase fails:
 
 ## Agent Coordination
 
-Exploration and synthesis agent coordination is handled by the `deep-analysis` skill in Phase 2. See that skill for agent model tiers and failure handling details.
+Exploration and synthesis agent coordination is handled by the `deep-analysis` skill in Phase 2, which uses Agent Teams with hub-and-spoke coordination. See that skill for team setup, agent model tiers, and failure handling details.
 
 When launching other parallel agents (code-architect, code-reviewer):
 - Give each agent a distinct focus area
@@ -269,7 +264,7 @@ When launching other parallel agents (code-architect, code-reviewer):
 
 When calling Task tool for agents:
 - Use `model: "opus"` for code-architect and code-reviewer agents
-- Code-explorer and codebase-synthesizer models are managed by deep-analysis
+- Code-explorer and deep-synthesizer models are managed by deep-analysis
 
 ## Additional Resources
 

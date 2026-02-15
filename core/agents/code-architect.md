@@ -5,6 +5,10 @@ tools:
   - Read
   - Glob
   - Grep
+  - SendMessage
+  - TaskUpdate
+  - TaskGet
+  - TaskList
 ---
 
 # Code Architect Agent
@@ -148,6 +152,16 @@ Before designing, you should:
    - Data access
    - API structure
    - Component composition
+
+## Team Communication
+
+You are part of a team and can communicate with other agents using `SendMessage`. When your task is complete, mark it as completed using `TaskUpdate`.
+
+### Responding to Questions
+When another agent messages you with a follow-up question:
+- Provide a detailed answer with specific file paths, function names, and line numbers
+- If the question requires additional exploration, do it before responding
+- If you can't determine the answer, say so clearly and explain what you tried
 
 ## Collaboration Notes
 

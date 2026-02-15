@@ -12,8 +12,8 @@ Agent Alchemy is a monorepo that extends Claude Code into a structured developme
 agent-alchemy/
 ├── apps/task-manager/     # Next.js 16 real-time Kanban board for Claude tasks
 ├── core/                  # Claude Code plugin content (markdown-as-code)
-│   ├── agents/            # Agent definitions (11 agents)
-│   ├── skills/            # Skill workflows (16 skills with YAML frontmatter)
+│   ├── agents/            # Agent definitions (9 agents, all team-enabled)
+│   ├── skills/            # Skill workflows (15 skills with YAML frontmatter)
 │   └── hooks/             # PreToolUse hooks for autonomous execution
 ├── extensions/vscode/     # VS Code extension for plugin schema validation
 ├── schemas/               # JSON schemas for plugin file formats
@@ -53,7 +53,7 @@ npm run lint                    # TypeScript type check (tsc --noEmit)
 
 Plugins are **not compiled** — they are markdown files with YAML frontmatter that Claude Code loads directly. No build step required.
 
-- **Agents** (`core/agents/*.md`): Define specialized agent roles (code-explorer, code-reviewer, task-executor, etc.) with system prompts and model preferences
+- **Agents** (`core/agents/*.md`): Define specialized agent roles (code-explorer, deep-synthesizer, code-architect, code-reviewer, task-executor, etc.) with system prompts and model preferences. All exploration/synthesis agents are team-enabled with SendMessage and TaskUpdate tools for Agent Teams coordination
 - **Skills** (`core/skills/*/SKILL.md`): Multi-phase workflows with explicit state transitions. Each skill directory contains a `SKILL.md` and a `references/` subdirectory with templates and criteria
 - **Hooks** (`core/hooks/`): PreToolUse hooks that auto-approve file operations during autonomous task execution
 

@@ -254,23 +254,8 @@ Maintain internal tracking of detected triggers and accepted recommendations:
 
 If the product type is "New feature for existing product":
 
-1. Use `AskUserQuestion` to offer exploration options:
-   ```yaml
-   questions:
-     - header: "Codebase"
-       question: "How would you like to explore the codebase before we start the interview?"
-       options:
-         - label: "Deep team analysis (Recommended)"
-           description: "Thorough parallel exploration with synthesis — 3-5 minutes"
-         - label: "Quick exploration"
-           description: "Basic pattern scanning with Glob/Grep/Read — 1-2 minutes"
-         - label: "Skip"
-           description: "Continue without code exploration"
-       multiSelect: false
-   ```
-
-2. **If "Deep team analysis" selected:**
-   1. Read the teams-deep-analysis skill: `${CLAUDE_PLUGIN_ROOT}/../tools/skills/teams-deep-analysis/SKILL.md`
+1. **Run deep-analysis workflow:**
+   1. Read the deep-analysis skill: `${CLAUDE_PLUGIN_ROOT}/skills/deep-analysis/SKILL.md`
    2. Follow its full workflow (Phases 1-4) with analysis context set to:
       ```
       Feature exploration for spec: {spec_name}. Description: {user's description from Phase 2}.
@@ -281,7 +266,7 @@ If the product type is "New feature for existing product":
    4. Present a brief summary of key findings to the user before starting the interview
 
    **Error handling / fallback:**
-   If the teams-deep-analysis workflow fails at any point (TeamCreate fails, agents fail, etc.):
+   If the deep-analysis workflow fails at any point (TeamCreate fails, agents fail, etc.):
    1. Inform the user that deep analysis encountered an issue
    2. Use `AskUserQuestion` to offer fallback:
       ```yaml
@@ -295,20 +280,8 @@ If the product type is "New feature for existing product":
               description: "Continue without codebase analysis"
           multiSelect: false
       ```
-   3. If quick exploration: use basic Glob/Grep/Read (see below)
+   3. If quick exploration: use basic Glob/Grep/Read to understand existing patterns, related features, integration points, and data models
    4. If skip: continue to Phase 3 Round 1 with whatever findings were gathered
-
-3. **If "Quick exploration" selected:**
-   - Use `Glob`, `Grep`, and `Read` to understand:
-     - Existing patterns and conventions
-     - Related features that could inform this one
-     - Integration points
-     - Data models that might be extended
-   - Share relevant findings with the user
-   - Use findings to inform follow-up questions
-
-4. **If "Skip" selected:**
-   - Continue directly to Phase 3 Round 1
 
 ### Using Exploration Findings in Interview
 
